@@ -483,16 +483,253 @@
     "successMessage": "你的生活小助手已经可以根据输入选择功能。",
     "hint": "模拟输入里填一个功能名称，代码里用 if / elif / else 判断选择。"
   },
-  { "id": "lesson-25", "title": "随机抽奖机", "status": "locked", "concept": "random", "comingSoonText": "即将解锁" },
-  { "id": "lesson-26", "title": "猜数字游戏", "status": "locked", "concept": "综合练习", "comingSoonText": "即将解锁" },
-  { "id": "lesson-27", "title": "整理错题本", "status": "locked", "concept": "数据整理", "comingSoonText": "即将解锁" },
-  { "id": "lesson-28", "title": "小小记账本", "status": "locked", "concept": "列表与数字", "comingSoonText": "即将解锁" },
-  { "id": "lesson-29", "title": "文字小画家", "status": "locked", "concept": "字符串循环", "comingSoonText": "即将解锁" },
-  { "id": "lesson-30", "title": "密码检查员", "status": "locked", "concept": "条件判断", "comingSoonText": "即将解锁" },
-  { "id": "lesson-31", "title": "宠物资料卡", "status": "locked", "concept": "字典综合", "comingSoonText": "即将解锁" },
-  { "id": "lesson-32", "title": "小小菜单程序", "status": "locked", "concept": "输入与条件", "comingSoonText": "即将解锁" },
-  { "id": "lesson-33", "title": "学习打卡器", "status": "locked", "concept": "综合应用", "comingSoonText": "即将解锁" },
-  { "id": "lesson-34", "title": "班级投票器", "status": "locked", "concept": "列表统计", "comingSoonText": "即将解锁" },
-  { "id": "lesson-35", "title": "我的小游戏", "status": "locked", "concept": "项目练习", "comingSoonText": "即将解锁" },
-  { "id": "lesson-36", "title": "创造师毕业作品", "status": "locked", "concept": "综合项目", "comingSoonText": "即将解锁" }
+  {
+    "id": "lesson-25",
+    "title": "文字变变变",
+    "status": "available",
+    "concept": "字符串拼接",
+    "goal": "把多个信息拼成一句完整介绍。",
+    "story": "小助手想把零散的信息合成一句顺口的今日介绍。",
+    "explanation": "今天学字符串拼接。可以用 + 把几段文字连成一句完整的话。",
+    "starterCode": "name = \"小派\"\nweather = \"晴天\"\nplan = \"学习 Python\"\n\nintro = \"我是\" + name + \"，今天是\" + weather + \"，我要\" + plan\nprint(intro)",
+    "modifyTask": "把 name、weather、plan 改成你的今日信息。",
+    "challengeTask": "再增加一个 mood 变量，把今天的心情也拼进去。",
+    "checkRules": [
+      { "type": "run_success" },
+      { "type": "code_contains", "value": "+" },
+      { "type": "code_contains", "value": "print" },
+      { "type": "output_line_count_at_least", "value": 1 }
+    ],
+    "successMessage": "今日介绍已经拼接完成。",
+    "hint": "用 + 连接文字和变量，文字部分要放在英文引号里。"
+  },
+  {
+    "id": "lesson-26",
+    "title": "找到关键词",
+    "status": "available",
+    "concept": "in",
+    "goal": "判断一句话里是否包含某个关键词。",
+    "story": "小助手要检查一句话里有没有提到 Python，就像帮你找关键词。",
+    "explanation": "今天学 in。它可以判断一个内容是否在字符串或列表里。",
+    "starterCode": "message = \"今天我学习了 Python\"\n\nif \"Python\" in message:\n    print(\"找到 Python\")\nelse:\n    print(\"没有找到\")",
+    "modifyTask": "把 message 改成你自己写的一句话。",
+    "challengeTask": "换一个关键词，比如“阅读”或“数学”，再做一次判断。",
+    "checkRules": [
+      { "type": "run_success" },
+      { "type": "code_contains", "value": " in " },
+      { "type": "code_contains", "value": "if" },
+      { "type": "output_contains", "value": "Python" }
+    ],
+    "successMessage": "小助手已经能找到关键词了。",
+    "hint": "判断关键词时，可以写 if \"Python\" in message:。"
+  },
+  {
+    "id": "lesson-27",
+    "title": "文字小清洁工",
+    "status": "available",
+    "concept": "strip / 字符串处理",
+    "goal": "去掉文字前后的多余空格。",
+    "story": "有时输入的名字前后会多出空格。小助手要帮你把文字清理干净。",
+    "explanation": "今天学 strip。它可以去掉字符串开头和结尾的多余空格。",
+    "starterCode": "raw_name = \"   小派   \"\nclean_name = raw_name.strip()\n\nprint(\"清理前：\")\nprint(raw_name)\nprint(\"清理后：\")\nprint(clean_name)",
+    "modifyTask": "把 raw_name 改成带空格的你的名字或任务名称。",
+    "challengeTask": "再创建一个 raw_task，用 strip 清理任务名称。",
+    "checkRules": [
+      { "type": "run_success" },
+      { "type": "code_contains", "value": "strip" },
+      { "type": "code_contains", "value": "print" },
+      { "type": "output_line_count_at_least", "value": 2 }
+    ],
+    "successMessage": "文字小清洁工已经把多余空格清理掉了。",
+    "hint": "用 raw_name.strip() 得到清理后的文字。"
+  },
+  {
+    "id": "lesson-28",
+    "title": "我的故事生成器",
+    "status": "available",
+    "concept": "字符串 + input",
+    "goal": "根据输入内容生成一小段故事。",
+    "story": "小助手要根据你输入的名字、地点和爱好，生成一段生活小故事。",
+    "explanation": "今天把字符串和 input 合起来用。每次 input 会读取模拟输入区的一行。",
+    "starterCode": "name = input(\"名字：\")\nplace = input(\"地点：\")\nhobby = input(\"爱好：\")\n\nstory = name + \"在\" + place + \"练习\" + hobby\nprint(story)",
+    "modifyTask": "修改模拟输入区的三行内容，生成你自己的故事。",
+    "challengeTask": "再给故事加一句结尾，比如“今天真不错”。",
+    "sampleInput": "小明\n图书馆\nPython",
+    "checkRules": [
+      { "type": "run_success" },
+      { "type": "code_contains", "value": "input" },
+      { "type": "code_contains", "value": "+" },
+      { "type": "output_line_count_at_least", "value": 1 }
+    ],
+    "successMessage": "故事生成器已经写出一小段故事。",
+    "hint": "模拟输入需要三行，分别给 name、place、hobby 使用。"
+  },
+  {
+    "id": "lesson-29",
+    "title": "找 Bug 小侦探",
+    "status": "available",
+    "concept": "常见错误识别",
+    "goal": "认识常见代码错误。",
+    "story": "小助手发现代码有时会出错。你要像小侦探一样检查引号、变量名、冒号和缩进。",
+    "explanation": "今天学找 Bug。常见问题包括少引号、变量名写错、少冒号、缩进不对。",
+    "starterCode": "name = \"小派\"\nscore = 90\n\nif score >= 80:\n    print(name + \"完成得不错\")\nelse:\n    print(\"继续加油\")",
+    "modifyTask": "把 name 和 score 改成你自己的内容，保持代码能运行。",
+    "challengeTask": "故意少写一个引号观察报错，再修回来。",
+    "checkRules": [
+      { "type": "run_success" },
+      { "type": "code_contains", "value": "if" },
+      { "type": "code_contains", "value": ":" },
+      { "type": "output_line_count_at_least", "value": 1 }
+    ],
+    "successMessage": "小侦探已经让代码保持正常运行。",
+    "hint": "检查引号是否成对、if 后面有没有冒号、缩进是否对齐。"
+  },
+  {
+    "id": "lesson-30",
+    "title": "修好小程序",
+    "status": "available",
+    "concept": "调试 debug",
+    "goal": "修复一段有问题的小程序。",
+    "story": "小助手的问候程序需要你帮忙检查。修好后，它就能正常说你好。",
+    "explanation": "今天学 debug。调试就是一步步找问题、改问题，让程序重新跑起来。",
+    "starterCode": "helper_name = \"小派\"\nuser_name = \"小明\"\n\nmessage = \"你好，\" + user_name\nprint(helper_name + \"说：\")\nprint(message)",
+    "modifyTask": "把 user_name 改成你的名字，让小助手向你问好。",
+    "challengeTask": "再输出一句“程序修好了”。",
+    "checkRules": [
+      { "type": "run_success" },
+      { "type": "code_contains", "value": "=" },
+      { "type": "code_contains", "value": "print" },
+      { "type": "output_contains", "value": "你好" }
+    ],
+    "successMessage": "问候小程序已经修好并正常运行。",
+    "hint": "先确保变量名一致，再用 print 输出 message。"
+  },
+  {
+    "id": "lesson-31",
+    "title": "猜数字升级版",
+    "status": "available",
+    "concept": "循环 + if",
+    "goal": "让用户可以多次猜数字。",
+    "story": "小助手准备了一个小挑战：你有 3 次机会猜出它心里的数字。",
+    "explanation": "今天练习循环 + if。for 控制猜 3 次，if 判断每次猜得对不对。",
+    "starterCode": "secret = 5\n\nfor time in range(3):\n    guess = int(input(\"猜一个数字：\"))\n    if guess == secret:\n        print(\"猜对了\")\n    else:\n        print(\"再试一次\")",
+    "modifyTask": "把 secret 改成你想设置的数字，并调整模拟输入。",
+    "challengeTask": "猜对时再输出一句“挑战成功”。",
+    "sampleInput": "2\n4\n5",
+    "checkRules": [
+      { "type": "run_success" },
+      { "type": "code_contains", "value": "for" },
+      { "type": "code_contains", "value": "if" },
+      { "type": "code_contains", "value": "input" },
+      { "type": "output_contains", "value": "猜对了" }
+    ],
+    "successMessage": "猜数字升级版已经可以多次尝试。",
+    "hint": "模拟输入要写三行数字，每次 input 会读取一行。"
+  },
+  {
+    "id": "lesson-32",
+    "title": "任务抽签器",
+    "status": "available",
+    "concept": "list + random",
+    "goal": "从任务列表中随机抽出一个任务。",
+    "story": "不知道先做哪个任务时，小助手可以从任务清单里抽一个。",
+    "explanation": "今天学 list + random。random.choice 可以从列表中随机选一个内容。",
+    "starterCode": "import random\n\ntasks = [\"阅读\", \"运动\", \"整理书包\"]\nchoice = random.choice(tasks)\n\nprint(\"抽到的任务：\")\nprint(choice)",
+    "modifyTask": "把 tasks 改成你的今日任务清单。",
+    "challengeTask": "再添加一个任务，让抽签器有更多选择。",
+    "checkRules": [
+      { "type": "run_success" },
+      { "type": "code_contains", "value": "random" },
+      { "type": "code_contains", "value": "[" },
+      { "type": "output_line_count_at_least", "value": 1 }
+    ],
+    "successMessage": "任务抽签器已经抽出一个小任务。",
+    "hint": "用 import random，再用 random.choice(tasks) 从列表里抽一个。"
+  },
+  {
+    "id": "lesson-33",
+    "title": "小小问卷机",
+    "status": "available",
+    "concept": "input + list",
+    "goal": "收集多个回答并保存到列表。",
+    "story": "小助手要做一份小问卷，收集名字、爱好和喜欢的课程。",
+    "explanation": "今天学 input + list。input 负责收集回答，列表负责保存多个回答。",
+    "starterCode": "answers = []\nname = input(\"名字：\")\nhobby = input(\"爱好：\")\ncourse = input(\"喜欢的课程：\")\n\nanswers.append(name)\nanswers.append(hobby)\nanswers.append(course)\nprint(answers)",
+    "modifyTask": "修改模拟输入区的三行内容，做一份自己的问卷结果。",
+    "challengeTask": "再增加一个问题，比如“今天目标”。",
+    "sampleInput": "小明\n画画\nPython",
+    "checkRules": [
+      { "type": "run_success" },
+      { "type": "code_contains", "value": "input" },
+      { "type": "code_contains", "value": "[" },
+      { "type": "code_contains", "value": "append" },
+      { "type": "output_line_count_at_least", "value": 1 }
+    ],
+    "successMessage": "小小问卷机已经收集并保存回答。",
+    "hint": "每个 input 读取一行模拟输入，再用 append 加进 answers。"
+  },
+  {
+    "id": "lesson-34",
+    "title": "成绩统计员",
+    "status": "available",
+    "concept": "list + for + 数字运算",
+    "goal": "计算多个数字的总和和平均值。",
+    "story": "小助手要统计几次练习得分，算出总分和平均分。",
+    "explanation": "今天组合列表、for 和数字运算。先累加总分，再除以次数得到平均分。",
+    "starterCode": "scores = [90, 85, 95]\ntotal = 0\n\nfor score in scores:\n    total = total + score\n\naverage = total / 3\nprint(\"总分：\")\nprint(total)\nprint(\"平均分：\")\nprint(average)",
+    "modifyTask": "把 scores 改成你自己的三次练习得分。",
+    "challengeTask": "增加第四个分数，并修改平均分计算。",
+    "checkRules": [
+      { "type": "run_success" },
+      { "type": "code_contains", "value": "[" },
+      { "type": "code_contains", "value": "for" },
+      { "type": "code_contains_any", "value": ["+", "/"] },
+      { "type": "output_contains", "value": "平均分" }
+    ],
+    "successMessage": "成绩统计员已经算出总分和平均分。",
+    "hint": "用 for 累加 total，再用 total / 3 计算平均分。"
+  },
+  {
+    "id": "lesson-35",
+    "title": "我的学习计划表",
+    "status": "available",
+    "concept": "dict + list",
+    "goal": "用字典和列表管理一周计划。",
+    "story": "小助手帮你把周一到周三的学习计划放进一张表里。",
+    "explanation": "今天学 dict + list。字典保存每天的名称，列表保存当天的多个任务。",
+    "starterCode": "plans = {\n    \"周一\": [\"阅读\", \"Python\"],\n    \"周二\": [\"数学\", \"运动\"],\n    \"周三\": [\"英语\", \"整理书包\"]\n}\n\nprint(plans[\"周一\"])",
+    "modifyTask": "把周一到周三的计划改成你自己的安排。",
+    "challengeTask": "查询并输出周二或周三的计划。",
+    "checkRules": [
+      { "type": "run_success" },
+      { "type": "code_contains", "value": "{" },
+      { "type": "code_contains", "value": "[" },
+      { "type": "output_line_count_at_least", "value": 1 }
+    ],
+    "successMessage": "学习计划表已经可以查询一天的安排。",
+    "hint": "字典里每一天对应一个任务列表，查询时写 plans[\"周一\"]。"
+  },
+  {
+    "id": "lesson-36",
+    "title": "毕业作品：我的 Python 小助手",
+    "status": "available",
+    "concept": "综合项目",
+    "goal": "做一个简单菜单式生活小助手。",
+    "story": "这是毕业作品。你要让小助手根据输入，完成问候、查看任务、计算零花钱或显示课程表。",
+    "explanation": "今天综合使用变量、input、if、list 和 function。代码不用很长，但要能真正运行。",
+    "starterCode": "def hello():\n    print(\"你好，我是 Python 小助手\")\n\nchoice = input(\"选择：问候/任务/零花钱/课程表\")\ntasks = [\"阅读\", \"运动\"]\nclasses = [\"语文\", \"数学\", \"Python\"]\n\nif choice == \"问候\":\n    hello()\nelif choice == \"任务\":\n    print(tasks[0])\nelif choice == \"零花钱\":\n    money = 10 + 5\n    print(money)\nelse:\n    print(classes)",
+    "modifyTask": "修改模拟输入，试试“问候”“任务”“零花钱”或“课程表”。",
+    "challengeTask": "给小助手增加一个新功能，比如显示今日目标。",
+    "sampleInput": "问候",
+    "checkRules": [
+      { "type": "run_success" },
+      { "type": "code_contains", "value": "def" },
+      { "type": "code_contains", "value": "input" },
+      { "type": "code_contains", "value": "if" },
+      { "type": "code_contains", "value": "[" },
+      { "type": "output_line_count_at_least", "value": 1 }
+    ],
+    "successMessage": "毕业作品完成，你已经做出了自己的 Python 小助手。",
+    "hint": "用 input 选择功能，再用 if / elif / else 执行对应代码。"
+  }
 ]
