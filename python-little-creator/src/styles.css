@@ -329,6 +329,65 @@ button {
   line-height: 1.7;
 }
 
+.learning-section {
+  margin-top: 18px;
+  padding: 16px;
+  border: 1px solid #dce2ea;
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.learning-section.compact {
+  background: #f8fafc;
+}
+
+.learning-section h3 {
+  margin: 0 0 10px;
+  font-size: 15px;
+}
+
+.learning-section p,
+.learning-section li {
+  color: #3f4958;
+  line-height: 1.75;
+}
+
+.learning-section p {
+  margin: 0;
+}
+
+.learning-section ul,
+.learning-section ol {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.mistake-list {
+  display: grid;
+  gap: 12px;
+}
+
+.mistake-item {
+  display: grid;
+  gap: 8px;
+  padding: 12px;
+  border-radius: 8px;
+  background: #f8fafc;
+}
+
+.mistake-item code {
+  display: block;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  color: #9f1239;
+  font: 13px/1.6 "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+}
+
+.mistake-item p {
+  margin: 0;
+  font-size: 14px;
+}
+
 .workspace {
   display: grid;
   grid-template-rows: auto minmax(340px, 1fr) minmax(230px, 0.46fr);

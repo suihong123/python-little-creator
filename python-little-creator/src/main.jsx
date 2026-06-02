@@ -494,6 +494,57 @@ function App() {
             <span>提示</span>
             <p>{currentLesson.hint}</p>
           </div>
+
+          {currentLesson.keyPoints?.length > 0 && (
+            <div className="learning-section">
+              <h3>本关重点</h3>
+              <ul>
+                {currentLesson.keyPoints.map((point) => (
+                  <li key={point}>{point}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {currentLesson.observeQuestion && (
+            <div className="learning-section compact">
+              <h3>观察一下</h3>
+              <p>{currentLesson.observeQuestion}</p>
+            </div>
+          )}
+
+          {currentLesson.practiceTasks?.length > 0 && (
+            <div className="learning-section">
+              <h3>多练几次</h3>
+              <ol>
+                {currentLesson.practiceTasks.map((task) => (
+                  <li key={task}>{task}</li>
+                ))}
+              </ol>
+            </div>
+          )}
+
+          {currentLesson.commonMistakes?.length > 0 && (
+            <div className="learning-section">
+              <h3>常见小错误</h3>
+              <div className="mistake-list">
+                {currentLesson.commonMistakes.map((mistake) => (
+                  <article className="mistake-item" key={mistake.wrongCode}>
+                    <code>{mistake.wrongCode}</code>
+                    <p><strong>为什么错：</strong>{mistake.explanation}</p>
+                    <p><strong>怎么修：</strong>{mistake.fixTip}</p>
+                  </article>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {currentLesson.reviewQuestion && (
+            <div className="learning-section compact">
+              <h3>复习问题</h3>
+              <p>{currentLesson.reviewQuestion}</p>
+            </div>
+          )}
         </section>
       </main>
 

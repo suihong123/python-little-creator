@@ -16,7 +16,31 @@
       { "type": "output_line_count_at_least", "value": 1 }
     ],
     "successMessage": "小助手已经成功醒来，并说出第一句话。",
-    "hint": "使用 print 输出一句话，括号和引号都要写完整。"
+    "hint": "使用 print 输出一句话，括号和引号都要写完整。",
+    "keyPoints": [
+      "print 可以让电脑把内容显示出来",
+      "文字内容要放在英文引号里面",
+      "可以连续写多个 print 输出多行内容"
+    ],
+    "observeQuestion": "运行后，电脑一共输出了几行内容？如果再加一行 print，会发生什么？",
+    "practiceTasks": [
+      "把小助手醒来的话改成你自己的问候语。",
+      "再增加一行 print，介绍你的爱好。",
+      "用三行 print 输出姓名、年龄和今天目标。"
+    ],
+    "commonMistakes": [
+      {
+        "wrongCode": "print(\"你好)",
+        "explanation": "这行代码少了一个结束引号。",
+        "fixTip": "检查文字两边是不是都有英文引号。"
+      },
+      {
+        "wrongCode": "print(\"你好\"",
+        "explanation": "这行代码少了右括号。",
+        "fixTip": "检查 print 最后是不是有 )。"
+      }
+    ],
+    "reviewQuestion": "你能说出 print 的作用吗？"
   },
   {
     "id": "lesson-02-card",
@@ -35,7 +59,31 @@
       { "type": "output_line_count_at_least", "value": 3 }
     ],
     "successMessage": "小助手的文字名片已经做好了。",
-    "hint": "用三行 print 输出名片内容，每一行文字都要放在英文引号里。"
+    "hint": "用三行 print 输出名片内容，每一行文字都要放在英文引号里。",
+    "keyPoints": [
+      "字符串就是文字内容",
+      "中文、英文、数字放在引号里都可以当作文字",
+      "字符串可以用 print 输出到屏幕"
+    ],
+    "observeQuestion": "名片一共输出了几行？每一行的文字是不是都放在引号里？",
+    "practiceTasks": [
+      "把名字、年龄、爱好改成你自己的内容。",
+      "再输出一行“喜欢的课程”。",
+      "试着把数字年龄放在引号里，观察它仍然像文字一样输出。"
+    ],
+    "commonMistakes": [
+      {
+        "wrongCode": "print(\"名字：小派)",
+        "explanation": "引号没有成对出现，Python 不知道文字在哪里结束。",
+        "fixTip": "让文字左边和右边都有英文引号。"
+      },
+      {
+        "wrongCode": "print(名字：小派)",
+        "explanation": "文字直接写在 print 里，没有加引号。",
+        "fixTip": "把文字写成 print(\"名字：小派\")。"
+      }
+    ],
+    "reviewQuestion": "字符串和普通数字有什么不同？"
   },
   {
     "id": "lesson-03-variables",
@@ -55,7 +103,31 @@
       { "type": "output_line_count_at_least", "value": 3 }
     ],
     "successMessage": "小助手已经记住这些信息了。",
-    "hint": "先用变量保存内容，再用 print 输出变量名。"
+    "hint": "先用变量保存内容，再用 print 输出变量名。",
+    "keyPoints": [
+      "变量像小助手的记忆卡，可以保存信息",
+      "变量可以保存名字、年龄、爱好",
+      "使用变量时，变量名要和创建时写得一样"
+    ],
+    "observeQuestion": "代码里先创建了哪些变量？print 输出的是变量名，还是引号里的文字？",
+    "practiceTasks": [
+      "把 name、age、hobby 改成你自己的信息。",
+      "新增一个 goal 变量，保存今天的小目标。",
+      "输出时加上说明文字，比如“名字：”。"
+    ],
+    "commonMistakes": [
+      {
+        "wrongCode": "name = \"小派\"\nprint(nmae)",
+        "explanation": "变量名拼错了，Python 找不到 nmae。",
+        "fixTip": "检查使用变量时的名字是不是和前面完全一样。"
+      },
+      {
+        "wrongCode": "print(name)\nname = \"小派\"",
+        "explanation": "先使用了 name，但前面还没有创建它。",
+        "fixTip": "先写 name = \"小派\"，再 print(name)。"
+      }
+    ],
+    "reviewQuestion": "变量为什么可以让代码更容易修改？"
   },
   {
     "id": "lesson-04-calculator",
@@ -75,7 +147,31 @@
       { "type": "output_line_count_at_least", "value": 1 }
     ],
     "successMessage": "零花钱小管家算出了新的金额。",
-    "hint": "用 + 把两个数字加起来，再用 print 输出结果。"
+    "hint": "用 + 把两个数字加起来，再用 print 输出结果。",
+    "keyPoints": [
+      "数字不用加引号也可以计算",
+      "money = money + 5 表示把 money 增加 5",
+      "print 可以输出计算后的结果"
+    ],
+    "observeQuestion": "total 的结果是多少？如果 more_money 改成 10，输出会变成多少？",
+    "practiceTasks": [
+      "把 money 和 more_money 改成你的零花钱数字。",
+      "增加一行 money = money + 5，再输出新的 money。",
+      "试着用 -、* 或 / 做一次新的计算。"
+    ],
+    "commonMistakes": [
+      {
+        "wrongCode": "money = \"12\"\nprint(money + 5)",
+        "explanation": "money 现在是字符串，不是数字，不能直接和 5 相加。",
+        "fixTip": "做计算时把数字写成 money = 12，不要加引号。"
+      },
+      {
+        "wrongCode": "total = money x more_money",
+        "explanation": "Python 乘法不能用 x。",
+        "fixTip": "乘法要写 *，例如 money * more_money。"
+      }
+    ],
+    "reviewQuestion": "为什么数字计算时通常不要给数字加引号？"
   },
   {
     "id": "lesson-05-input-name",
@@ -95,7 +191,31 @@
       { "type": "output_contains", "value": "你好" }
     ],
     "successMessage": "小助手已经能听到输入，并完成问候。",
-    "hint": "用 input 读取名字，再把名字和问候语一起输出。"
+    "hint": "用 input 读取名字，再把名字和问候语一起输出。",
+    "keyPoints": [
+      "input 可以接收用户输入",
+      "输入内容会被保存到变量里",
+      "当前项目用模拟输入区域给 input 提供内容"
+    ],
+    "observeQuestion": "把模拟输入改成另一个名字后，输出里的名字有没有跟着变化？",
+    "practiceTasks": [
+      "把模拟输入区改成你的名字。",
+      "修改 print 里的问候语。",
+      "再增加一行 print，输出“欢迎来到 Python 课堂”。"
+    ],
+    "commonMistakes": [
+      {
+        "wrongCode": "input(\"请输入名字：\")\nprint(name)",
+        "explanation": "input 的结果没有保存到 name 变量里。",
+        "fixTip": "写成 name = input(\"请输入名字：\")。"
+      },
+      {
+        "wrongCode": "name = input(\"请输入名字：\")",
+        "explanation": "如果模拟输入区为空，程序读到的名字也是空的。",
+        "fixTip": "在模拟输入区写一行名字再运行。"
+      }
+    ],
+    "reviewQuestion": "input 读到的内容会保存在哪里？"
   },
   {
     "id": "lesson-06-age",
@@ -116,7 +236,31 @@
       { "type": "output_line_count_at_least", "value": 1 }
     ],
     "successMessage": "年龄魔法机已经完成计算。",
-    "hint": "先用 input 读取年龄，再用 int(age) 转成数字，最后加 1。"
+    "hint": "先用 input 读取年龄，再用 int(age) 转成数字，最后加 1。",
+    "keyPoints": [
+      "input 得到的是文字",
+      "int 可以把合适的数字文字变成数字",
+      "\"10\" 和 10 不一样"
+    ],
+    "observeQuestion": "模拟输入是 9 时，为什么加 1 后输出 10？",
+    "practiceTasks": [
+      "把模拟输入改成你的年龄。",
+      "把 + 1 改成 + 3，计算三年后的年龄。",
+      "输出一句说明文字，让结果更容易看懂。"
+    ],
+    "commonMistakes": [
+      {
+        "wrongCode": "age = input(\"请输入年龄：\")\nprint(age + 1)",
+        "explanation": "age 现在是文字，不是数字，不能直接加 1。",
+        "fixTip": "先写 age = int(age)，或者用 int(age) + 1。"
+      },
+      {
+        "wrongCode": "age = int(input(\"请输入年龄：\"))",
+        "explanation": "如果模拟输入不是数字，比如“九”，int 就不能转换。",
+        "fixTip": "模拟输入区要写 9、10 这样的数字。"
+      }
+    ],
+    "reviewQuestion": "为什么 input 得到的年龄要先用 int 转换？"
   },
   {
     "id": "lesson-07-weather",
@@ -135,7 +279,31 @@
       { "type": "output_line_count_at_least", "value": 1 }
     ],
     "successMessage": "天气穿衣小助手已经会做判断了。",
-    "hint": "保留 if 判断，并让条件成立时输出一条提醒。"
+    "hint": "保留 if 判断，并让条件成立时输出一条提醒。",
+    "keyPoints": [
+      "if 表示“如果”",
+      "条件成立才执行缩进里的代码",
+      "if 后面要有冒号"
+    ],
+    "observeQuestion": "weather 是“下雨”时，缩进里的 print 有没有运行？",
+    "practiceTasks": [
+      "把 weather 改成“晴天”，观察输出变化。",
+      "把提醒文字改成你自己的穿衣建议。",
+      "增加一个新的 if，判断 weather 是否等于“晴天”。"
+    ],
+    "commonMistakes": [
+      {
+        "wrongCode": "if weather == \"下雨\"\n    print(\"带伞\")",
+        "explanation": "if 后面忘记写冒号。",
+        "fixTip": "把第一行改成 if weather == \"下雨\":。"
+      },
+      {
+        "wrongCode": "if weather == \"下雨\":\nprint(\"带伞\")",
+        "explanation": "if 里面的代码没有缩进，Python 不知道哪些代码属于 if。",
+        "fixTip": "让 print 前面空 4 个空格。"
+      }
+    ],
+    "reviewQuestion": "if 里面的代码什么时候会执行？"
   },
   {
     "id": "lesson-08-score",
@@ -156,7 +324,37 @@
       { "type": "output_contains", "value": "良好" }
     ],
     "successMessage": "学习等级评定员完成了判断。",
-    "hint": "保留 if、elif、else 三种分支，并让 88 分能输出“良好”。"
+    "hint": "保留 if、elif、else 三种分支，并让 88 分能输出“良好”。",
+    "keyPoints": [
+      "if 判断第一种情况",
+      "elif 判断其他情况",
+      "else 处理前面都不符合的情况",
+      "程序会从上往下判断"
+    ],
+    "observeQuestion": "score 是 88 时，程序为什么输出“良好”，没有输出“优秀”？",
+    "practiceTasks": [
+      "把 score 改成 95、70、50，分别观察输出。",
+      "修改每个等级的提示文字。",
+      "增加一个 60 分以下的分支。"
+    ],
+    "commonMistakes": [
+      {
+        "wrongCode": "elif score >= 80:\n    print(\"良好\")\nif score >= 90:\n    print(\"优秀\")",
+        "explanation": "elif 不能写在 if 前面，它必须跟在 if 后面。",
+        "fixTip": "先写 if，再写 elif。"
+      },
+      {
+        "wrongCode": "else score < 60:\n    print(\"继续加油\")",
+        "explanation": "else 后面不能加条件。",
+        "fixTip": "else 直接写成 else:。"
+      },
+      {
+        "wrongCode": "if score >= 90\n    print(\"优秀\")",
+        "explanation": "if 后面忘记冒号。",
+        "fixTip": "条件后面加上 :。"
+      }
+    ],
+    "reviewQuestion": "if、elif、else 的判断顺序是怎样的？"
   },
   {
     "id": "lesson-09-countdown",
@@ -176,7 +374,31 @@
       { "type": "output_line_count_at_least", "value": 4 }
     ],
     "successMessage": "出发倒计时完成，可以开始新任务了。",
-    "hint": "用 for 和 range 输出数字，最后再 print“开始”或“出发”。"
+    "hint": "用 for 和 range 输出数字，最后再 print“开始”或“出发”。",
+    "keyPoints": [
+      "for 可以重复做事",
+      "range(3) 会重复 3 次",
+      "range(3, 0, -1) 可以做倒计时"
+    ],
+    "observeQuestion": "程序输出了几行？第一行输出的是多少？如果把 range(3) 改成 range(5)，会发生什么？",
+    "practiceTasks": [
+      "把倒计时改成从 5 开始。",
+      "把“开始”改成“出发”。",
+      "用 range(3) 输出三次“准备好了”。"
+    ],
+    "commonMistakes": [
+      {
+        "wrongCode": "for number in range(3)\n    print(number)",
+        "explanation": "for 后面忘记写冒号。",
+        "fixTip": "把第一行改成 for number in range(3):。"
+      },
+      {
+        "wrongCode": "for number in range(3):\nprint(number)",
+        "explanation": "循环里的代码没有缩进。",
+        "fixTip": "让 print 前面空 4 个空格。"
+      }
+    ],
+    "reviewQuestion": "range(3) 会让循环重复几次？"
   },
   {
     "id": "lesson-10-list",
@@ -196,7 +418,31 @@
       { "type": "output_line_count_at_least", "value": 1 }
     ],
     "successMessage": "每日任务包已经整理好了。",
-    "hint": "用方括号创建列表，再用 print 输出其中一个任务。"
+    "hint": "用方括号创建列表，再用 print 输出其中一个任务。",
+    "keyPoints": [
+      "列表可以一次保存多个内容",
+      "列表里的内容用中括号包起来",
+      "第一个元素的索引是 0"
+    ],
+    "observeQuestion": "tasks[0] 输出的是列表里的第几个任务？",
+    "practiceTasks": [
+      "把列表改成你的三个今日任务。",
+      "输出 tasks[1]，观察它是不是第二个任务。",
+      "再给列表增加一个新任务。"
+    ],
+    "commonMistakes": [
+      {
+        "wrongCode": "print(tasks[1])  # 想输出第一个任务",
+        "explanation": "列表索引从 0 开始，tasks[1] 是第二个任务。",
+        "fixTip": "输出第一个任务要写 tasks[0]。"
+      },
+      {
+        "wrongCode": "tasks = (\"读书\", \"运动\")",
+        "explanation": "这里用了小括号，不是本关要练习的列表中括号。",
+        "fixTip": "列表要写成 tasks = [\"读书\", \"运动\"]。"
+      }
+    ],
+    "reviewQuestion": "为什么第一个任务要用 tasks[0] 读取？"
   },
   {
     "id": "lesson-11-schedule",
@@ -216,7 +462,36 @@
       { "type": "output_line_count_at_least", "value": 3 }
     ],
     "successMessage": "课程表已经自动播报完成。",
-    "hint": "先创建课程列表，再用 for 逐项 print。"
+    "hint": "先创建课程列表，再用 for 逐项 print。",
+    "keyPoints": [
+      "for 可以一个一个取出列表里的内容",
+      "每次循环变量会变成列表里的一个元素",
+      "适合打印课程表、任务清单"
+    ],
+    "observeQuestion": "classes 有几个课程，程序就输出了几行课程名？",
+    "practiceTasks": [
+      "把课程表改成你今天的课程。",
+      "在 print 里加上“今天有：”。",
+      "把 classes 改成 tasks，播报今日任务清单。"
+    ],
+    "commonMistakes": [
+      {
+        "wrongCode": "for class_name in classes\n    print(class_name)",
+        "explanation": "for 后面忘记冒号。",
+        "fixTip": "第一行最后要写 :。"
+      },
+      {
+        "wrongCode": "for class_name in classes:\nprint(class_name)",
+        "explanation": "循环体没有缩进。",
+        "fixTip": "让 print 前面空 4 个空格。"
+      },
+      {
+        "wrongCode": "for class_name in class:\n    print(class_name)",
+        "explanation": "列表变量名写错了，前面创建的是 classes。",
+        "fixTip": "变量名要前后一致。"
+      }
+    ],
+    "reviewQuestion": "for 是怎样从列表里一个一个取出内容的？"
   },
   {
     "id": "lesson-12-quiz",
@@ -238,7 +513,37 @@
       { "type": "output_contains", "value": "1" }
     ],
     "successMessage": "小小答题挑战已经可以计分了。",
-    "hint": "模拟输入里填 print，代码里保留 input、if 和 score 加分。"
+    "hint": "模拟输入里填 print，代码里保留 input、if 和 score 加分。",
+    "keyPoints": [
+      "score 可以记录分数",
+      "input 可以接收答案",
+      "if 可以判断答案是否正确",
+      "score = score + 1 可以加分"
+    ],
+    "observeQuestion": "模拟输入是 print 时，score 最后为什么变成 1？",
+    "practiceTasks": [
+      "把题目文字改成你自己的问题。",
+      "把正确答案改成另一个 Python 关键词。",
+      "再增加一道题，让最高分变成 2 分。"
+    ],
+    "commonMistakes": [
+      {
+        "wrongCode": "if answer == print:\n    score = score + 1",
+        "explanation": "判断文字答案时，print 需要加引号。",
+        "fixTip": "写成 if answer == \"print\":。"
+      },
+      {
+        "wrongCode": "answer = input(\"问题：\")\nscore = score + 1",
+        "explanation": "score 没有先创建，Python 不知道它是多少。",
+        "fixTip": "在前面先写 score = 0。"
+      },
+      {
+        "wrongCode": "score + 1",
+        "explanation": "这只是算了一下，没有把新分数存回 score。",
+        "fixTip": "写成 score = score + 1。"
+      }
+    ],
+    "reviewQuestion": "为什么加分时要写 score = score + 1？"
   },
   {
     "id": "lesson-13",
