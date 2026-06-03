@@ -2,6 +2,18 @@ import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { createRoot } from 'react-dom/client'
 import Editor from '@monaco-editor/react'
 import lessons from './data/lessons.json'
+import { AI_TYPES, buildAiMessages, getAiTypeLabel, getThinkPrompt } from './utils/aiPrompts'
+import {
+  AI_MODE_STORAGE_KEY,
+  DEEPSEEK_API_KEY_STORAGE_KEY,
+  callDeepSeek,
+  getTodayUsage,
+  incrementTodayUsage,
+  maskApiKey,
+  saveAiFeedback,
+  testDeepSeekKey,
+  validateApiKey,
+} from './utils/deepseekClient'
 import { explainPythonError } from './utils/errorExplainer'
 import './styles.css'
 
@@ -11,6 +23,7 @@ const LEGACY_STORAGE_KEY = 'python-little-creator:v1'
 const PYODIDE_VERSION = '0.26.4'
 const MAX_OUTPUT_LINES = 100
 const RUN_TIMEOUT_MS = 8000
+const TEMP_CHALLENGE_PREFIX = 'plc_temp_challenge_lesson_'
 
 const availableLessons = lessons.filter((lesson) => lesson.status === 'available')
 const badgeDefinitions = [
@@ -119,6 +132,19 @@ function App() {
   const [isRunning, setIsRunning] = useState(false)
   const [isChecking, setIsChecking] = useState(false)
   const [pyodideStatus, setPyodideStatus] = useState('等待加载')
+  const [savedApiKey, setSavedApiKey] = useState(() => localStorage.getItem(DEEPSEEK_API_KEY_STORAGE_KEY) || '')
+  const [apiKeyInput, setApiKeyInput] = useState('')
+  const [apiStatusMessage, setApiStatusMessage] = useState('')
+  const [apiTestStatus, setApiTestStatus] = useState('')
+  const [aiMode, setAiMode] = useState(() => localStorage.getItem(AI_MODE_STORAGE_KEY) || 'child')
+  const [aiUsageCount, setAiUsageCount] = useState(() => getTodayUsage())
+  const [aiThinkingRequest, setAiThinkingRequest] = useState(null)
+  const [aiPanel, setAiPanel] = useState(null)
+  const [isAiLoading, setIsAiLoading] = useState(false)
+  const [aiFeedbackMessage, setAiFeedbackMessage] = useState('')
+  const [tempChallenge, setTempChallenge] = useState(() => (
+    localStorage.getItem(`${TEMP_CHALLENGE_PREFIX}${currentLessonId}`) || ''
+  ))
   const pyodideRef = useRef(null)
   const runTokenRef = useRef(0)
 
@@ -154,6 +180,12 @@ function App() {
     earnedBadges,
     lastStudyAt,
   ])
+
+  useEffect(() => {
+    setTempChallenge(localStorage.getItem(`${TEMP_CHALLENGE_PREFIX}${currentLesson.id}`) || '')
+    setAiThinkingRequest(null)
+    setAiFeedbackMessage('')
+  }, [currentLesson.id])
 
   async function getPyodide() {
     if (pyodideRef.current) {
@@ -249,6 +281,130 @@ function App() {
     setFriendlyError(null)
     setErrorHintLevel(1)
     touchStudyTime()
+  }
+
+  function saveApiKey() {
+    const validation = validateApiKey(apiKeyInput)
+    if (!validation.ok) {
+      setApiStatusMessage(validation.message)
+      return
+    }
+
+    localStorage.setItem(DEEPSEEK_API_KEY_STORAGE_KEY, validation.value)
+    setSavedApiKey(validation.value)
+    setApiKeyInput('')
+    setApiTestStatus('')
+    setApiStatusMessage('API Key 已保存到本机浏览器。')
+  }
+
+  function clearApiKey() {
+    localStorage.removeItem(DEEPSEEK_API_KEY_STORAGE_KEY)
+    setSavedApiKey('')
+    setApiKeyInput('')
+    setApiTestStatus('')
+    setApiStatusMessage('本机 API Key 已清除。')
+  }
+
+  async function testApiKey() {
+    const keyToTest = apiKeyInput.trim() || savedApiKey
+    const validation = validateApiKey(keyToTest)
+    if (!validation.ok) {
+      setApiStatusMessage(validation.message)
+      return
+    }
+
+    setApiTestStatus('正在测试连接...')
+    setApiStatusMessage('')
+    try {
+      await testDeepSeekKey(validation.value)
+      setApiTestStatus('连接测试成功。')
+    } catch {
+      setApiTestStatus('测试失败。请检查 Key 是否复制完整、账户是否有额度、网络是否正常，或浏览器是否阻止请求。')
+    }
+  }
+
+  function changeAiMode(nextMode) {
+    setAiMode(nextMode)
+    localStorage.setItem(AI_MODE_STORAGE_KEY, nextMode)
+  }
+
+  function openAiRequest(type) {
+    if (!savedApiKey) {
+      setAiPanel(null)
+      setApiStatusMessage('请先在 AI 助教设置里保存 DeepSeek API Key。')
+      return
+    }
+
+    if (type === AI_TYPES.error && !friendlyError) {
+      setAiPanel({
+        type,
+        content: '还没有发现错误。可以先运行代码，看到本地提示后再问 AI。',
+      })
+      return
+    }
+
+    const thinkPrompt = getThinkPrompt(type)
+    if (thinkPrompt) {
+      setAiThinkingRequest({ type, ...thinkPrompt })
+      return
+    }
+
+    runAiRequest(type)
+  }
+
+  async function runAiRequest(type) {
+    setAiThinkingRequest(null)
+    setIsAiLoading(true)
+    setAiFeedbackMessage('')
+    setAiPanel({
+      type,
+      content: 'AI 助教正在整理提示...',
+    })
+
+    try {
+      const messages = buildAiMessages({
+        type,
+        mode: aiMode,
+        lesson: currentLesson,
+        code: currentCode,
+        errorText: friendlyError?.originalError || output,
+      })
+      const content = await callDeepSeek({ apiKey: savedApiKey, messages })
+      const nextUsageCount = incrementTodayUsage()
+      setAiUsageCount(nextUsageCount)
+      setAiPanel({ type, content })
+    } catch {
+      setAiPanel({
+        type,
+        content: 'AI 请求失败了。主课程仍然可以正常使用，请检查 Key、额度、网络或浏览器请求限制。',
+      })
+    } finally {
+      setIsAiLoading(false)
+    }
+  }
+
+  function addTempChallenge() {
+    if (!aiPanel?.content || aiPanel.type !== AI_TYPES.challenge) return
+
+    localStorage.setItem(`${TEMP_CHALLENGE_PREFIX}${currentLesson.id}`, aiPanel.content)
+    setTempChallenge(aiPanel.content)
+  }
+
+  function clearTempChallenge() {
+    localStorage.removeItem(`${TEMP_CHALLENGE_PREFIX}${currentLesson.id}`)
+    setTempChallenge('')
+  }
+
+  function recordAiFeedback(helpful) {
+    if (!aiPanel) return
+
+    saveAiFeedback({
+      lessonId: currentLesson.id,
+      type: aiPanel.type,
+      helpful,
+      createdAt: new Date().toISOString(),
+    })
+    setAiFeedbackMessage(helpful ? '已记录：这个提示有帮助。' : '可以换个方式再问一次，或者先看本地提示和课程讲解。')
   }
 
   function resetCode() {
@@ -487,6 +643,18 @@ function App() {
             <p>{currentLesson.challengeTask}</p>
           </div>
 
+          {tempChallenge && (
+            <div className="temp-challenge-card">
+              <div>
+                <h3>我的临时挑战</h3>
+                <button className="text-button" onClick={clearTempChallenge} type="button">
+                  清除
+                </button>
+              </div>
+              <p>{tempChallenge}</p>
+            </div>
+          )}
+
           <div className="hint-box">
             <span>提示</span>
             <p>{currentLesson.hint}</p>
@@ -634,6 +802,13 @@ function App() {
                   </button>
                 )}
 
+                <div className="local-first-note">
+                  <span>先看本地提示，还是不明白再问 AI。</span>
+                  <button onClick={() => openAiRequest(AI_TYPES.error)} type="button" disabled={isAiLoading || !savedApiKey}>
+                    AI 帮我看看错误
+                  </button>
+                </div>
+
                 <p className="encouragement">{friendlyError.encouragement}</p>
 
                 <details className="raw-error">
@@ -655,6 +830,141 @@ function App() {
                 )}
               </>
             )}
+          </div>
+
+          <div className="ai-assistant-panel">
+            <div className="panel-title">家庭版 AI 助教</div>
+            <div className="ai-content">
+              <section className="ai-settings">
+                <div className="ai-settings-header">
+                  <div>
+                    <strong>AI 助教设置</strong>
+                    <span>API Key 只保存在本机浏览器。</span>
+                  </div>
+                  <span className="ai-mode-pill">{aiMode === 'parent' ? '家长模式' : '孩子模式'}</span>
+                </div>
+
+                <div className="ai-key-row">
+                  <input
+                    value={apiKeyInput}
+                    onChange={(event) => setApiKeyInput(event.target.value)}
+                    placeholder={savedApiKey ? `已保存：${maskApiKey(savedApiKey)}` : '输入 DeepSeek API Key'}
+                    type="password"
+                    autoComplete="off"
+                  />
+                  <button onClick={saveApiKey} type="button">保存</button>
+                  <button className="secondary-action" onClick={testApiKey} type="button">测试连接</button>
+                  <button className="danger-action" onClick={clearApiKey} type="button" disabled={!savedApiKey && !apiKeyInput}>
+                    清除
+                  </button>
+                </div>
+
+                <div className="ai-mode-row" aria-label="AI 模式选择">
+                  <label>
+                    <input
+                      checked={aiMode === 'child'}
+                      onChange={() => changeAiMode('child')}
+                      type="radio"
+                      name="ai-mode"
+                    />
+                    孩子模式
+                  </label>
+                  <label>
+                    <input
+                      checked={aiMode === 'parent'}
+                      onChange={() => changeAiMode('parent')}
+                      type="radio"
+                      name="ai-mode"
+                    />
+                    家长模式
+                  </label>
+                </div>
+
+                <p className="ai-usage">今天已使用 AI 助教：{aiUsageCount} 次</p>
+                {aiUsageCount > 20 && (
+                  <p className="ai-warning">今天已经问了很多次 AI 啦。可以先试着自己改一改，再继续问。</p>
+                )}
+                {apiStatusMessage && <p className="ai-status">{apiStatusMessage}</p>}
+                {apiTestStatus && <p className="ai-status">{apiTestStatus}</p>}
+                <p className="ai-safe-note">
+                  AI 请求只会发送当前关卡、当前代码和必要错误信息，不会发送完整课程库或学习记录。
+                </p>
+              </section>
+
+              <section className="ai-actions-panel">
+                <div className="ai-action-copy">
+                  <strong>AI 助教提示</strong>
+                  <span>先自己想，再让 AI 给一点提示。</span>
+                </div>
+                <div className="ai-action-buttons">
+                  <button
+                    onClick={() => openAiRequest(AI_TYPES.error)}
+                    type="button"
+                    disabled={isAiLoading || !friendlyError}
+                  >
+                    AI 帮我看看错误
+                  </button>
+                  <button onClick={() => openAiRequest(AI_TYPES.explain)} type="button" disabled={isAiLoading}>
+                    AI 讲讲这段代码
+                  </button>
+                  <button onClick={() => openAiRequest(AI_TYPES.challenge)} type="button" disabled={isAiLoading}>
+                    AI 给我一个小挑战
+                  </button>
+                  <button onClick={() => openAiRequest(AI_TYPES.parentReview)} type="button" disabled={isAiLoading}>
+                    AI 生成家长复盘问题
+                  </button>
+                </div>
+              </section>
+
+              {aiThinkingRequest && (
+                <section className="think-card">
+                  <h3>{aiThinkingRequest.title}</h3>
+                  <p>{aiThinkingRequest.content}</p>
+                  <div>
+                    <button onClick={() => runAiRequest(aiThinkingRequest.type)} type="button" disabled={isAiLoading}>
+                      {aiThinkingRequest.confirmLabel}
+                    </button>
+                    <button
+                      className="secondary-action"
+                      onClick={() => setAiThinkingRequest(null)}
+                      type="button"
+                      disabled={isAiLoading}
+                    >
+                      {aiThinkingRequest.cancelLabel}
+                    </button>
+                  </div>
+                </section>
+              )}
+
+              {aiPanel && (
+                <section className="ai-result-card">
+                  <div className="ai-result-heading">
+                    <span>{getAiTypeLabel(aiPanel.type)}</span>
+                    {isAiLoading && <em>生成中...</em>}
+                  </div>
+                  <p>{aiPanel.content}</p>
+                  <div className="ai-result-actions">
+                    {aiPanel.type === AI_TYPES.challenge && !isAiLoading && (
+                      <button onClick={addTempChallenge} type="button">加入本关临时挑战</button>
+                    )}
+                    {!isAiLoading && (
+                      <>
+                        <button className="secondary-action" onClick={() => recordAiFeedback(true)} type="button">
+                          有帮助
+                        </button>
+                        <button className="secondary-action" onClick={() => recordAiFeedback(false)} type="button">
+                          没看懂
+                        </button>
+                        <button className="secondary-action" onClick={() => setAiPanel(null)} type="button">
+                          关闭
+                        </button>
+                      </>
+                    )}
+                  </div>
+                  {aiFeedbackMessage && <p className="ai-feedback-message">{aiFeedbackMessage}</p>}
+                </section>
+              )}
+            </div>
           </div>
         </div>
       </section>
