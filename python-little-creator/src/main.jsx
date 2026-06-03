@@ -904,93 +904,6 @@ function App() {
           <div className="ai-assistant-panel">
             <div className="panel-title">家庭版 AI 助教</div>
             <div className="ai-content">
-              <section className="ai-settings">
-                <div className="ai-settings-header">
-                  <div>
-                    <strong>AI 助教设置</strong>
-                    <span>API Key 只保存在本机浏览器。</span>
-                  </div>
-                  <span className="ai-mode-pill">{aiMode === 'parent' ? '家长模式' : '孩子模式'}</span>
-                </div>
-
-                <div className="ai-key-row">
-                  <input
-                    value={apiKeyInput}
-                    onChange={(event) => setApiKeyInput(event.target.value)}
-                    placeholder={savedApiKey ? `已保存：${maskApiKey(savedApiKey)}` : '输入 DeepSeek API Key'}
-                    type="password"
-                    autoComplete="off"
-                  />
-                  <button onClick={saveApiKey} type="button">保存</button>
-                  <button className="secondary-action" onClick={testApiKey} type="button">测试连接</button>
-                  <button className="danger-action" onClick={clearApiKey} type="button" disabled={!savedApiKey && !apiKeyInput}>
-                    清除
-                  </button>
-                </div>
-
-                <label className="ai-model-row">
-                  <span>模型</span>
-                  <select value={deepSeekModel} onChange={(event) => changeDeepSeekModel(event.target.value)}>
-                    <option value="deepseek-chat">deepseek-chat</option>
-                    <option value="deepseek-reasoner">deepseek-reasoner</option>
-                  </select>
-                </label>
-
-                <details className="ai-advanced-settings">
-                  <summary>高级设置：API 地址</summary>
-                  <p>
-                    一般不用修改。默认使用 DeepSeek 官方地址。如果浏览器无法直接请求 DeepSeek，或者你以后使用自己的转发服务，可以在这里填写自定义地址。
-                  </p>
-                  <div className="ai-key-row">
-                    <input
-                      value={deepSeekBaseUrl}
-                      onChange={(event) => setDeepSeekBaseUrl(event.target.value)}
-                      placeholder={DEFAULT_DEEPSEEK_BASE_URL}
-                      type="url"
-                    />
-                    <button onClick={saveBaseUrl} type="button">保存 API 地址</button>
-                    <button className="secondary-action" onClick={restoreDefaultBaseUrl} type="button">
-                      恢复默认 API 地址
-                    </button>
-                  </div>
-                  <p>
-                    如果你以后使用自己的转发服务，可以把 API 地址改成你的转发地址。比如 Cloudflare Worker 或 Vercel Function 地址。当前项目不会自动创建转发服务。
-                  </p>
-                  <p>家庭自用通常保持默认 DeepSeek 官方地址即可。</p>
-                </details>
-
-                <div className="ai-mode-row" aria-label="AI 模式选择">
-                  <label>
-                    <input
-                      checked={aiMode === 'child'}
-                      onChange={() => changeAiMode('child')}
-                      type="radio"
-                      name="ai-mode"
-                    />
-                    孩子模式
-                  </label>
-                  <label>
-                    <input
-                      checked={aiMode === 'parent'}
-                      onChange={() => changeAiMode('parent')}
-                      type="radio"
-                      name="ai-mode"
-                    />
-                    家长模式
-                  </label>
-                </div>
-
-                <p className="ai-usage">今天已使用 AI 助教：{aiUsageCount} 次</p>
-                {aiUsageCount > 20 && (
-                  <p className="ai-warning">今天已经问了很多次 AI 啦。可以先试着自己改一改，再继续问。</p>
-                )}
-                {apiStatusMessage && <p className="ai-status">{apiStatusMessage}</p>}
-                {apiTestStatus && <p className="ai-status">{apiTestStatus}</p>}
-                <p className="ai-safe-note">
-                  Key 只保存在当前浏览器本地，不会写入项目代码，也不会保存到 GitHub。使用 AI 功能时，当前代码、错误信息和课程任务会发送给 DeepSeek 用于生成提示。请不要在公共电脑保存 API Key。
-                </p>
-              </section>
-
               <section className="ai-actions-panel">
                 <div className="ai-action-copy">
                   <strong>AI 助教提示</strong>
@@ -1015,6 +928,100 @@ function App() {
                   </button>
                 </div>
               </section>
+
+              <details className="ai-settings">
+                <summary className="ai-settings-summary">
+                  <span>AI 助教设置</span>
+                  <em>{savedApiKey ? `已保存 Key · ${aiMode === 'parent' ? '家长模式' : '孩子模式'}` : '未保存 API Key'}</em>
+                </summary>
+
+                <div className="ai-settings-body">
+                  <div className="ai-settings-header">
+                    <div>
+                      <strong>AI 助教设置</strong>
+                      <span>API Key 只保存在本机浏览器。</span>
+                    </div>
+                    <span className="ai-mode-pill">{aiMode === 'parent' ? '家长模式' : '孩子模式'}</span>
+                  </div>
+
+                  <div className="ai-key-row">
+                    <input
+                      value={apiKeyInput}
+                      onChange={(event) => setApiKeyInput(event.target.value)}
+                      placeholder={savedApiKey ? `已保存：${maskApiKey(savedApiKey)}` : '输入 DeepSeek API Key'}
+                      type="password"
+                      autoComplete="off"
+                    />
+                    <button onClick={saveApiKey} type="button">保存</button>
+                    <button className="secondary-action" onClick={testApiKey} type="button">测试连接</button>
+                    <button className="danger-action" onClick={clearApiKey} type="button" disabled={!savedApiKey && !apiKeyInput}>
+                      清除
+                    </button>
+                  </div>
+
+                  <label className="ai-model-row">
+                    <span>模型</span>
+                    <select value={deepSeekModel} onChange={(event) => changeDeepSeekModel(event.target.value)}>
+                      <option value="deepseek-chat">deepseek-chat</option>
+                      <option value="deepseek-reasoner">deepseek-reasoner</option>
+                    </select>
+                  </label>
+
+                  <details className="ai-advanced-settings">
+                    <summary>高级设置：API 地址</summary>
+                    <p>
+                      一般不用修改。默认使用 DeepSeek 官方地址。如果浏览器无法直接请求 DeepSeek，或者你以后使用自己的转发服务，可以在这里填写自定义地址。
+                    </p>
+                    <div className="ai-key-row">
+                      <input
+                        value={deepSeekBaseUrl}
+                        onChange={(event) => setDeepSeekBaseUrl(event.target.value)}
+                        placeholder={DEFAULT_DEEPSEEK_BASE_URL}
+                        type="url"
+                      />
+                      <button onClick={saveBaseUrl} type="button">保存 API 地址</button>
+                      <button className="secondary-action" onClick={restoreDefaultBaseUrl} type="button">
+                        恢复默认 API 地址
+                      </button>
+                    </div>
+                    <p>
+                      如果你以后使用自己的转发服务，可以把 API 地址改成你的转发地址。比如 Cloudflare Worker 或 Vercel Function 地址。当前项目不会自动创建转发服务。
+                    </p>
+                    <p>家庭自用通常保持默认 DeepSeek 官方地址即可。</p>
+                  </details>
+
+                  <div className="ai-mode-row" aria-label="AI 模式选择">
+                    <label>
+                      <input
+                        checked={aiMode === 'child'}
+                        onChange={() => changeAiMode('child')}
+                        type="radio"
+                        name="ai-mode"
+                      />
+                      孩子模式
+                    </label>
+                    <label>
+                      <input
+                        checked={aiMode === 'parent'}
+                        onChange={() => changeAiMode('parent')}
+                        type="radio"
+                        name="ai-mode"
+                      />
+                      家长模式
+                    </label>
+                  </div>
+
+                  <p className="ai-usage">今天已使用 AI 助教：{aiUsageCount} 次</p>
+                  {aiUsageCount > 20 && (
+                    <p className="ai-warning">今天已经问了很多次 AI 啦。可以先试着自己改一改，再继续问。</p>
+                  )}
+                  {apiStatusMessage && <p className="ai-status">{apiStatusMessage}</p>}
+                  {apiTestStatus && <p className="ai-status">{apiTestStatus}</p>}
+                  <p className="ai-safe-note">
+                    Key 只保存在当前浏览器本地，不会写入项目代码，也不会保存到 GitHub。使用 AI 功能时，当前代码、错误信息和课程任务会发送给 DeepSeek 用于生成提示。请不要在公共电脑保存 API Key。
+                  </p>
+                </div>
+              </details>
 
               {aiThinkingRequest && (
                 <section className="think-card">

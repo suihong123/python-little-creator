@@ -739,8 +739,8 @@ button {
 
 .ai-content {
   display: grid;
-  gap: 14px;
-  padding: 14px;
+  gap: 10px;
+  padding: 12px;
 }
 
 .ai-settings,
@@ -748,11 +748,42 @@ button {
 .think-card,
 .ai-result-card {
   display: grid;
-  gap: 12px;
-  padding: 14px;
+  gap: 10px;
+  padding: 12px;
   border: 1px solid #293244;
   border-radius: 8px;
   background: #111827;
+}
+
+.ai-settings {
+  display: block;
+}
+
+.ai-settings-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  cursor: pointer;
+  color: #dbeafe;
+  font-size: 13px;
+  font-weight: 900;
+  list-style-position: inside;
+}
+
+.ai-settings-summary em {
+  color: #93c5fd;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 800;
+}
+
+.ai-settings-body {
+  display: grid;
+  gap: 12px;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid #293244;
 }
 
 .ai-settings-header,
@@ -819,6 +850,15 @@ button {
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
+}
+
+.ai-actions-panel {
+  align-items: center;
+  grid-template-columns: minmax(180px, 0.45fr) minmax(360px, 1fr);
+}
+
+.ai-action-buttons {
+  justify-content: flex-end;
 }
 
 .ai-model-row {
@@ -972,6 +1012,14 @@ button {
     grid-column: 1 / -1;
     min-height: 680px;
     max-height: none;
+  }
+
+  .ai-actions-panel {
+    grid-template-columns: 1fr;
+  }
+
+  .ai-action-buttons {
+    justify-content: flex-start;
   }
 }
 
