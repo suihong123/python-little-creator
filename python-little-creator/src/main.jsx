@@ -5,14 +5,21 @@ import lessons from './data/lessons.json'
 import { AI_TYPES, buildAiMessages, getAiTypeLabel, getThinkPrompt } from './utils/aiPrompts'
 import {
   AI_MODE_STORAGE_KEY,
+  DEEPSEEK_BASE_URL_STORAGE_KEY,
   DEEPSEEK_API_KEY_STORAGE_KEY,
+  DEEPSEEK_MODEL_STORAGE_KEY,
+  DEFAULT_DEEPSEEK_BASE_URL,
+  DEFAULT_DEEPSEEK_MODEL,
   callDeepSeek,
+  describeDeepSeekFailure,
   getTodayUsage,
   incrementTodayUsage,
   maskApiKey,
+  normalizeBaseUrl,
   saveAiFeedback,
   testDeepSeekKey,
   validateApiKey,
+  validateBaseUrl,
 } from './utils/deepseekClient'
 import { explainPythonError } from './utils/errorExplainer'
 import './styles.css'
@@ -134,6 +141,12 @@ function App() {
   const [pyodideStatus, setPyodideStatus] = useState('等待加载')
   const [savedApiKey, setSavedApiKey] = useState(() => localStorage.getItem(DEEPSEEK_API_KEY_STORAGE_KEY) || '')
   const [apiKeyInput, setApiKeyInput] = useState('')
+  const [deepSeekBaseUrl, setDeepSeekBaseUrl] = useState(() => (
+    localStorage.getItem(DEEPSEEK_BASE_URL_STORAGE_KEY) || DEFAULT_DEEPSEEK_BASE_URL
+  ))
+  const [deepSeekModel, setDeepSeekModel] = useState(() => (
+    localStorage.getItem(DEEPSEEK_MODEL_STORAGE_KEY) || DEFAULT_DEEPSEEK_MODEL
+  ))
   const [apiStatusMessage, setApiStatusMessage] = useState('')
   const [apiTestStatus, setApiTestStatus] = useState('')
   const [aiMode, setAiMode] = useState(() => localStorage.getItem(AI_MODE_STORAGE_KEY) || 'child')
@@ -305,6 +318,32 @@ function App() {
     setApiStatusMessage('本机 API Key 已清除。')
   }
 
+  function saveBaseUrl() {
+    const validation = validateBaseUrl(deepSeekBaseUrl)
+    if (!validation.ok) {
+      setApiStatusMessage(validation.message)
+      return
+    }
+
+    localStorage.setItem(DEEPSEEK_BASE_URL_STORAGE_KEY, validation.value)
+    setDeepSeekBaseUrl(validation.value)
+    setApiTestStatus('')
+    setApiStatusMessage(validation.message)
+  }
+
+  function restoreDefaultBaseUrl() {
+    localStorage.removeItem(DEEPSEEK_BASE_URL_STORAGE_KEY)
+    setDeepSeekBaseUrl(DEFAULT_DEEPSEEK_BASE_URL)
+    setApiTestStatus('')
+    setApiStatusMessage('API 地址已恢复为默认 DeepSeek 官方地址。')
+  }
+
+  function changeDeepSeekModel(nextModel) {
+    setDeepSeekModel(nextModel)
+    localStorage.setItem(DEEPSEEK_MODEL_STORAGE_KEY, nextModel)
+    setApiTestStatus('')
+  }
+
   async function testApiKey() {
     const keyToTest = apiKeyInput.trim() || savedApiKey
     const validation = validateApiKey(keyToTest)
@@ -313,13 +352,27 @@ function App() {
       return
     }
 
+    const baseUrlValidation = validateBaseUrl(deepSeekBaseUrl)
+    if (!baseUrlValidation.ok) {
+      setApiStatusMessage(baseUrlValidation.message)
+      return
+    }
+    if (baseUrlValidation.value !== normalizeBaseUrl(deepSeekBaseUrl)) {
+      localStorage.setItem(DEEPSEEK_BASE_URL_STORAGE_KEY, baseUrlValidation.value)
+      setDeepSeekBaseUrl(baseUrlValidation.value)
+    }
+
     setApiTestStatus('正在测试连接...')
     setApiStatusMessage('')
     try {
-      await testDeepSeekKey(validation.value)
-      setApiTestStatus('连接测试成功。')
-    } catch {
-      setApiTestStatus('测试失败。请检查 Key 是否复制完整、账户是否有额度、网络是否正常，或浏览器是否阻止请求。')
+      await testDeepSeekKey({
+        apiKey: validation.value,
+        baseUrl: baseUrlValidation.value,
+        model: deepSeekModel,
+      })
+      setApiTestStatus('连接成功，AI 助教可以使用。')
+    } catch (error) {
+      setApiTestStatus(describeDeepSeekFailure(error))
     }
   }
 
@@ -353,6 +406,17 @@ function App() {
   }
 
   async function runAiRequest(type) {
+    const baseUrlValidation = validateBaseUrl(deepSeekBaseUrl)
+    if (!baseUrlValidation.ok) {
+      setApiStatusMessage(baseUrlValidation.message)
+      return
+    }
+    if (baseUrlValidation.value !== normalizeBaseUrl(deepSeekBaseUrl)) {
+      localStorage.setItem(DEEPSEEK_BASE_URL_STORAGE_KEY, baseUrlValidation.value)
+      setDeepSeekBaseUrl(baseUrlValidation.value)
+      setApiStatusMessage(baseUrlValidation.message)
+    }
+
     setAiThinkingRequest(null)
     setIsAiLoading(true)
     setAiFeedbackMessage('')
@@ -369,14 +433,19 @@ function App() {
         code: currentCode,
         errorText: friendlyError?.originalError || output,
       })
-      const content = await callDeepSeek({ apiKey: savedApiKey, messages })
+      const content = await callDeepSeek({
+        apiKey: savedApiKey,
+        baseUrl: baseUrlValidation.value,
+        model: deepSeekModel,
+        messages,
+      })
       const nextUsageCount = incrementTodayUsage()
       setAiUsageCount(nextUsageCount)
       setAiPanel({ type, content })
-    } catch {
+    } catch (error) {
       setAiPanel({
         type,
-        content: 'AI 请求失败了。主课程仍然可以正常使用，请检查 Key、额度、网络或浏览器请求限制。',
+        content: `AI 请求失败了。主课程仍然可以正常使用。\n${describeDeepSeekFailure(error)}`,
       })
     } finally {
       setIsAiLoading(false)
@@ -859,6 +928,37 @@ function App() {
                   </button>
                 </div>
 
+                <label className="ai-model-row">
+                  <span>模型</span>
+                  <select value={deepSeekModel} onChange={(event) => changeDeepSeekModel(event.target.value)}>
+                    <option value="deepseek-chat">deepseek-chat</option>
+                    <option value="deepseek-reasoner">deepseek-reasoner</option>
+                  </select>
+                </label>
+
+                <details className="ai-advanced-settings">
+                  <summary>高级设置：API 地址</summary>
+                  <p>
+                    一般不用修改。默认使用 DeepSeek 官方地址。如果浏览器无法直接请求 DeepSeek，或者你以后使用自己的转发服务，可以在这里填写自定义地址。
+                  </p>
+                  <div className="ai-key-row">
+                    <input
+                      value={deepSeekBaseUrl}
+                      onChange={(event) => setDeepSeekBaseUrl(event.target.value)}
+                      placeholder={DEFAULT_DEEPSEEK_BASE_URL}
+                      type="url"
+                    />
+                    <button onClick={saveBaseUrl} type="button">保存 API 地址</button>
+                    <button className="secondary-action" onClick={restoreDefaultBaseUrl} type="button">
+                      恢复默认 API 地址
+                    </button>
+                  </div>
+                  <p>
+                    如果你以后使用自己的转发服务，可以把 API 地址改成你的转发地址。比如 Cloudflare Worker 或 Vercel Function 地址。当前项目不会自动创建转发服务。
+                  </p>
+                  <p>家庭自用通常保持默认 DeepSeek 官方地址即可。</p>
+                </details>
+
                 <div className="ai-mode-row" aria-label="AI 模式选择">
                   <label>
                     <input
@@ -887,7 +987,7 @@ function App() {
                 {apiStatusMessage && <p className="ai-status">{apiStatusMessage}</p>}
                 {apiTestStatus && <p className="ai-status">{apiTestStatus}</p>}
                 <p className="ai-safe-note">
-                  AI 请求只会发送当前关卡、当前代码和必要错误信息，不会发送完整课程库或学习记录。
+                  Key 只保存在当前浏览器本地，不会写入项目代码，也不会保存到 GitHub。使用 AI 功能时，当前代码、错误信息和课程任务会发送给 DeepSeek 用于生成提示。请不要在公共电脑保存 API Key。
                 </p>
               </section>
 
