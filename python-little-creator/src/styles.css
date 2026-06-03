@@ -535,22 +535,122 @@ button {
   color: #86efac;
 }
 
-.friendly-error {
+.friendly-error-card {
+  display: grid;
+  gap: 10px;
   margin: 14px;
-  padding: 12px;
-  border: 1px solid #fbbf24;
+  padding: 14px;
+  border: 1px solid #fed7aa;
   border-radius: 8px;
-  background: #451a03;
+  background: #fff7ed;
+  color: #2f2419;
 }
 
-.friendly-error strong {
-  display: block;
-  margin-bottom: 4px;
-  color: #fde68a;
+.friendly-error-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
 }
 
-.friendly-error p {
+.friendly-error-heading span {
+  color: #9a3412;
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.friendly-error-heading div {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 6px;
+}
+
+.friendly-error-heading strong,
+.friendly-error-heading em {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: #ffedd5;
+  color: #9a3412;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 900;
+}
+
+.friendly-error-card h3 {
+  margin: 0;
+  color: #1f2937;
+  font-size: 17px;
+}
+
+.friendly-error-card p {
+  margin: 0;
   padding: 0;
+  color: #3f3b36;
+  line-height: 1.65;
+}
+
+.lesson-error-hint {
+  padding: 10px !important;
+  border-radius: 8px;
+  background: #eef6ff;
+  color: #174ea6 !important;
+}
+
+.hint-steps {
+  display: grid;
+  gap: 8px;
+  padding: 12px;
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.hint-steps strong {
+  color: #9a3412;
+}
+
+.hint-more-button {
+  justify-self: start;
+  min-height: 36px;
+  padding: 0 12px;
+  border-radius: 8px;
+  background: #276ef1;
+  color: #ffffff;
+  cursor: pointer;
+  font-weight: 800;
+}
+
+.encouragement {
+  color: #166534 !important;
+  font-weight: 800;
+}
+
+.raw-error {
+  border-top: 1px solid #fed7aa;
+  padding-top: 10px;
+}
+
+.raw-error summary {
+  cursor: pointer;
+  color: #7c2d12;
+  font-weight: 800;
+}
+
+.raw-error pre {
+  margin: 10px 0 0;
+  max-height: 180px;
+  overflow: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+  color: #dbeafe;
+  background: #111827;
+  border-radius: 8px;
+  padding: 10px;
+  font: 12px/1.6 "SFMono-Regular", Consolas, "Liberation Mono", monospace;
 }
 
 @media (max-width: 1180px) {

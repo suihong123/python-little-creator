@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { createRoot } from 'react-dom/client'
 import Editor from '@monaco-editor/react'
 import lessons from './data/lessons.json'
+import { explainPythonError } from './utils/errorExplainer'
 import './styles.css'
 
 const STORAGE_KEY = 'python-little-creator:v3'
@@ -64,17 +65,6 @@ function limitOutputLines(text) {
   return `${lines.slice(0, MAX_OUTPUT_LINES).join('\n')}\n\n输出太多，已帮你截断前 100 行。`
 }
 
-function explainPythonError(message) {
-  if (!message) return ''
-  if (message.includes('SyntaxError')) return '代码格式可能有问题，请检查是不是少了引号、括号或冒号。'
-  if (message.includes('NameError')) return '这个名字 Python 还不认识，可能是变量名写错了，或者前面没有创建它。'
-  if (message.includes('TypeError')) return '这里可能把文字和数字混在一起计算了，Python 有点分不清。'
-  if (message.includes('IndentationError')) return '缩进可能不对，代码要像排队一样对齐。'
-  if (message.includes('ValueError')) return '输入内容可能不适合转换成数字，比如 int() 需要输入数字。'
-  if (message.includes('模拟输入不够')) return message
-  return '代码运行时遇到问题了，可以先检查引号、括号、冒号、变量名和缩进。'
-}
-
 function describeRule(rule) {
   if (rule.type === 'run_success') return '代码需要成功运行'
   if (rule.type === 'output_contains') return `输出需要包含“${rule.value}”`
@@ -122,7 +112,8 @@ function App() {
   const [lastStudyAt, setLastStudyAt] = useState(savedState.lastStudyAt)
   const [newBadge, setNewBadge] = useState(null)
   const [output, setOutput] = useState('')
-  const [friendlyError, setFriendlyError] = useState('')
+  const [friendlyError, setFriendlyError] = useState(null)
+  const [errorHintLevel, setErrorHintLevel] = useState(1)
   const [checkResult, setCheckResult] = useState(null)
   const [lessonNotice, setLessonNotice] = useState('')
   const [isRunning, setIsRunning] = useState(false)
@@ -219,7 +210,7 @@ function App() {
         ok: cleanError.length === 0,
         output: limitOutputLines(rawOutput),
         error: cleanError,
-        friendlyError: cleanError ? explainPythonError(cleanError) : '',
+        friendlyError: cleanError ? explainPythonError(cleanError, code, currentLesson) : null,
       }
     } catch (error) {
       const message = error.message || String(error)
@@ -229,7 +220,7 @@ function App() {
         ok: false,
         output: limitOutputLines(rawOutput),
         error: message,
-        friendlyError: explainPythonError(message),
+        friendlyError: explainPythonError(message, code, currentLesson),
       }
     }
   }
@@ -244,7 +235,8 @@ function App() {
       [currentLesson.id]: nextCode || '',
     }))
     setCheckResult(null)
-    setFriendlyError('')
+    setFriendlyError(null)
+    setErrorHintLevel(1)
     touchStudyTime()
   }
 
@@ -254,6 +246,8 @@ function App() {
       [currentLesson.id]: nextInput,
     }))
     setCheckResult(null)
+    setFriendlyError(null)
+    setErrorHintLevel(1)
     touchStudyTime()
   }
 
@@ -267,7 +261,8 @@ function App() {
       [currentLesson.id]: currentLesson.sampleInput || '',
     }))
     setOutput('')
-    setFriendlyError('')
+    setFriendlyError(null)
+    setErrorHintLevel(1)
     setCheckResult(null)
     touchStudyTime()
   }
@@ -280,7 +275,8 @@ function App() {
 
     setCurrentLessonId(lesson.id)
     setOutput('')
-    setFriendlyError('')
+    setFriendlyError(null)
+    setErrorHintLevel(1)
     setCheckResult(null)
     setLessonNotice('')
     touchStudyTime()
@@ -291,7 +287,8 @@ function App() {
     runTokenRef.current = runToken
     setIsRunning(true)
     setOutput('')
-    setFriendlyError('')
+    setFriendlyError(null)
+    setErrorHintLevel(1)
     setCheckResult(null)
     setRunCountMap((previous) => ({
       ...previous,
@@ -302,7 +299,7 @@ function App() {
     const result = await executePython(currentCode)
     if (runTokenRef.current === runToken) {
       setOutput(result.output || '代码运行完成，没有输出。')
-      setFriendlyError(result.friendlyError || '')
+      setFriendlyError(result.friendlyError || null)
       setIsRunning(false)
     }
 
@@ -609,9 +606,40 @@ function App() {
           <div className={checkResult?.passed ? 'check-panel passed' : 'check-panel'}>
             <div className="panel-title">检查结果</div>
             {friendlyError && (
-              <div className="friendly-error">
-                <strong>小提示</strong>
-                <p>{friendlyError}</p>
+              <div className="friendly-error-card">
+                <div className="friendly-error-heading">
+                  <span>小错误被发现啦</span>
+                  <div>
+                    <strong>{friendlyError.errorType}</strong>
+                    {friendlyError.lineNumber && <em>第 {friendlyError.lineNumber} 行</em>}
+                  </div>
+                </div>
+                <h3>{friendlyError.friendlyTitle}</h3>
+                <p>{friendlyError.simpleExplanation}</p>
+                {friendlyError.lessonHint && <p className="lesson-error-hint">{friendlyError.lessonHint}</p>}
+
+                <div className="hint-steps">
+                  <p><strong>提示 1：</strong>{friendlyError.hintLevel1}</p>
+                  {errorHintLevel >= 2 && <p><strong>提示 2：</strong>{friendlyError.hintLevel2}</p>}
+                  {errorHintLevel >= 3 && <p><strong>提示 3：</strong>{friendlyError.hintLevel3}</p>}
+                </div>
+
+                {errorHintLevel < 3 && (
+                  <button
+                    className="hint-more-button"
+                    onClick={() => setErrorHintLevel((level) => Math.min(level + 1, 3))}
+                    type="button"
+                  >
+                    {errorHintLevel === 1 ? '再给我一点提示' : '我想看更具体的提示'}
+                  </button>
+                )}
+
+                <p className="encouragement">{friendlyError.encouragement}</p>
+
+                <details className="raw-error">
+                  <summary>查看原始错误</summary>
+                  <pre>{friendlyError.originalError}</pre>
+                </details>
               </div>
             )}
             {!checkResult && <p>点击检查任务后，这里会显示通关结果。</p>}
