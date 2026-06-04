@@ -138,7 +138,9 @@ function App() {
   const [lessonNotice, setLessonNotice] = useState('')
   const [isRunning, setIsRunning] = useState(false)
   const [isChecking, setIsChecking] = useState(false)
-  const [pyodideStatus, setPyodideStatus] = useState('等待加载')
+  const [pythonLoadStatus, setPythonLoadStatus] = useState('idle')
+  const [pythonLoadProgress, setPythonLoadProgress] = useState(0)
+  const [pythonLoadMessage, setPythonLoadMessage] = useState('Python 未准备')
   const [savedApiKey, setSavedApiKey] = useState(() => localStorage.getItem(DEEPSEEK_API_KEY_STORAGE_KEY) || '')
   const [apiKeyInput, setApiKeyInput] = useState('')
   const [deepSeekBaseUrl, setDeepSeekBaseUrl] = useState(() => (
@@ -159,6 +161,8 @@ function App() {
     localStorage.getItem(`${TEMP_CHALLENGE_PREFIX}${currentLessonId}`) || ''
   ))
   const pyodideRef = useRef(null)
+  const pyodideLoadingPromiseRef = useRef(null)
+  const pythonLoadTimersRef = useRef([])
   const runTokenRef = useRef(0)
 
   const completedAvailableCount = availableLessons.filter((lesson) => completedLessons.includes(lesson.id)).length
@@ -200,20 +204,86 @@ function App() {
     setAiFeedbackMessage('')
   }, [currentLesson.id])
 
+  useEffect(() => {
+    getPyodide().catch(() => {
+      // The status card shows the friendly error. Reading lessons and editing code still work.
+    })
+
+    return () => {
+      clearPythonLoadTimers()
+    }
+  }, [])
+
+  function clearPythonLoadTimers() {
+    pythonLoadTimersRef.current.forEach((timerId) => window.clearTimeout(timerId))
+    pythonLoadTimersRef.current = []
+  }
+
+  function startPythonLoadProgress() {
+    clearPythonLoadTimers()
+    setPythonLoadStatus('loading')
+    setPythonLoadProgress(15)
+    setPythonLoadMessage('正在连接 Python 运行环境……')
+
+    pythonLoadTimersRef.current = [
+      window.setTimeout(() => {
+        setPythonLoadProgress(35)
+        setPythonLoadMessage('正在下载运行文件，第一次可能会久一点……')
+      }, 2000),
+      window.setTimeout(() => {
+        setPythonLoadProgress(65)
+        setPythonLoadMessage('正在初始化 Python……')
+      }, 6000),
+      window.setTimeout(() => {
+        setPythonLoadStatus('slow')
+        setPythonLoadProgress(90)
+        setPythonLoadMessage('Python 加载较慢，可能是网络访问运行环境较慢。第一次加载会久一点，后面浏览器缓存后通常会更快。')
+      }, 12000),
+      window.setTimeout(() => {
+        setPythonLoadStatus('slow')
+        setPythonLoadProgress(90)
+        setPythonLoadMessage('Python 加载时间较长。可以继续等待，或之后考虑把 Pyodide 放到本地 public/pyodide/ 目录。')
+      }, 45000),
+    ]
+  }
+
   async function getPyodide() {
     if (pyodideRef.current) {
+      setPythonLoadStatus('ready')
+      setPythonLoadProgress(100)
+      setPythonLoadMessage('Python 已准备好，可以运行代码啦')
       return pyodideRef.current
     }
 
-    setPyodideStatus('正在加载 Python 环境，请稍等')
-    const module = await import(
+    if (pyodideLoadingPromiseRef.current) {
+      return pyodideLoadingPromiseRef.current
+    }
+
+    startPythonLoadProgress()
+    pyodideLoadingPromiseRef.current = import(
       /* @vite-ignore */ `https://cdn.jsdelivr.net/pyodide/v${PYODIDE_VERSION}/full/pyodide.mjs`
     )
-    pyodideRef.current = await module.loadPyodide({
-      indexURL: `https://cdn.jsdelivr.net/pyodide/v${PYODIDE_VERSION}/full/`,
-    })
-    setPyodideStatus('Python 环境已就绪')
-    return pyodideRef.current
+      .then((module) => module.loadPyodide({
+        indexURL: `https://cdn.jsdelivr.net/pyodide/v${PYODIDE_VERSION}/full/`,
+      }))
+      .then((pyodide) => {
+        pyodideRef.current = pyodide
+        clearPythonLoadTimers()
+        setPythonLoadStatus('ready')
+        setPythonLoadProgress(100)
+        setPythonLoadMessage('Python 已准备好，可以运行代码啦')
+        return pyodide
+      })
+      .catch((error) => {
+        pyodideLoadingPromiseRef.current = null
+        clearPythonLoadTimers()
+        setPythonLoadStatus('error')
+        setPythonLoadProgress(0)
+        setPythonLoadMessage('Python 加载失败，请检查网络后重试。')
+        throw error
+      })
+
+    return pyodideLoadingPromiseRef.current
   }
 
   async function executePython(code) {
@@ -511,7 +581,11 @@ function App() {
     const runToken = runTokenRef.current + 1
     runTokenRef.current = runToken
     setIsRunning(true)
-    setOutput('')
+    setOutput(
+      pythonLoadStatus === 'loading' || pythonLoadStatus === 'slow' || pythonLoadStatus === 'idle'
+        ? 'Python 正在准备中，请稍等一下……加载完成后会继续运行当前代码。'
+        : '',
+    )
     setFriendlyError(null)
     setErrorHintLevel(1)
     setCheckResult(null)
@@ -786,7 +860,25 @@ function App() {
         <div className="toolbar">
           <div>
             <strong>代码编辑器</strong>
-            <span>{pyodideStatus} · 已运行 {runCountMap[currentLesson.id] || 0} 次</span>
+            <span>已运行 {runCountMap[currentLesson.id] || 0} 次</span>
+          </div>
+          <div className={`python-status-card ${pythonLoadStatus}`}>
+            <div className="python-status-copy">
+              <strong>Python 状态</strong>
+              <span>
+                {pythonLoadMessage}
+                {pythonLoadStatus === 'ready' ? ' ✅' : ''}
+              </span>
+            </div>
+            <div className="python-progress-track" aria-label={`Python 加载进度 ${pythonLoadProgress}%`}>
+              <div style={{ width: `${pythonLoadProgress}%` }} />
+            </div>
+            <em>{pythonLoadProgress}%</em>
+            {pythonLoadStatus === 'error' && (
+              <button className="python-retry-button" onClick={() => getPyodide()} type="button">
+                重新加载 Python
+              </button>
+            )}
           </div>
           <div className="actions">
             <button className="secondary" onClick={resetCode} type="button">
