@@ -370,6 +370,16 @@ function App() {
 
       window.plcInteractive = {
         pop: (message) => currentInteractiveEvents.push({ type: 'pop', message: String(message) }),
+        ask: (message) => {
+          const question = String(message)
+          const answer = window.prompt(question) ?? ''
+          currentInteractiveEvents.push({
+            type: 'ask',
+            message: answer ? `问题：${question}\n回答：${answer}` : `问题：${question}\n没有输入内容`,
+          })
+          return answer
+        },
+        showList: (message) => currentInteractiveEvents.push({ type: 'list', message: String(message) }),
         star: () => currentInteractiveEvents.push({ type: 'star', message: '获得一颗星星！' }),
         success: (message) => currentInteractiveEvents.push({ type: 'success', message: String(message) }),
         fail: (message) => currentInteractiveEvents.push({ type: 'fail', message: String(message) }),
@@ -381,6 +391,16 @@ from js import plcInteractive
 def pop(message):
     plcInteractive.pop(str(message))
     print(message)
+
+def ask(message):
+    answer = plcInteractive.ask(str(message))
+    print(str(message) + " " + str(answer))
+    return str(answer)
+
+def show_list(items):
+    text = "、".join([str(item) for item in items])
+    plcInteractive.showList(text)
+    print(text)
 
 def star():
     plcInteractive.star()
@@ -1048,7 +1068,8 @@ def fail(message):
               <div className="interactive-preview">
                 <h3>互动函数</h3>
                 <p>
-                  项目创造营可以使用 pop("内容")、star()、success("内容")、fail("内容")。运行后，右侧会用弹窗卡片展示结果，让作品更像互动小工具。
+                  项目创造营可以使用 ask("问题") 弹窗输入、pop("内容") 显示提示、show_list(列表) 展示清单、star() 加星、success("内容") 和 fail("内容") 展示反馈。
+                  运行后，右侧会用互动卡片展示结果，让作品更像小应用。
                 </p>
               </div>
 
@@ -1251,6 +1272,8 @@ def fail(message):
                       {event.type === 'success' ? '✓' : ''}
                       {event.type === 'fail' ? '!' : ''}
                       {event.type === 'pop' ? 'i' : ''}
+                      {event.type === 'ask' ? '?' : ''}
+                      {event.type === 'list' ? '≡' : ''}
                     </span>
                     <p>{event.message}</p>
                   </div>

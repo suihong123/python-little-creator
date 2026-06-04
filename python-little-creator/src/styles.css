@@ -883,6 +883,26 @@ button {
   color: #92400e;
 }
 
+.interactive-event.ask {
+  border-color: #93c5fd;
+  background: #0f2748;
+}
+
+.interactive-event.ask span {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+.interactive-event.list {
+  border-color: #c4b5fd;
+  background: #24173d;
+}
+
+.interactive-event.list span {
+  background: #ede9fe;
+  color: #6d28d9;
+}
+
 .input-panel textarea,
 .output-panel pre {
   white-space: pre-wrap;
