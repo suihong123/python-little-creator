@@ -761,7 +761,7 @@ function App() {
           <p className="eyebrow">第 {currentLessonIndex + 1} 关 · {currentLesson.concept}</p>
           <h2>{currentLesson.title}</h2>
 
-          <div className="task-section">
+          <div className="task-section task-goal-section">
             <h3>今天目标</h3>
             <p>{currentLesson.goal}</p>
           </div>
@@ -776,12 +776,12 @@ function App() {
             <p>{currentLesson.explanation}</p>
           </div>
 
-          <div className="task-section">
+          <div className="task-section task-modify-section">
             <h3>改一改任务</h3>
             <p>{currentLesson.modifyTask}</p>
           </div>
 
-          <div className="task-section">
+          <div className="task-section task-challenge-section">
             <h3>挑战任务</h3>
             <p>{currentLesson.challengeTask}</p>
           </div>
@@ -822,7 +822,7 @@ function App() {
           )}
 
           {currentLesson.practiceTasks?.length > 0 && (
-            <div className="learning-section">
+            <div className="learning-section practice-section">
               <h3>多练几次</h3>
               <ol>
                 {currentLesson.practiceTasks.map((task) => (

@@ -296,6 +296,45 @@ button {
   margin: 22px 0;
 }
 
+.task-goal-section,
+.task-modify-section,
+.task-challenge-section {
+  padding: 14px 16px;
+  border: 1px solid transparent;
+  border-left-width: 5px;
+  border-radius: 8px;
+}
+
+.task-goal-section {
+  border-color: #bfdbfe;
+  border-left-color: #2563eb;
+  background: #eff6ff;
+}
+
+.task-modify-section {
+  border-color: #bbf7d0;
+  border-left-color: #16a34a;
+  background: #f0fdf4;
+}
+
+.task-challenge-section {
+  border-color: #fed7aa;
+  border-left-color: #f97316;
+  background: #fff7ed;
+}
+
+.task-goal-section h3 {
+  color: #1d4ed8;
+}
+
+.task-modify-section h3 {
+  color: #15803d;
+}
+
+.task-challenge-section h3 {
+  color: #c2410c;
+}
+
 .task-section h3 {
   margin: 0 0 8px;
   font-size: 16px;
@@ -376,6 +415,16 @@ button {
   border: 1px solid #dce2ea;
   border-radius: 8px;
   background: #ffffff;
+}
+
+.practice-section {
+  border-color: #ddd6fe;
+  border-left: 5px solid #7c3aed;
+  background: #f5f3ff;
+}
+
+.practice-section h3 {
+  color: #6d28d9;
 }
 
 .learning-section.compact {
