@@ -783,9 +783,16 @@ button {
 
 .input-panel,
 .output-panel,
+.interactive-output-panel,
 .check-panel {
   min-width: 0;
   border-right: 1px solid #293244;
+}
+
+.interactive-output-panel {
+  grid-column: 1 / -1;
+  border-top: 1px solid #293244;
+  border-bottom: 1px solid #293244;
 }
 
 .input-panel {
@@ -807,6 +814,73 @@ button {
 .check-panel ul {
   margin: 0;
   padding: 14px;
+}
+
+.interactive-event-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 10px;
+  padding: 14px;
+}
+
+.interactive-event {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 10px;
+  min-height: 54px;
+  padding: 12px;
+  border: 1px solid #334155;
+  border-radius: 8px;
+  background: #111827;
+}
+
+.interactive-event span {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 999px;
+  background: #dbeafe;
+  color: #174ea6;
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.interactive-event p {
+  margin: 0;
+  color: #dbeafe;
+  line-height: 1.55;
+}
+
+.interactive-event.success {
+  border-color: #86efac;
+  background: #052e1a;
+}
+
+.interactive-event.success span {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.interactive-event.fail {
+  border-color: #fca5a5;
+  background: #3b1010;
+}
+
+.interactive-event.fail span {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.interactive-event.star {
+  border-color: #fde68a;
+  background: #3b2604;
+}
+
+.interactive-event.star span {
+  background: #fef3c7;
+  color: #92400e;
 }
 
 .input-panel textarea,

@@ -167,6 +167,7 @@ function App() {
   const [lastStudyAt, setLastStudyAt] = useState(savedState.lastStudyAt)
   const [newBadge, setNewBadge] = useState(null)
   const [output, setOutput] = useState('')
+  const [interactiveEvents, setInteractiveEvents] = useState([])
   const [friendlyError, setFriendlyError] = useState(null)
   const [errorHintLevel, setErrorHintLevel] = useState(1)
   const [checkResult, setCheckResult] = useState(null)
@@ -346,6 +347,7 @@ function App() {
   async function executePython(code) {
     const stdout = []
     const stderr = []
+    const currentInteractiveEvents = []
     const inputQueue = currentInput.split(/\r?\n/)
     let inputIndex = 0
 
@@ -366,7 +368,34 @@ function App() {
         },
       })
 
-      const runPromise = pyodide.runPythonAsync(code)
+      window.plcInteractive = {
+        pop: (message) => currentInteractiveEvents.push({ type: 'pop', message: String(message) }),
+        star: () => currentInteractiveEvents.push({ type: 'star', message: '获得一颗星星！' }),
+        success: (message) => currentInteractiveEvents.push({ type: 'success', message: String(message) }),
+        fail: (message) => currentInteractiveEvents.push({ type: 'fail', message: String(message) }),
+      }
+
+      const interactivePrelude = `
+from js import plcInteractive
+
+def pop(message):
+    plcInteractive.pop(str(message))
+    print(message)
+
+def star():
+    plcInteractive.star()
+    print("获得一颗星星！")
+
+def success(message):
+    plcInteractive.success(str(message))
+    print(message)
+
+def fail(message):
+    plcInteractive.fail(str(message))
+    print(message)
+`
+
+      const runPromise = pyodide.runPythonAsync(`${interactivePrelude}\n${code}`)
       const timeoutPromise = new Promise((_, reject) => {
         window.setTimeout(() => {
           reject(new Error('运行时间有点久：程序可能进入了很长的循环，请检查循环条件。'))
@@ -382,6 +411,7 @@ function App() {
         ok: cleanError.length === 0,
         output: limitOutputLines(rawOutput),
         error: cleanError,
+        interactiveEvents: currentInteractiveEvents,
         friendlyError: cleanError ? explainPythonError(cleanError, code, activeItem) : null,
       }
     } catch (error) {
@@ -392,6 +422,7 @@ function App() {
         ok: false,
         output: limitOutputLines(rawOutput),
         error: message,
+        interactiveEvents: currentInteractiveEvents,
         friendlyError: explainPythonError(message, code, activeItem),
       }
     }
@@ -408,6 +439,7 @@ function App() {
     }))
     setCheckResult(null)
     setFriendlyError(null)
+    setInteractiveEvents([])
     setErrorHintLevel(1)
     touchStudyTime()
   }
@@ -419,6 +451,7 @@ function App() {
     }))
     setCheckResult(null)
     setFriendlyError(null)
+    setInteractiveEvents([])
     setErrorHintLevel(1)
     touchStudyTime()
   }
@@ -613,6 +646,7 @@ function App() {
       [activeItem.id]: activeItem.sampleInput || '',
     }))
     setOutput('')
+    setInteractiveEvents([])
     setFriendlyError(null)
     setErrorHintLevel(1)
     setCheckResult(null)
@@ -628,6 +662,7 @@ function App() {
     setLearningMode('lessons')
     setCurrentLessonId(lesson.id)
     setOutput('')
+    setInteractiveEvents([])
     setFriendlyError(null)
     setErrorHintLevel(1)
     setCheckResult(null)
@@ -639,6 +674,7 @@ function App() {
     setLearningMode('projects')
     setCurrentProjectId(project.id)
     setOutput('')
+    setInteractiveEvents([])
     setFriendlyError(null)
     setErrorHintLevel(1)
     setCheckResult(null)
@@ -649,6 +685,7 @@ function App() {
   function switchLearningMode(nextMode) {
     setLearningMode(nextMode)
     setOutput('')
+    setInteractiveEvents([])
     setFriendlyError(null)
     setErrorHintLevel(1)
     setCheckResult(null)
@@ -660,6 +697,7 @@ function App() {
     const runToken = runTokenRef.current + 1
     runTokenRef.current = runToken
     setIsRunning(true)
+    setInteractiveEvents([])
     setOutput(
       pythonLoadStatus === 'loading' || pythonLoadStatus === 'slow' || pythonLoadStatus === 'idle'
         ? 'Python 正在准备中，请稍等一下……加载完成后会继续运行当前代码。'
@@ -687,6 +725,7 @@ function App() {
     const result = await executePython(currentCode)
     if (runTokenRef.current === runToken) {
       setOutput(result.output || '代码运行完成，没有输出。')
+      setInteractiveEvents(result.interactiveEvents || [])
       setFriendlyError(result.friendlyError || null)
       setIsRunning(false)
     }
@@ -1007,9 +1046,9 @@ function App() {
               </div>
 
               <div className="interactive-preview">
-                <h3>下一步可以升级成互动版</h3>
+                <h3>互动函数</h3>
                 <p>
-                  现在先用 print 显示结果。以后可以升级成 pop 弹窗、star 星星奖励、success 通关动画，让代码像游戏一样动起来。
+                  项目创造营可以使用 pop("内容")、star()、success("内容")、fail("内容")。运行后，右侧会用弹窗卡片展示结果，让作品更像互动小工具。
                 </p>
               </div>
 
@@ -1200,6 +1239,25 @@ function App() {
             <div className="panel-title">输出结果</div>
             <pre>{output || '点击运行代码后，这里会显示 Python 输出。'}</pre>
           </div>
+
+          {interactiveEvents.length > 0 && (
+            <div className="interactive-output-panel">
+              <div className="panel-title">互动弹窗结果</div>
+              <div className="interactive-event-list">
+                {interactiveEvents.map((event, index) => (
+                  <div className={`interactive-event ${event.type}`} key={`${event.type}-${index}`}>
+                    <span>
+                      {event.type === 'star' ? '★' : ''}
+                      {event.type === 'success' ? '✓' : ''}
+                      {event.type === 'fail' ? '!' : ''}
+                      {event.type === 'pop' ? 'i' : ''}
+                    </span>
+                    <p>{event.message}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
 
           <div className={checkResult?.passed ? 'check-panel passed' : 'check-panel'}>
             <div className="panel-title">检查结果</div>

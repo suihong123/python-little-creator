@@ -14,7 +14,7 @@
       { "title": "第二步：加入变量", "description": "用 name、age、hobby 保存自己的信息。" },
       { "title": "第三步：做成自己的版本", "description": "把示例内容改成你自己的介绍。" }
     ],
-    "starterCode": "name = \"杭杭\"\nage = 8\nhobby = \"编程\"\n\nprint(\"大家好，我叫\", name)\nprint(\"我今年\", age, \"岁\")\nprint(\"我喜欢\", hobby)",
+    "starterCode": "name = \"杭杭\"\nage = 8\nhobby = \"编程\"\n\npop(\"大家好，我叫 \" + name)\npop(\"我今年 \" + str(age) + \" 岁\")\nsuccess(\"我喜欢 \" + hobby)",
     "inputMock": "",
     "expectedKeywords": ["print", "name"],
     "checkRules": [
@@ -46,7 +46,7 @@
       { "title": "第二步：判断答案", "description": "用 if 判断回答是不是正确。" },
       { "title": "第三步：记录得分", "description": "答对时让 score 加 1，最后输出分数。" }
     ],
-    "starterCode": "score = 0\n\nanswer = input(\"apple 是什么意思？\")\n\nif answer == \"苹果\":\n    print(\"答对啦！\")\n    score = score + 1\nelse:\n    print(\"再想想，apple 是一种水果。\")\n\nprint(\"你的得分是\", score)",
+    "starterCode": "score = 0\n\nanswer = input(\"apple 是什么意思？\")\n\nif answer == \"苹果\":\n    success(\"答对啦！\")\n    star()\n    score = score + 1\nelse:\n    fail(\"再想想，apple 是一种水果。\")\n\npop(\"你的得分是 \" + str(score))",
     "inputMock": "苹果",
     "expectedKeywords": ["input", "if", "score"],
     "checkRules": [
@@ -79,7 +79,7 @@
       { "title": "第二步：变成数字", "description": "用 int 把输入内容变成能计算的数字。" },
       { "title": "第三步：输出结果", "description": "完成一次加法或减法计算，并输出结果。" }
     ],
-    "starterCode": "pages = int(input(\"今天读了几页书？\"))\ntomorrow = pages + 5\n\nprint(\"明天可以挑战读\", tomorrow, \"页\")",
+    "starterCode": "pages = int(input(\"今天读了几页书？\"))\ntomorrow = pages + 5\n\nsuccess(\"明天可以挑战读 \" + str(tomorrow) + \" 页\")",
     "inputMock": "10",
     "expectedKeywords": ["input", "int", "+"],
     "checkRules": [
@@ -112,7 +112,7 @@
       { "title": "第二步：显示所有任务", "description": "用 for 把任务一个个打印出来。" },
       { "title": "第三步：检查完成情况", "description": "输入完成的任务，用 if 判断它在不在清单里。" }
     ],
-    "starterCode": "tasks = [\"阅读\", \"运动\", \"整理书包\"]\n\nprint(\"今天的任务有：\")\nfor task in tasks:\n    print(task)\n\ndone = input(\"你完成了哪个任务？\")\n\nif done in tasks:\n    print(\"完成得很好：\", done)\nelse:\n    print(\"这个任务不在清单里。\")",
+    "starterCode": "tasks = [\"阅读\", \"运动\", \"整理书包\"]\n\npop(\"今天的任务有：\")\nfor task in tasks:\n    pop(task)\n\ndone = input(\"你完成了哪个任务？\")\n\nif done in tasks:\n    success(\"完成得很好：\" + done)\n    star()\nelse:\n    fail(\"这个任务不在清单里。\")",
     "inputMock": "阅读",
     "expectedKeywords": ["for", "if", "tasks"],
     "checkRules": [
@@ -145,7 +145,7 @@
       { "title": "第二步：设计题目", "description": "用 input 提问，用 if 判断答案。" },
       { "title": "第三步：显示总分", "description": "每答对一题加 1 分，最后输出总分。" }
     ],
-    "starterCode": "score = 0\n\nanswer1 = input(\"Python 里让电脑说话用什么？\")\nif answer1 == \"print\":\n    print(\"答对第 1 题！\")\n    score = score + 1\nelse:\n    print(\"第 1 题再想想。\")\n\nanswer2 = input(\"if 表示什么意思？\")\nif answer2 == \"如果\":\n    print(\"答对第 2 题！\")\n    score = score + 1\nelse:\n    print(\"第 2 题再想想。\")\n\nprint(\"你的总分是\", score)",
+    "starterCode": "score = 0\n\nanswer1 = input(\"Python 里让电脑说话用什么？\")\nif answer1 == \"print\":\n    success(\"答对第 1 题！\")\n    star()\n    score = score + 1\nelse:\n    fail(\"第 1 题再想想。\")\n\nanswer2 = input(\"if 表示什么意思？\")\nif answer2 == \"如果\":\n    success(\"答对第 2 题！\")\n    star()\n    score = score + 1\nelse:\n    fail(\"第 2 题再想想。\")\n\npop(\"你的总分是 \" + str(score))",
     "inputMock": "print\n如果",
     "expectedKeywords": ["input", "if", "score"],
     "checkRules": [
@@ -178,7 +178,7 @@
       { "title": "第二步：随机抽取", "description": "用 random.choice 随机选出一个物品。" },
       { "title": "第三步：判断结果", "description": "根据抽到的物品输出不同结果。" }
     ],
-    "starterCode": "import random\n\nitems = [\"金币\", \"药水\", \"空盒子\", \"陷阱\"]\nbox = random.choice(items)\n\nprint(\"你打开了宝箱！\")\nprint(\"你发现了：\", box)\n\nif box == \"金币\":\n    print(\"太棒了，你获得奖励！\")\nelif box == \"陷阱\":\n    print(\"小心！这是陷阱。\")\nelse:\n    print(\"继续探索吧。\")",
+    "starterCode": "import random\n\nitems = [\"金币\", \"药水\", \"空盒子\", \"陷阱\"]\nbox = random.choice(items)\n\npop(\"你打开了宝箱！\")\npop(\"你发现了：\" + box)\n\nif box == \"金币\":\n    success(\"太棒了，你获得奖励！\")\n    star()\nelif box == \"陷阱\":\n    fail(\"小心！这是陷阱。\")\nelse:\n    pop(\"继续探索吧。\")",
     "inputMock": "",
     "expectedKeywords": ["random", "choice", "items"],
     "checkRules": [
@@ -211,7 +211,7 @@
       { "title": "第二步：让玩家选择", "description": "用 input 接收玩家的选择。" },
       { "title": "第三步：输出不同结果", "description": "用 if / elif / else 让不同选择走向不同结局。" }
     ],
-    "starterCode": "print(\"你来到了神秘森林。\")\nchoice = input(\"你要往左走还是往右走？\")\n\nif choice == \"左\":\n    print(\"你发现了一条小河。\")\nelif choice == \"右\":\n    print(\"你看到了一个宝箱。\")\nelse:\n    print(\"你站在原地，没有行动。\")",
+    "starterCode": "pop(\"你来到了神秘森林。\")\nchoice = input(\"你要往左走还是往右走？\")\n\nif choice == \"左\":\n    pop(\"你发现了一条小河。\")\nelif choice == \"右\":\n    success(\"你看到了一个宝箱。\")\nelse:\n    fail(\"你站在原地，没有行动。\")",
     "inputMock": "右",
     "expectedKeywords": ["input", "if", "elif"],
     "checkRules": [
@@ -244,7 +244,7 @@
       { "title": "第二步：接收选择", "description": "用 input 让用户选择功能。" },
       { "title": "第三步：完成不同功能", "description": "用 if / elif / else 输出不同功能结果。" }
     ],
-    "starterCode": "def show_menu():\n    print(\"欢迎使用杭杭的 Python 小助手\")\n    print(\"1. 今日鼓励\")\n    print(\"2. 学习任务\")\n    print(\"3. 随机小游戏\")\n\nshow_menu()\n\nchoice = input(\"请选择功能：\")\n\nif choice == \"1\":\n    print(\"你今天也很棒！\")\nelif choice == \"2\":\n    print(\"今天可以完成阅读、英语和 Python。\")\nelif choice == \"3\":\n    print(\"开始一个小挑战吧！\")\nelse:\n    print(\"没有这个选项。\")",
+    "starterCode": "def show_menu():\n    pop(\"欢迎使用杭杭的 Python 小助手\")\n    pop(\"1. 今日鼓励\")\n    pop(\"2. 学习任务\")\n    pop(\"3. 随机小游戏\")\n\nshow_menu()\n\nchoice = input(\"请选择功能：\")\n\nif choice == \"1\":\n    success(\"你今天也很棒！\")\nelif choice == \"2\":\n    pop(\"今天可以完成阅读、英语和 Python。\")\nelif choice == \"3\":\n    success(\"开始一个小挑战吧！\")\nelse:\n    fail(\"没有这个选项。\")",
     "inputMock": "1",
     "expectedKeywords": ["def", "input", "if"],
     "checkRules": [
