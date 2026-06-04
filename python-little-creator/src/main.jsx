@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { createRoot } from 'react-dom/client'
 import Editor from '@monaco-editor/react'
 import lessons from './data/lessons.json'
+import projects from './data/projects.json'
 import { AI_TYPES, buildAiMessages, getAiTypeLabel, getThinkPrompt } from './utils/aiPrompts'
 import {
   AI_MODE_STORAGE_KEY,
@@ -31,6 +32,9 @@ const PYODIDE_VERSION = '0.26.4'
 const MAX_OUTPUT_LINES = 100
 const RUN_TIMEOUT_MS = 8000
 const TEMP_CHALLENGE_PREFIX = 'plc_temp_challenge_lesson_'
+const PROJECT_PROGRESS_STORAGE_KEY = 'plc_project_progress'
+const CURRENT_PROJECT_STORAGE_KEY = 'plc_current_project_id'
+const LEARNING_MODE_STORAGE_KEY = 'plc_learning_mode'
 
 const availableLessons = lessons.filter((lesson) => lesson.status === 'available')
 const badgeDefinitions = [
@@ -40,6 +44,17 @@ const badgeDefinitions = [
   { id: 'condition-helper', title: '判断小能手', lessonId: 'lesson-07-weather' },
   { id: 'loop-star', title: '循环小达人', lessonId: 'lesson-09-countdown' },
   { id: 'game-maker', title: '小游戏创造师', lessonId: 'lesson-12-quiz' },
+]
+
+const projectBadgeDefinitions = [
+  { id: 'project-intro', title: '小小介绍官', projectId: 'project-1-intro-bot' },
+  { id: 'project-word', title: '单词小助手', projectId: 'project-2-word-helper' },
+  { id: 'project-calc', title: '生活计算师', projectId: 'project-3-life-calculator' },
+  { id: 'project-checkin', title: '打卡小管家', projectId: 'project-4-task-checkin' },
+  { id: 'project-quiz', title: '闯关设计师', projectId: 'project-5-quiz-game' },
+  { id: 'project-box', title: '宝箱探险家', projectId: 'project-6-random-box' },
+  { id: 'project-story', title: '故事冒险家', projectId: 'project-7-text-adventure' },
+  { id: 'project-helper', title: 'Python 小创造师', projectId: 'project-8-python-helper' },
 ]
 
 function readStorage(key) {
@@ -116,6 +131,19 @@ function formatStudyTime(value) {
   }).format(new Date(value))
 }
 
+function normalizeProject(project) {
+  return {
+    ...project,
+    concept: project.skills.join(' / '),
+    story: project.scene,
+    explanation: `这是一个项目作品，会用到：${project.skills.join('、')}。`,
+    modifyTask: project.requirements.join('；'),
+    challengeTask: project.challenge,
+    hint: project.hint,
+    sampleInput: project.inputMock || '',
+  }
+}
+
 function App() {
   const savedState = useMemo(loadSavedState, [])
   const safeInitialLesson = lessons.find(
@@ -123,6 +151,13 @@ function App() {
   )
   const [currentLessonId, setCurrentLessonId] = useState(safeInitialLesson?.id || availableLessons[0].id)
   const currentLesson = lessons.find((lesson) => lesson.id === currentLessonId) || availableLessons[0]
+  const [learningMode, setLearningMode] = useState(() => localStorage.getItem(LEARNING_MODE_STORAGE_KEY) || 'lessons')
+  const [currentProjectId, setCurrentProjectId] = useState(
+    () => localStorage.getItem(CURRENT_PROJECT_STORAGE_KEY) || projects[0].id,
+  )
+  const currentProject = projects.find((project) => project.id === currentProjectId) || projects[0]
+  const isProjectMode = learningMode === 'projects'
+  const activeItem = isProjectMode ? normalizeProject(currentProject) : currentLesson
   const [completedLessons, setCompletedLessons] = useState(savedState.completedLessons)
   const [lessonCodeMap, setLessonCodeMap] = useState(savedState.lessonCodeMap)
   const [runCountMap, setRunCountMap] = useState(savedState.runCountMap)
@@ -158,8 +193,9 @@ function App() {
   const [isAiLoading, setIsAiLoading] = useState(false)
   const [aiFeedbackMessage, setAiFeedbackMessage] = useState('')
   const [tempChallenge, setTempChallenge] = useState(() => (
-    localStorage.getItem(`${TEMP_CHALLENGE_PREFIX}${currentLessonId}`) || ''
+    localStorage.getItem(`${TEMP_CHALLENGE_PREFIX}${isProjectMode ? currentProjectId : currentLessonId}`) || ''
   ))
+  const [projectProgress, setProjectProgress] = useState(() => readStorage(PROJECT_PROGRESS_STORAGE_KEY))
   const pyodideRef = useRef(null)
   const pyodideLoadingPromiseRef = useRef(null)
   const pythonLoadTimersRef = useRef([])
@@ -167,13 +203,22 @@ function App() {
 
   const completedAvailableCount = availableLessons.filter((lesson) => completedLessons.includes(lesson.id)).length
   const progressPercent = Math.round((completedAvailableCount / availableLessons.length) * 100)
+  const completedProjectCount = projects.filter((project) => projectProgress[project.id]?.completed).length
+  const projectProgressPercent = Math.round((completedProjectCount / projects.length) * 100)
   const currentLessonIndex = availableLessons.findIndex((lesson) => lesson.id === currentLesson.id)
+  const currentProjectIndex = projects.findIndex((project) => project.id === currentProject.id)
   const nextLesson = availableLessons[currentLessonIndex + 1]
-  const isCurrentCompleted = completedLessons.includes(currentLesson.id)
-  const currentCode = lessonCodeMap[currentLesson.id] ?? currentLesson.starterCode
-  const currentInput = lessonInputMap[currentLesson.id] ?? currentLesson.sampleInput ?? ''
+  const nextProject = projects[currentProjectIndex + 1]
+  const isCurrentCompleted = isProjectMode
+    ? Boolean(projectProgress[currentProject.id]?.completed)
+    : completedLessons.includes(currentLesson.id)
+  const currentCode = lessonCodeMap[activeItem.id] ?? activeItem.starterCode
+  const currentInput = lessonInputMap[activeItem.id] ?? activeItem.sampleInput ?? ''
+  const projectRunCount = projectProgress[currentProject.id]?.runCount || 0
   const totalRunCount = Object.values(runCountMap).reduce((sum, count) => sum + count, 0)
-  const needsInput = currentLesson.checkRules?.some((rule) => rule.type === 'code_contains' && rule.value === 'input')
+    + Object.values(projectProgress).reduce((sum, progress) => sum + (progress.runCount || 0), 0)
+  const activeRunCount = isProjectMode ? projectRunCount : (runCountMap[currentLesson.id] || 0)
+  const needsInput = activeItem.checkRules?.some((rule) => rule.type === 'code_contains' && rule.value === 'input')
     || currentCode.includes('input(')
 
   useEffect(() => {
@@ -203,6 +248,18 @@ function App() {
     setAiThinkingRequest(null)
     setAiFeedbackMessage('')
   }, [currentLesson.id])
+
+  useEffect(() => {
+    localStorage.setItem(PROJECT_PROGRESS_STORAGE_KEY, JSON.stringify(projectProgress))
+  }, [projectProgress])
+
+  useEffect(() => {
+    localStorage.setItem(LEARNING_MODE_STORAGE_KEY, learningMode)
+    localStorage.setItem(CURRENT_PROJECT_STORAGE_KEY, currentProjectId)
+    setTempChallenge(localStorage.getItem(`${TEMP_CHALLENGE_PREFIX}${activeItem.id}`) || '')
+    setAiThinkingRequest(null)
+    setAiFeedbackMessage('')
+  }, [learningMode, currentProjectId, activeItem.id])
 
   useEffect(() => {
     getPyodide().catch(() => {
@@ -325,7 +382,7 @@ function App() {
         ok: cleanError.length === 0,
         output: limitOutputLines(rawOutput),
         error: cleanError,
-        friendlyError: cleanError ? explainPythonError(cleanError, code, currentLesson) : null,
+        friendlyError: cleanError ? explainPythonError(cleanError, code, activeItem) : null,
       }
     } catch (error) {
       const message = error.message || String(error)
@@ -335,7 +392,7 @@ function App() {
         ok: false,
         output: limitOutputLines(rawOutput),
         error: message,
-        friendlyError: explainPythonError(message, code, currentLesson),
+        friendlyError: explainPythonError(message, code, activeItem),
       }
     }
   }
@@ -347,7 +404,7 @@ function App() {
   function updateCode(nextCode) {
     setLessonCodeMap((previous) => ({
       ...previous,
-      [currentLesson.id]: nextCode || '',
+      [activeItem.id]: nextCode || '',
     }))
     setCheckResult(null)
     setFriendlyError(null)
@@ -358,7 +415,7 @@ function App() {
   function updateInput(nextInput) {
     setLessonInputMap((previous) => ({
       ...previous,
-      [currentLesson.id]: nextInput,
+      [activeItem.id]: nextInput,
     }))
     setCheckResult(null)
     setFriendlyError(null)
@@ -499,7 +556,7 @@ function App() {
       const messages = buildAiMessages({
         type,
         mode: aiMode,
-        lesson: currentLesson,
+        lesson: activeItem,
         code: currentCode,
         errorText: friendlyError?.originalError || output,
       })
@@ -525,12 +582,12 @@ function App() {
   function addTempChallenge() {
     if (!aiPanel?.content || aiPanel.type !== AI_TYPES.challenge) return
 
-    localStorage.setItem(`${TEMP_CHALLENGE_PREFIX}${currentLesson.id}`, aiPanel.content)
+    localStorage.setItem(`${TEMP_CHALLENGE_PREFIX}${activeItem.id}`, aiPanel.content)
     setTempChallenge(aiPanel.content)
   }
 
   function clearTempChallenge() {
-    localStorage.removeItem(`${TEMP_CHALLENGE_PREFIX}${currentLesson.id}`)
+    localStorage.removeItem(`${TEMP_CHALLENGE_PREFIX}${activeItem.id}`)
     setTempChallenge('')
   }
 
@@ -538,7 +595,7 @@ function App() {
     if (!aiPanel) return
 
     saveAiFeedback({
-      lessonId: currentLesson.id,
+      lessonId: activeItem.id,
       type: aiPanel.type,
       helpful,
       createdAt: new Date().toISOString(),
@@ -549,11 +606,11 @@ function App() {
   function resetCode() {
     setLessonCodeMap((previous) => ({
       ...previous,
-      [currentLesson.id]: currentLesson.starterCode,
+      [activeItem.id]: activeItem.starterCode,
     }))
     setLessonInputMap((previous) => ({
       ...previous,
-      [currentLesson.id]: currentLesson.sampleInput || '',
+      [activeItem.id]: activeItem.sampleInput || '',
     }))
     setOutput('')
     setFriendlyError(null)
@@ -568,7 +625,29 @@ function App() {
       return
     }
 
+    setLearningMode('lessons')
     setCurrentLessonId(lesson.id)
+    setOutput('')
+    setFriendlyError(null)
+    setErrorHintLevel(1)
+    setCheckResult(null)
+    setLessonNotice('')
+    touchStudyTime()
+  }
+
+  function selectProject(project) {
+    setLearningMode('projects')
+    setCurrentProjectId(project.id)
+    setOutput('')
+    setFriendlyError(null)
+    setErrorHintLevel(1)
+    setCheckResult(null)
+    setLessonNotice('')
+    touchStudyTime()
+  }
+
+  function switchLearningMode(nextMode) {
+    setLearningMode(nextMode)
     setOutput('')
     setFriendlyError(null)
     setErrorHintLevel(1)
@@ -589,10 +668,20 @@ function App() {
     setFriendlyError(null)
     setErrorHintLevel(1)
     setCheckResult(null)
-    setRunCountMap((previous) => ({
-      ...previous,
-      [currentLesson.id]: (previous[currentLesson.id] || 0) + 1,
-    }))
+    if (isProjectMode) {
+      setProjectProgress((previous) => ({
+        ...previous,
+        [currentProject.id]: {
+          ...previous[currentProject.id],
+          runCount: (previous[currentProject.id]?.runCount || 0) + 1,
+        },
+      }))
+    } else {
+      setRunCountMap((previous) => ({
+        ...previous,
+        [currentLesson.id]: (previous[currentLesson.id] || 0) + 1,
+      }))
+    }
     touchStudyTime()
 
     const result = await executePython(currentCode)
@@ -621,11 +710,30 @@ function App() {
     setCheckResult(null)
 
     const runResult = await runCode()
-    const failedRules = currentLesson.checkRules
+    const failedRules = activeItem.checkRules
       .filter((rule) => !evaluateRule(rule, currentCode, runResult))
       .map(describeRule)
 
     if (failedRules.length === 0) {
+      if (isProjectMode) {
+        setProjectProgress((previous) => ({
+          ...previous,
+          [currentProject.id]: {
+            ...previous[currentProject.id],
+            completed: true,
+            completedAt: previous[currentProject.id]?.completedAt || new Date().toISOString(),
+            runCount: previous[currentProject.id]?.runCount || 1,
+          },
+        }))
+        setCheckResult({
+          passed: true,
+          message: activeItem.successMessage,
+          failedRules: [],
+        })
+        setIsChecking(false)
+        return
+      }
+
       const nextCompleted = completedLessons.includes(currentLesson.id)
         ? completedLessons
         : [...completedLessons, currentLesson.id]
@@ -638,17 +746,19 @@ function App() {
       }))
       setCheckResult({
         passed: true,
-        message: currentLesson.successMessage,
+        message: activeItem.successMessage,
         failedRules: [],
       })
     } else {
-      setCheckPassedMap((previous) => ({
-        ...previous,
-        [currentLesson.id]: false,
-      }))
+      if (!isProjectMode) {
+        setCheckPassedMap((previous) => ({
+          ...previous,
+          [currentLesson.id]: false,
+        }))
+      }
       setCheckResult({
         passed: false,
-        message: currentLesson.hint,
+        message: activeItem.hint,
         failedRules,
       })
     }
@@ -657,8 +767,12 @@ function App() {
   }
 
   function goNextLesson() {
-    if (!nextLesson || !isCurrentCompleted) return
-    selectLesson(nextLesson)
+    if (!isCurrentCompleted) return
+    if (isProjectMode) {
+      if (nextProject) selectProject(nextProject)
+      return
+    }
+    if (nextLesson) selectLesson(nextLesson)
   }
 
   return (
@@ -680,32 +794,60 @@ function App() {
 
         <div className="progress-card">
           <div className="progress-copy">
-            <span>学习进度</span>
-            <strong>已完成 {completedAvailableCount} / {availableLessons.length} 关</strong>
+            <span>{isProjectMode ? '项目进度' : '学习进度'}</span>
+            <strong>
+              {isProjectMode
+                ? `已完成 ${completedProjectCount} / ${projects.length} 个项目`
+                : `已完成 ${completedAvailableCount} / ${availableLessons.length} 关`}
+            </strong>
           </div>
-          <div className="progress-track" aria-label={`已完成 ${completedAvailableCount} / ${availableLessons.length} 关`}>
-            <div style={{ width: `${progressPercent}%` }} />
+          <div
+            className="progress-track"
+            aria-label={isProjectMode
+              ? `已完成 ${completedProjectCount} / ${projects.length} 个项目`
+              : `已完成 ${completedAvailableCount} / ${availableLessons.length} 关`}
+          >
+            <div style={{ width: `${isProjectMode ? projectProgressPercent : progressPercent}%` }} />
           </div>
+        </div>
+
+        <div className="camp-switch" aria-label="学习入口">
+          <button
+            className={learningMode === 'lessons' ? 'active' : ''}
+            onClick={() => switchLearningMode('lessons')}
+            type="button"
+          >
+            <strong>基础训练营</strong>
+            <span>第 1-36 关：学习 Python 本领</span>
+          </button>
+          <button
+            className={learningMode === 'projects' ? 'active' : ''}
+            onClick={() => switchLearningMode('projects')}
+            type="button"
+          >
+            <strong>项目创造营</strong>
+            <span>用 Python 本领做作品</span>
+          </button>
         </div>
 
         <section className="study-card" aria-label="学习记录">
           <div className="study-title">学习记录</div>
           <dl>
             <div>
-              <dt>当前关卡</dt>
-              <dd>{currentLesson.title}</dd>
+              <dt>{isProjectMode ? '当前项目' : '当前关卡'}</dt>
+              <dd>{activeItem.title}</dd>
             </div>
             <div>
               <dt>总运行次数</dt>
               <dd>{totalRunCount}</dd>
             </div>
             <div>
-              <dt>本关运行</dt>
-              <dd>{runCountMap[currentLesson.id] || 0}</dd>
+              <dt>{isProjectMode ? '本项目运行' : '本关运行'}</dt>
+              <dd>{activeRunCount}</dd>
             </div>
             <div>
               <dt>徽章</dt>
-              <dd>{earnedBadges.length} / {badgeDefinitions.length}</dd>
+              <dd>{earnedBadges.length + completedProjectCount} / {badgeDefinitions.length + projectBadgeDefinitions.length}</dd>
             </div>
             <div>
               <dt>最近学习</dt>
@@ -725,13 +867,21 @@ function App() {
                 </span>
               )
             })}
+            {projectBadgeDefinitions.map((badge) => {
+              const earned = Boolean(projectProgress[badge.projectId]?.completed)
+              return (
+                <span className={earned ? 'badge earned project-badge' : 'badge project-badge'} key={badge.id}>
+                  {earned ? '✓ ' : ''}{badge.title}
+                </span>
+              )
+            })}
           </div>
         </section>
 
         {lessonNotice && <div className="lesson-notice">{lessonNotice}</div>}
 
         <nav className="lesson-nav">
-          {lessons.map((lesson, index) => {
+          {learningMode === 'lessons' && lessons.map((lesson, index) => {
             const isActive = lesson.id === currentLesson.id
             const isCompleted = completedLessons.includes(lesson.id)
             const className = [
@@ -753,105 +903,219 @@ function App() {
               </button>
             )
           })}
+          {learningMode === 'projects' && projects.map((project, index) => {
+            const isActive = project.id === currentProject.id
+            const isCompleted = Boolean(projectProgress[project.id]?.completed)
+            const className = ['lesson-item', 'project-item', isActive ? 'active' : ''].filter(Boolean).join(' ')
+
+            return (
+              <button className={className} key={project.id} onClick={() => selectProject(project)} type="button">
+                <span className="lesson-number">P{index + 1}</span>
+                <span className="lesson-title">
+                  {project.title}
+                  <small>{project.level} · 建议学完第 {project.recommendedAfterLesson} 关</small>
+                </span>
+                {isCompleted && <span className="done-mark">✓</span>}
+              </button>
+            )
+          })}
         </nav>
       </aside>
 
       <main className="task-panel">
         <section className="task-card">
-          <p className="eyebrow">第 {currentLessonIndex + 1} 关 · {currentLesson.concept}</p>
-          <h2>{currentLesson.title}</h2>
+          {isProjectMode ? (
+            <>
+              <p className="eyebrow">项目创造营 · 项目 {currentProjectIndex + 1} · {currentProject.level}</p>
+              <h2>{currentProject.title}</h2>
+              <p className="project-subtitle">{currentProject.subtitle}</p>
 
-          <div className="task-section task-goal-section">
-            <h3>今天目标</h3>
-            <p>{currentLesson.goal}</p>
-          </div>
-
-          <div className="task-section">
-            <h3>故事引入</h3>
-            <p>{currentLesson.story}</p>
-          </div>
-
-          <div className="task-section">
-            <h3>简单讲解</h3>
-            <p>{currentLesson.explanation}</p>
-          </div>
-
-          <div className="task-section task-modify-section">
-            <h3>改一改任务</h3>
-            <p>{currentLesson.modifyTask}</p>
-          </div>
-
-          <div className="task-section task-challenge-section">
-            <h3>挑战任务</h3>
-            <p>{currentLesson.challengeTask}</p>
-          </div>
-
-          {tempChallenge && (
-            <div className="temp-challenge-card">
-              <div>
-                <h3>我的临时挑战</h3>
-                <button className="text-button" onClick={clearTempChallenge} type="button">
-                  清除
-                </button>
+              <div className="project-meta-card">
+                <span>建议学完第 {currentProject.recommendedAfterLesson} 关后尝试</span>
+                <span>用到本领：{currentProject.skills.join('、')}</span>
               </div>
-              <p>{tempChallenge}</p>
-            </div>
-          )}
 
-          <div className="hint-box">
-            <span>提示</span>
-            <p>{currentLesson.hint}</p>
-          </div>
-
-          {currentLesson.keyPoints?.length > 0 && (
-            <div className="learning-section">
-              <h3>本关重点</h3>
-              <ul>
-                {currentLesson.keyPoints.map((point) => (
-                  <li key={point}>{point}</li>
-                ))}
-              </ul>
-            </div>
-          )}
-
-          {currentLesson.observeQuestion && (
-            <div className="learning-section compact">
-              <h3>观察一下</h3>
-              <p>{currentLesson.observeQuestion}</p>
-            </div>
-          )}
-
-          {currentLesson.practiceTasks?.length > 0 && (
-            <div className="learning-section practice-section">
-              <h3>多练几次</h3>
-              <ol>
-                {currentLesson.practiceTasks.map((task) => (
-                  <li key={task}>{task}</li>
-                ))}
-              </ol>
-            </div>
-          )}
-
-          {currentLesson.commonMistakes?.length > 0 && (
-            <div className="learning-section">
-              <h3>常见小错误</h3>
-              <div className="mistake-list">
-                {currentLesson.commonMistakes.map((mistake) => (
-                  <article className="mistake-item" key={mistake.wrongCode}>
-                    <code>{mistake.wrongCode}</code>
-                    <p><strong>为什么错：</strong>{mistake.explanation}</p>
-                    <p><strong>怎么修：</strong>{mistake.fixTip}</p>
-                  </article>
-                ))}
+              <div className="task-section task-goal-section">
+                <h3>项目目标</h3>
+                <p>{currentProject.goal}</p>
               </div>
-            </div>
-          )}
 
-          {currentLesson.reviewQuestion && (
-            <div className="learning-section compact">
-              <h3>复习问题</h3>
-              <p>{currentLesson.reviewQuestion}</p>
-            </div>
+              <div className="task-section">
+                <h3>生活场景</h3>
+                <p>{currentProject.scene}</p>
+              </div>
+
+              <div className="learning-section project-steps-section">
+                <h3>分步骤做作品</h3>
+                <ol>
+                  {currentProject.steps.map((step) => (
+                    <li key={step.title}>
+                      <strong>{step.title}</strong>
+                      <span>{step.description}</span>
+                    </li>
+                  ))}
+                </ol>
+              </div>
+
+              <div className="learning-section practice-section">
+                <h3>任务要求</h3>
+                <ol>
+                  {currentProject.requirements.map((requirement) => (
+                    <li key={requirement}>{requirement}</li>
+                  ))}
+                </ol>
+              </div>
+
+              <div className="task-section task-challenge-section">
+                <h3>拓展挑战</h3>
+                <p>{currentProject.challenge}</p>
+              </div>
+
+              {tempChallenge && (
+                <div className="temp-challenge-card">
+                  <div>
+                    <h3>我的临时挑战</h3>
+                    <button className="text-button" onClick={clearTempChallenge} type="button">
+                      清除
+                    </button>
+                  </div>
+                  <p>{tempChallenge}</p>
+                </div>
+              )}
+
+              <div className="learning-section">
+                <h3>家长提问</h3>
+                <ul>
+                  {currentProject.parentQuestions.map((question) => (
+                    <li key={question}>{question}</li>
+                  ))}
+                </ul>
+              </div>
+
+              <div className="learning-section compact">
+                <h3>作品展示引导</h3>
+                <p>{currentProject.showcasePrompt}</p>
+              </div>
+
+              <div className="learning-section">
+                <h3>拓展玩法</h3>
+                <ul>
+                  {currentProject.extensionIdeas.map((idea) => (
+                    <li key={idea}>{idea}</li>
+                  ))}
+                </ul>
+              </div>
+
+              <div className="interactive-preview">
+                <h3>下一步可以升级成互动版</h3>
+                <p>
+                  现在先用 print 显示结果。以后可以升级成 pop 弹窗、star 星星奖励、success 通关动画，让代码像游戏一样动起来。
+                </p>
+              </div>
+
+              <div className="hint-box">
+                <span>提示</span>
+                <p>{currentProject.hint}</p>
+              </div>
+            </>
+          ) : (
+            <>
+              <p className="eyebrow">第 {currentLessonIndex + 1} 关 · {currentLesson.concept}</p>
+              <h2>{currentLesson.title}</h2>
+
+              <div className="task-section task-goal-section">
+                <h3>今天目标</h3>
+                <p>{currentLesson.goal}</p>
+              </div>
+
+              <div className="task-section">
+                <h3>故事引入</h3>
+                <p>{currentLesson.story}</p>
+              </div>
+
+              <div className="task-section">
+                <h3>简单讲解</h3>
+                <p>{currentLesson.explanation}</p>
+              </div>
+
+              <div className="task-section task-modify-section">
+                <h3>改一改任务</h3>
+                <p>{currentLesson.modifyTask}</p>
+              </div>
+
+              <div className="task-section task-challenge-section">
+                <h3>挑战任务</h3>
+                <p>{currentLesson.challengeTask}</p>
+              </div>
+
+              {tempChallenge && (
+                <div className="temp-challenge-card">
+                  <div>
+                    <h3>我的临时挑战</h3>
+                    <button className="text-button" onClick={clearTempChallenge} type="button">
+                      清除
+                    </button>
+                  </div>
+                  <p>{tempChallenge}</p>
+                </div>
+              )}
+
+              <div className="hint-box">
+                <span>提示</span>
+                <p>{currentLesson.hint}</p>
+              </div>
+
+              {currentLesson.keyPoints?.length > 0 && (
+                <div className="learning-section">
+                  <h3>本关重点</h3>
+                  <ul>
+                    {currentLesson.keyPoints.map((point) => (
+                      <li key={point}>{point}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {currentLesson.observeQuestion && (
+                <div className="learning-section compact">
+                  <h3>观察一下</h3>
+                  <p>{currentLesson.observeQuestion}</p>
+                </div>
+              )}
+
+              {currentLesson.practiceTasks?.length > 0 && (
+                <div className="learning-section practice-section">
+                  <h3>多练几次</h3>
+                  <ol>
+                    {currentLesson.practiceTasks.map((task) => (
+                      <li key={task}>{task}</li>
+                    ))}
+                  </ol>
+                </div>
+              )}
+
+              {currentLesson.commonMistakes?.length > 0 && (
+                <div className="learning-section">
+                  <h3>常见小错误</h3>
+                  <div className="mistake-list">
+                    {currentLesson.commonMistakes.map((mistake) => (
+                      <article className="mistake-item" key={mistake.wrongCode}>
+                        <code>{mistake.wrongCode}</code>
+                        <p><strong>为什么错：</strong>{mistake.explanation}</p>
+                        <p><strong>怎么修：</strong>{mistake.fixTip}</p>
+                      </article>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {currentLesson.reviewQuestion && (
+                <div className="learning-section compact">
+                  <h3>复习问题</h3>
+                  <p>{currentLesson.reviewQuestion}</p>
+                </div>
+              )}
+            </>
           )}
         </section>
       </main>
@@ -860,7 +1124,7 @@ function App() {
         <div className="toolbar">
           <div>
             <strong>代码编辑器</strong>
-            <span>已运行 {runCountMap[currentLesson.id] || 0} 次</span>
+            <span>已运行 {activeRunCount} 次</span>
           </div>
           <div className={`python-status-card ${pythonLoadStatus}`}>
             <div className="python-status-copy">
@@ -890,8 +1154,13 @@ function App() {
             <button onClick={runCode} type="button" disabled={isRunning || isChecking}>
               {isRunning ? '运行中...' : '运行代码'}
             </button>
-            <button className="next-button" onClick={goNextLesson} type="button" disabled={!isCurrentCompleted || !nextLesson}>
-              下一关
+            <button
+              className="next-button"
+              onClick={goNextLesson}
+              type="button"
+              disabled={!isCurrentCompleted || (isProjectMode ? !nextProject : !nextLesson)}
+            >
+              {isProjectMode ? '下一项目' : '下一关'}
             </button>
           </div>
         </div>

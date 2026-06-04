@@ -92,7 +92,20 @@ function buildSystemPrompt(type, mode) {
 }
 
 function buildLessonSummary(lesson) {
+  if (lesson.type === 'project') {
+    return [
+      '当前内容类型：项目创造营',
+      `当前项目名称：${lesson.title}`,
+      `项目目标：${lesson.goal || '无'}`,
+      `用到技能：${lesson.skills?.join('、') || lesson.concept || '无'}`,
+      `生活场景：${lesson.scene || lesson.story || '无'}`,
+      `任务要求：${lesson.requirements?.join('；') || lesson.modifyTask || '无'}`,
+      `拓展挑战：${lesson.challenge || lesson.challengeTask || '无'}`,
+    ].join('\n')
+  }
+
   return [
+    '当前内容类型：基础训练营',
     `课程标题：${lesson.title}`,
     `知识点：${lesson.concept}`,
     `今天目标：${lesson.goal || '无'}`,

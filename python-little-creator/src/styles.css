@@ -102,6 +102,45 @@ button {
   transition: width 180ms ease;
 }
 
+.camp-switch {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.camp-switch button {
+  display: grid;
+  gap: 4px;
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #dce2ea;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #344054;
+  cursor: pointer;
+  text-align: left;
+}
+
+.camp-switch button.active {
+  border-color: #bfdbfe;
+  background: #eff6ff;
+  color: #174ea6;
+}
+
+.camp-switch strong {
+  font-size: 14px;
+}
+
+.camp-switch span {
+  color: #64748b;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.camp-switch button.active span {
+  color: #276ef1;
+}
+
 .study-card,
 .badge-card {
   margin-bottom: 14px;
@@ -172,6 +211,11 @@ button {
 .badge.earned {
   background: #dcfce7;
   color: #166534;
+}
+
+.badge.project-badge.earned {
+  background: #fef3c7;
+  color: #92400e;
 }
 
 .badge-toast {
@@ -258,6 +302,11 @@ button {
   color: #174ea6;
 }
 
+.lesson-item.project-item.active {
+  background: #fff7ed;
+  color: #c2410c;
+}
+
 .lesson-item.locked {
   color: #8a94a6;
   background: #f7f8fa;
@@ -290,6 +339,30 @@ button {
   font-size: 34px;
   line-height: 1.15;
   letter-spacing: 0;
+}
+
+.project-subtitle {
+  margin: -18px 0 18px;
+  color: #64748b;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.project-meta-card {
+  display: grid;
+  gap: 8px;
+  margin: 0 0 22px;
+  padding: 14px 16px;
+  border: 1px solid #fed7aa;
+  border-radius: 8px;
+  background: #fff7ed;
+}
+
+.project-meta-card span {
+  color: #9a3412;
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1.5;
 }
 
 .task-section {
@@ -425,6 +498,56 @@ button {
 
 .practice-section h3 {
   color: #6d28d9;
+}
+
+.project-steps-section {
+  border-color: #bfdbfe;
+  border-left: 5px solid #2563eb;
+  background: #eff6ff;
+}
+
+.project-steps-section h3 {
+  color: #1d4ed8;
+}
+
+.project-steps-section ol {
+  display: grid;
+  gap: 10px;
+}
+
+.project-steps-section li {
+  display: grid;
+  gap: 4px;
+}
+
+.project-steps-section strong {
+  color: #1f2937;
+}
+
+.project-steps-section span {
+  color: #475569;
+}
+
+.interactive-preview {
+  display: grid;
+  gap: 8px;
+  margin-top: 18px;
+  padding: 16px;
+  border: 1px dashed #c4b5fd;
+  border-radius: 8px;
+  background: #faf5ff;
+}
+
+.interactive-preview h3 {
+  margin: 0;
+  color: #7c3aed;
+  font-size: 15px;
+}
+
+.interactive-preview p {
+  margin: 0;
+  color: #4b5563;
+  line-height: 1.75;
 }
 
 .learning-section.compact {
