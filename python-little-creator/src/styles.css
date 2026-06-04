@@ -218,7 +218,7 @@ button {
   color: #92400e;
 }
 
-.badge.game-badge.earned {
+.badge.tower-badge.earned {
   background: #ede9fe;
   color: #6d28d9;
 }
@@ -312,7 +312,7 @@ button {
   color: #c2410c;
 }
 
-.lesson-item.game-item.active {
+.lesson-item.tower-item.active {
   background: #f5f3ff;
   color: #6d28d9;
 }
@@ -375,71 +375,152 @@ button {
   line-height: 1.5;
 }
 
-.game-stage-card {
+.tower-stage-card {
   display: grid;
-  gap: 14px;
+  gap: 16px;
   margin: 0 0 22px;
   padding: 16px;
-  border: 1px solid #c4b5fd;
+  border: 1px solid #bfdbfe;
   border-radius: 8px;
-  background: #faf5ff;
+  background: linear-gradient(180deg, #eff6ff 0%, #f8fafc 100%);
 }
 
-.game-hud {
+.tower-title-row {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   flex-wrap: wrap;
+  gap: 12px;
+}
+
+.tower-title-row > div:first-child {
+  display: grid;
+  gap: 4px;
+}
+
+.tower-title-row strong {
+  color: #1e3a8a;
+  font-size: 15px;
+}
+
+.tower-title-row span {
+  color: #475569;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.tower-reward-row {
+  display: inline-flex;
+  align-items: center;
   gap: 8px;
 }
 
-.game-hud span,
-.game-hud strong {
-  display: inline-flex;
-  align-items: center;
-  min-height: 28px;
-  padding: 4px 9px;
+.tower-reward-row span {
+  padding: 5px 9px;
   border-radius: 999px;
-  background: #ede9fe;
-  color: #6d28d9;
+  background: #fef3c7;
+  color: #92400e;
   font-size: 12px;
   font-weight: 900;
 }
 
-.game-hud strong {
-  background: #ffffff;
-  color: #475569;
-}
-
-.farm-grid {
+.tower-battle-row {
   display: grid;
-  grid-template-columns: repeat(6, minmax(38px, 1fr));
-  gap: 6px;
-  max-width: 420px;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: stretch;
+  gap: 12px;
 }
 
-.farm-cell {
+.tower-fighter-card {
+  display: grid;
+  gap: 10px;
+  min-width: 0;
+  padding: 14px;
+  border: 1px solid #dbeafe;
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: 0 10px 24px rgb(15 23 42 / 8%);
+}
+
+.tower-fighter-card.hero {
+  border-color: #bbf7d0;
+}
+
+.tower-fighter-card.monster {
+  border-color: #fecaca;
+}
+
+.tower-avatar {
   display: grid;
   place-items: center;
-  aspect-ratio: 1;
-  border: 1px solid #bbf7d0;
+  width: 52px;
+  height: 52px;
   border-radius: 8px;
-  background: #dcfce7;
-  color: #166534;
-  font-size: 24px;
+  background: #f8fafc;
+  font-size: 30px;
 }
 
-.farm-cell.blocked {
-  border-color: #d6d3d1;
-  background: #f5f5f4;
+.tower-fighter-card h3 {
+  margin: 0;
+  color: #0f172a;
+  font-size: 17px;
 }
 
-.farm-player {
-  filter: drop-shadow(0 4px 8px rgb(22 101 52 / 30%));
+.tower-fighter-card p {
+  margin: 4px 0 0;
+  color: #64748b;
+  font-size: 13px;
+  font-weight: 700;
 }
 
-.game-speech {
+.tower-hp-line {
+  display: grid;
+  gap: 6px;
+}
+
+.tower-hp-line span {
+  color: #334155;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.tower-hp-track {
+  overflow: hidden;
+  height: 9px;
+  border-radius: 999px;
+  background: #e2e8f0;
+}
+
+.tower-hp-fill {
+  height: 100%;
+  border-radius: inherit;
+  transition: width 180ms ease;
+}
+
+.tower-hp-fill.hero {
+  background: #22c55e;
+}
+
+.tower-hp-fill.monster {
+  background: #ef4444;
+}
+
+.tower-vs {
+  align-self: center;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  background: #1d4ed8;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 950;
+}
+
+.tower-speech {
   justify-self: start;
-  max-width: 420px;
+  max-width: 100%;
   padding: 10px 12px;
   border: 1px solid #bfdbfe;
   border-radius: 8px;
@@ -447,6 +528,45 @@ button {
   color: #174ea6;
   font-weight: 800;
   line-height: 1.6;
+}
+
+.tower-log {
+  display: grid;
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid #dbeafe;
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.tower-log-title {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tower-log-title strong {
+  color: #1e3a8a;
+}
+
+.tower-log-title span {
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: #eff6ff;
+  color: #1d4ed8;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.tower-log ol {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding-left: 22px;
+  color: #334155;
+  font-size: 13px;
+  line-height: 1.5;
 }
 
 .task-section {

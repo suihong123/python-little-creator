@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client'
 import Editor from '@monaco-editor/react'
 import lessons from './data/lessons.json'
 import projects from './data/projects.json'
-import gameLevels from './data/gameLevels.json'
+import towerLevels from './data/towerLevels.json'
 import { AI_TYPES, buildAiMessages, getAiTypeLabel, getThinkPrompt } from './utils/aiPrompts'
 import {
   AI_MODE_STORAGE_KEY,
@@ -34,9 +34,9 @@ const MAX_OUTPUT_LINES = 100
 const RUN_TIMEOUT_MS = 8000
 const TEMP_CHALLENGE_PREFIX = 'plc_temp_challenge_lesson_'
 const PROJECT_PROGRESS_STORAGE_KEY = 'plc_project_progress'
-const GAME_PROGRESS_STORAGE_KEY = 'plc_game_progress'
+const TOWER_PROGRESS_STORAGE_KEY = 'plc_tower_progress'
 const CURRENT_PROJECT_STORAGE_KEY = 'plc_current_project_id'
-const CURRENT_GAME_STORAGE_KEY = 'plc_current_game_id'
+const CURRENT_TOWER_STORAGE_KEY = 'plc_current_tower_id'
 const LEARNING_MODE_STORAGE_KEY = 'plc_learning_mode'
 
 const availableLessons = lessons.filter((lesson) => lesson.status === 'available')
@@ -60,17 +60,19 @@ const projectBadgeDefinitions = [
   { id: 'project-helper', title: 'Python 小创造师', projectId: 'project-8-python-helper' },
 ]
 
-const gameBadgeDefinitions = [
-  { id: 'game-hello', title: '小小问候官', gameId: 'game-1-hello' },
-  { id: 'game-sequence', title: '顺序行动员', gameId: 'game-2-sequence' },
-  { id: 'game-variable', title: '变量魔法师', gameId: 'game-3-variable' },
-  { id: 'game-input', title: '输入小信使', gameId: 'game-4-input' },
-  { id: 'game-if', title: '判断小队长', gameId: 'game-5-if-else' },
-  { id: 'game-loop', title: '循环小跑者', gameId: 'game-6-loop' },
-  { id: 'game-npc', title: 'NPC 好朋友', gameId: 'game-7-npc' },
-  { id: 'game-list', title: '句子收藏家', gameId: 'game-8-list' },
-  { id: 'game-star', title: '星星挑战者', gameId: 'game-9-star' },
-  { id: 'game-def', title: '函数小法师', gameId: 'game-10-def' },
+const towerBadgeDefinitions = [
+  { id: 'tower-say', title: '勇者开口啦', towerId: 'tower-1' },
+  { id: 'tower-attack', title: '连击新手', towerId: 'tower-2' },
+  { id: 'tower-variable', title: '变量勇者', towerId: 'tower-3' },
+  { id: 'tower-input', title: '输入指挥官', towerId: 'tower-4' },
+  { id: 'tower-if', title: '判断小队长', towerId: 'tower-5' },
+  { id: 'tower-loop', title: '连击高手', towerId: 'tower-6' },
+  { id: 'tower-hp', title: '血量观察员', towerId: 'tower-7' },
+  { id: 'tower-bag', title: '背包管理员', towerId: 'tower-8' },
+  { id: 'tower-dict', title: '怪物资料师', towerId: 'tower-9' },
+  { id: 'tower-def', title: '技能创造师', towerId: 'tower-10' },
+  { id: 'tower-return', title: '伤害计算师', towerId: 'tower-11' },
+  { id: 'tower-random', title: '宝箱探险家', towerId: 'tower-12' },
 ]
 
 function readStorage(key) {
@@ -137,15 +139,15 @@ function evaluateRule(rule, code, runResult) {
   if (rule.type === 'output_line_count_at_least') return countOutputLines(runResult.output) >= rule.value
   if (rule.type === 'code_contains_any') return rule.value.some((keyword) => code.includes(keyword))
   if (rule.type === 'actionIncludes') {
-    return runResult.gameActions?.some((action) => (
+    return runResult.towerActions?.some((action) => (
       action.type === rule.actionType && (!rule.textIncludes || action.text?.includes(rule.textIncludes))
     ))
   }
   if (rule.type === 'minActions') {
-    return (runResult.gameActions || []).filter((action) => action.type === rule.actionType).length >= rule.value
+    return (runResult.towerActions || []).filter((action) => action.type === rule.actionType).length >= rule.value
   }
   if (rule.type === 'starsAtLeast') {
-    return (runResult.gameActions || []).filter((action) => action.type === 'star').length >= rule.value
+    return (runResult.towerActions || []).filter((action) => action.type === 'star').length >= rule.value
   }
   return false
 }
@@ -174,7 +176,7 @@ function normalizeProject(project) {
   }
 }
 
-function normalizeGameLevel(level) {
+function normalizeTowerLevel(level) {
   return {
     ...level,
     concept: level.skill,
@@ -186,54 +188,64 @@ function normalizeGameLevel(level) {
   }
 }
 
-function getInitialGameState(level) {
+function getInitialTowerState(level) {
   return {
-    player: { ...level.playerStart },
-    stars: 0,
+    hero: { ...level.hero },
+    monster: { ...level.monster },
     speech: '',
     score: null,
     item: '',
-    notice: '运行代码后，小农场会动起来。',
+    logs: ['勇者进入了这一层。'],
+    notice: '运行代码后，战斗日志会记录动作。',
   }
 }
 
-function applyGameActions(level, actions) {
-  const state = getInitialGameState(level)
-  const blocked = new Set((level.obstacles || []).map((item) => `${item.x},${item.y}`))
+function applyTowerActions(level, actions) {
+  const state = getInitialTowerState(level)
+  const logs = [...state.logs]
 
   actions.forEach((action) => {
-    if (action.type === 'move') {
-      const next = { ...state.player }
-      if (action.direction === 'right') next.x += 1
-      if (action.direction === 'left') next.x -= 1
-      if (action.direction === 'up') next.y -= 1
-      if (action.direction === 'down') next.y += 1
-
-      if (next.x < 1 || next.x > 6 || next.y < 1 || next.y > 6 || blocked.has(`${next.x},${next.y}`)) {
-        state.notice = '这里过不去'
-      } else {
-        state.player = next
-        state.notice = `向${action.direction}移动了一步`
-      }
-    }
     if (action.type === 'say') {
       state.speech = action.text
-      state.notice = '角色说话了'
+      logs.push(`勇者说：${action.text}`)
+    }
+    if (action.type === 'attack') {
+      const damage = Number(state.hero.attack || 1)
+      state.monster.hp = Math.max(0, Number(state.monster.hp || 0) - damage)
+      logs.push(`勇者攻击，怪物受到 ${damage} 点伤害。`)
+    }
+    if (action.type === 'heal') {
+      const amount = Number(action.amount ?? 2)
+      state.hero.hp = Math.min(Number(state.hero.maxHp || state.hero.hp), Number(state.hero.hp || 0) + amount)
+      logs.push(`勇者恢复 ${amount} 点 HP。`)
+    }
+    if (action.type === 'coin') {
+      const amount = Number(action.amount ?? 1)
+      state.hero.coins = Number(state.hero.coins || 0) + amount
+      logs.push(`获得 ${amount} 枚金币。`)
     }
     if (action.type === 'star') {
-      state.stars += 1
-      state.notice = '获得一颗星星'
+      state.hero.stars = Number(state.hero.stars || 0) + 1
+      logs.push('获得 1 颗星。')
     }
     if (action.type === 'score') {
       state.score = action.value
-      state.notice = `当前分数：${action.value}`
+      logs.push(`当前分数：${action.value}`)
+    }
+    if (action.type === 'damage') {
+      logs.push(`计算出的伤害是：${action.value}`)
+    }
+    if (action.type === 'status') {
+      logs.push(`勇者 HP：${state.hero.hp}，怪物 HP：${state.monster.hp}，金币：${state.hero.coins}。`)
     }
     if (action.type === 'item') {
       state.item = action.value
-      state.notice = `获得物品：${action.value}`
+      logs.push(`获得物品：${action.value}`)
     }
   })
 
+  state.logs = logs
+  state.notice = logs[logs.length - 1]
   return state
 }
 
@@ -248,14 +260,14 @@ function App() {
   const [currentProjectId, setCurrentProjectId] = useState(
     () => localStorage.getItem(CURRENT_PROJECT_STORAGE_KEY) || projects[0].id,
   )
-  const [currentGameId, setCurrentGameId] = useState(
-    () => localStorage.getItem(CURRENT_GAME_STORAGE_KEY) || gameLevels[0].id,
+  const [currentTowerId, setCurrentTowerId] = useState(
+    () => localStorage.getItem(CURRENT_TOWER_STORAGE_KEY) || towerLevels[0].id,
   )
   const currentProject = projects.find((project) => project.id === currentProjectId) || projects[0]
-  const currentGame = gameLevels.find((level) => level.id === currentGameId) || gameLevels[0]
+  const currentTower = towerLevels.find((level) => level.id === currentTowerId) || towerLevels[0]
   const isProjectMode = learningMode === 'projects'
-  const isGameMode = learningMode === 'games'
-  const activeItem = isGameMode ? normalizeGameLevel(currentGame) : (isProjectMode ? normalizeProject(currentProject) : currentLesson)
+  const isTowerMode = learningMode === 'games'
+  const activeItem = isTowerMode ? normalizeTowerLevel(currentTower) : (isProjectMode ? normalizeProject(currentProject) : currentLesson)
   const [completedLessons, setCompletedLessons] = useState(savedState.completedLessons)
   const [lessonCodeMap, setLessonCodeMap] = useState(savedState.lessonCodeMap)
   const [runCountMap, setRunCountMap] = useState(savedState.runCountMap)
@@ -295,9 +307,9 @@ function App() {
     localStorage.getItem(`${TEMP_CHALLENGE_PREFIX}${isProjectMode ? currentProjectId : currentLessonId}`) || ''
   ))
   const [projectProgress, setProjectProgress] = useState(() => readStorage(PROJECT_PROGRESS_STORAGE_KEY))
-  const [gameProgress, setGameProgress] = useState(() => readStorage(GAME_PROGRESS_STORAGE_KEY))
-  const [gameActions, setGameActions] = useState([])
-  const [gameState, setGameState] = useState(() => getInitialGameState(currentGame))
+  const [towerProgress, setTowerProgress] = useState(() => readStorage(TOWER_PROGRESS_STORAGE_KEY))
+  const [towerActions, setTowerActions] = useState([])
+  const [towerState, setTowerState] = useState(() => getInitialTowerState(currentTower))
   const pyodideRef = useRef(null)
   const pyodideLoadingPromiseRef = useRef(null)
   const pythonLoadTimersRef = useRef([])
@@ -307,25 +319,25 @@ function App() {
   const progressPercent = Math.round((completedAvailableCount / availableLessons.length) * 100)
   const completedProjectCount = projects.filter((project) => projectProgress[project.id]?.completed).length
   const projectProgressPercent = Math.round((completedProjectCount / projects.length) * 100)
-  const completedGameCount = gameLevels.filter((level) => gameProgress[level.id]?.completed).length
-  const gameProgressPercent = Math.round((completedGameCount / gameLevels.length) * 100)
+  const completedTowerCount = towerLevels.filter((level) => towerProgress[level.id]?.completed).length
+  const towerProgressPercent = Math.round((completedTowerCount / towerLevels.length) * 100)
   const currentLessonIndex = availableLessons.findIndex((lesson) => lesson.id === currentLesson.id)
   const currentProjectIndex = projects.findIndex((project) => project.id === currentProject.id)
-  const currentGameIndex = gameLevels.findIndex((level) => level.id === currentGame.id)
+  const currentTowerIndex = towerLevels.findIndex((level) => level.id === currentTower.id)
   const nextLesson = availableLessons[currentLessonIndex + 1]
   const nextProject = projects[currentProjectIndex + 1]
-  const nextGame = gameLevels[currentGameIndex + 1]
+  const nextTower = towerLevels[currentTowerIndex + 1]
   const isCurrentCompleted = isProjectMode
     ? Boolean(projectProgress[currentProject.id]?.completed)
-    : (isGameMode ? Boolean(gameProgress[currentGame.id]?.completed) : completedLessons.includes(currentLesson.id))
+    : (isTowerMode ? Boolean(towerProgress[currentTower.id]?.completed) : completedLessons.includes(currentLesson.id))
   const currentCode = lessonCodeMap[activeItem.id] ?? activeItem.starterCode
   const currentInput = lessonInputMap[activeItem.id] ?? activeItem.sampleInput ?? ''
   const projectRunCount = projectProgress[currentProject.id]?.runCount || 0
-  const gameRunCount = gameProgress[currentGame.id]?.runCount || 0
+  const towerRunCount = towerProgress[currentTower.id]?.runCount || 0
   const totalRunCount = Object.values(runCountMap).reduce((sum, count) => sum + count, 0)
     + Object.values(projectProgress).reduce((sum, progress) => sum + (progress.runCount || 0), 0)
-    + Object.values(gameProgress).reduce((sum, progress) => sum + (progress.runCount || 0), 0)
-  const activeRunCount = isGameMode ? gameRunCount : (isProjectMode ? projectRunCount : (runCountMap[currentLesson.id] || 0))
+    + Object.values(towerProgress).reduce((sum, progress) => sum + (progress.runCount || 0), 0)
+  const activeRunCount = isTowerMode ? towerRunCount : (isProjectMode ? projectRunCount : (runCountMap[currentLesson.id] || 0))
   const needsInput = activeItem.checkRules?.some((rule) => rule.type === 'code_contains' && rule.value === 'input')
     || currentCode.includes('input(')
 
@@ -362,21 +374,21 @@ function App() {
   }, [projectProgress])
 
   useEffect(() => {
-    localStorage.setItem(GAME_PROGRESS_STORAGE_KEY, JSON.stringify(gameProgress))
-  }, [gameProgress])
+    localStorage.setItem(TOWER_PROGRESS_STORAGE_KEY, JSON.stringify(towerProgress))
+  }, [towerProgress])
 
   useEffect(() => {
     localStorage.setItem(LEARNING_MODE_STORAGE_KEY, learningMode)
     localStorage.setItem(CURRENT_PROJECT_STORAGE_KEY, currentProjectId)
-    localStorage.setItem(CURRENT_GAME_STORAGE_KEY, currentGameId)
+    localStorage.setItem(CURRENT_TOWER_STORAGE_KEY, currentTowerId)
     setTempChallenge(localStorage.getItem(`${TEMP_CHALLENGE_PREFIX}${activeItem.id}`) || '')
     setAiThinkingRequest(null)
     setAiFeedbackMessage('')
     if (learningMode === 'games') {
-      setGameActions([])
-      setGameState(getInitialGameState(currentGame))
+      setTowerActions([])
+      setTowerState(getInitialTowerState(currentTower))
     }
-  }, [learningMode, currentProjectId, currentGameId, activeItem.id])
+  }, [learningMode, currentProjectId, currentTowerId, activeItem.id])
 
   useEffect(() => {
     getPyodide().catch(() => {
@@ -464,7 +476,7 @@ function App() {
     const stdout = []
     const stderr = []
     const currentInteractiveEvents = []
-    let currentGameActions = []
+    let currentTowerActions = []
     const inputQueue = currentInput.split(/\r?\n/)
     let inputIndex = 0
 
@@ -532,31 +544,43 @@ def fail(message):
     print(message)
 `
 
-      const gamePrelude = isGameMode ? `
-game_actions = []
-
-def move(direction):
-    game_actions.append({"type": "move", "direction": str(direction)})
-    print("move", direction)
+      const towerPrelude = isTowerMode ? `
+tower_actions = []
 
 def say(text):
-    game_actions.append({"type": "say", "text": str(text)})
+    tower_actions.append({"type": "say", "text": str(text)})
     print(text)
 
+def attack():
+    tower_actions.append({"type": "attack"})
+    print("勇者攻击")
+
+def heal(amount=2):
+    tower_actions.append({"type": "heal", "amount": amount})
+    print("恢复", amount)
+
+def gain_coin(amount):
+    tower_actions.append({"type": "coin", "amount": amount})
+    print("获得金币", amount)
+
 def star():
-    game_actions.append({"type": "star"})
+    tower_actions.append({"type": "star"})
     print("获得一颗星星！")
 
 def show_score(score):
-    game_actions.append({"type": "score", "value": score})
+    tower_actions.append({"type": "score", "value": score})
     print("分数", score)
 
-def show_item(item):
-    game_actions.append({"type": "item", "value": str(item)})
-    print("获得", item)
+def show_damage(amount):
+    tower_actions.append({"type": "damage", "value": amount})
+    print("伤害", amount)
+
+def show_status():
+    tower_actions.append({"type": "status"})
+    print("显示状态")
 ` : ''
 
-      const runPromise = pyodide.runPythonAsync(`${interactivePrelude}\n${gamePrelude}\n${code}`)
+      const runPromise = pyodide.runPythonAsync(`${interactivePrelude}\n${towerPrelude}\n${code}`)
       const timeoutPromise = new Promise((_, reject) => {
         window.setTimeout(() => {
           reject(new Error('运行时间有点久：程序可能进入了很长的循环，请检查循环条件。'))
@@ -567,9 +591,9 @@ def show_item(item):
       const cleanOutput = stdout.join('\n').trim()
       const cleanError = stderr.join('\n').trim()
       const rawOutput = [cleanOutput, cleanError].filter(Boolean).join('\n').trim()
-      if (isGameMode) {
-        const actionsProxy = pyodide.globals.get('game_actions')
-        currentGameActions = actionsProxy.toJs({ dict_converter: Object.fromEntries })
+      if (isTowerMode) {
+        const actionsProxy = pyodide.globals.get('tower_actions')
+        currentTowerActions = actionsProxy.toJs({ dict_converter: Object.fromEntries })
         actionsProxy.destroy?.()
       }
 
@@ -578,7 +602,7 @@ def show_item(item):
         output: limitOutputLines(rawOutput),
         error: cleanError,
         interactiveEvents: currentInteractiveEvents,
-        gameActions: currentGameActions,
+        towerActions: currentTowerActions,
         friendlyError: cleanError ? explainPythonError(cleanError, code, activeItem) : null,
       }
     } catch (error) {
@@ -590,7 +614,7 @@ def show_item(item):
         output: limitOutputLines(rawOutput),
         error: message,
         interactiveEvents: currentInteractiveEvents,
-        gameActions: currentGameActions,
+        towerActions: currentTowerActions,
         friendlyError: explainPythonError(message, code, activeItem),
       }
     }
@@ -608,8 +632,8 @@ def show_item(item):
     setCheckResult(null)
     setFriendlyError(null)
     setInteractiveEvents([])
-    setGameActions([])
-    if (isGameMode) setGameState(getInitialGameState(currentGame))
+    setTowerActions([])
+    if (isTowerMode) setTowerState(getInitialTowerState(currentTower))
     setErrorHintLevel(1)
     touchStudyTime()
   }
@@ -622,8 +646,8 @@ def show_item(item):
     setCheckResult(null)
     setFriendlyError(null)
     setInteractiveEvents([])
-    setGameActions([])
-    if (isGameMode) setGameState(getInitialGameState(currentGame))
+    setTowerActions([])
+    if (isTowerMode) setTowerState(getInitialTowerState(currentTower))
     setErrorHintLevel(1)
     touchStudyTime()
   }
@@ -819,8 +843,8 @@ def show_item(item):
     }))
     setOutput('')
     setInteractiveEvents([])
-    setGameActions([])
-    if (isGameMode) setGameState(getInitialGameState(currentGame))
+    setTowerActions([])
+    if (isTowerMode) setTowerState(getInitialTowerState(currentTower))
     setFriendlyError(null)
     setErrorHintLevel(1)
     setCheckResult(null)
@@ -837,8 +861,8 @@ def show_item(item):
     setCurrentLessonId(lesson.id)
     setOutput('')
     setInteractiveEvents([])
-    setGameActions([])
-    setGameState(getInitialGameState(currentGame))
+    setTowerActions([])
+    setTowerState(getInitialTowerState(currentTower))
     setFriendlyError(null)
     setErrorHintLevel(1)
     setCheckResult(null)
@@ -851,8 +875,8 @@ def show_item(item):
     setCurrentProjectId(project.id)
     setOutput('')
     setInteractiveEvents([])
-    setGameActions([])
-    setGameState(getInitialGameState(currentGame))
+    setTowerActions([])
+    setTowerState(getInitialTowerState(currentTower))
     setFriendlyError(null)
     setErrorHintLevel(1)
     setCheckResult(null)
@@ -860,13 +884,13 @@ def show_item(item):
     touchStudyTime()
   }
 
-  function selectGame(level) {
+  function selectTower(level) {
     setLearningMode('games')
-    setCurrentGameId(level.id)
+    setCurrentTowerId(level.id)
     setOutput('')
     setInteractiveEvents([])
-    setGameActions([])
-    setGameState(getInitialGameState(level))
+    setTowerActions([])
+    setTowerState(getInitialTowerState(level))
     setFriendlyError(null)
     setErrorHintLevel(1)
     setCheckResult(null)
@@ -878,8 +902,8 @@ def show_item(item):
     setLearningMode(nextMode)
     setOutput('')
     setInteractiveEvents([])
-    setGameActions([])
-    if (nextMode === 'games') setGameState(getInitialGameState(currentGame))
+    setTowerActions([])
+    if (nextMode === 'games') setTowerState(getInitialTowerState(currentTower))
     setFriendlyError(null)
     setErrorHintLevel(1)
     setCheckResult(null)
@@ -892,8 +916,8 @@ def show_item(item):
     runTokenRef.current = runToken
     setIsRunning(true)
     setInteractiveEvents([])
-    setGameActions([])
-    if (isGameMode) setGameState(getInitialGameState(currentGame))
+    setTowerActions([])
+    if (isTowerMode) setTowerState(getInitialTowerState(currentTower))
     setOutput(
       pythonLoadStatus === 'loading' || pythonLoadStatus === 'slow' || pythonLoadStatus === 'idle'
         ? 'Python 正在准备中，请稍等一下……加载完成后会继续运行当前代码。'
@@ -902,12 +926,12 @@ def show_item(item):
     setFriendlyError(null)
     setErrorHintLevel(1)
     setCheckResult(null)
-    if (isGameMode) {
-      setGameProgress((previous) => ({
+    if (isTowerMode) {
+      setTowerProgress((previous) => ({
         ...previous,
-        [currentGame.id]: {
-          ...previous[currentGame.id],
-          runCount: (previous[currentGame.id]?.runCount || 0) + 1,
+        [currentTower.id]: {
+          ...previous[currentTower.id],
+          runCount: (previous[currentTower.id]?.runCount || 0) + 1,
         },
       }))
     } else if (isProjectMode) {
@@ -930,8 +954,8 @@ def show_item(item):
     if (runTokenRef.current === runToken) {
       setOutput(result.output || '代码运行完成，没有输出。')
       setInteractiveEvents(result.interactiveEvents || [])
-      setGameActions(result.gameActions || [])
-      if (isGameMode) setGameState(applyGameActions(currentGame, result.gameActions || []))
+      setTowerActions(result.towerActions || [])
+      if (isTowerMode) setTowerState(applyTowerActions(currentTower, result.towerActions || []))
       setFriendlyError(result.friendlyError || null)
       setIsRunning(false)
     }
@@ -960,14 +984,14 @@ def show_item(item):
       .map(describeRule)
 
     if (failedRules.length === 0) {
-      if (isGameMode) {
-        setGameProgress((previous) => ({
+      if (isTowerMode) {
+        setTowerProgress((previous) => ({
           ...previous,
-          [currentGame.id]: {
-            ...previous[currentGame.id],
+          [currentTower.id]: {
+            ...previous[currentTower.id],
             completed: true,
-            completedAt: previous[currentGame.id]?.completedAt || new Date().toISOString(),
-            runCount: previous[currentGame.id]?.runCount || 1,
+            completedAt: previous[currentTower.id]?.completedAt || new Date().toISOString(),
+            runCount: previous[currentTower.id]?.runCount || 1,
           },
         }))
         setCheckResult({
@@ -1014,7 +1038,7 @@ def show_item(item):
         failedRules: [],
       })
     } else {
-      if (!isProjectMode) {
+      if (!isProjectMode && !isTowerMode) {
         setCheckPassedMap((previous) => ({
           ...previous,
           [currentLesson.id]: false,
@@ -1032,8 +1056,8 @@ def show_item(item):
 
   function goNextLesson() {
     if (!isCurrentCompleted) return
-    if (isGameMode) {
-      if (nextGame) selectGame(nextGame)
+    if (isTowerMode) {
+      if (nextTower) selectTower(nextTower)
       return
     }
     if (isProjectMode) {
@@ -1062,10 +1086,10 @@ def show_item(item):
 
         <div className="progress-card">
           <div className="progress-copy">
-            <span>{isGameMode ? '游戏进度' : (isProjectMode ? '项目进度' : '学习进度')}</span>
+            <span>{isTowerMode ? '勇者塔进度' : (isProjectMode ? '项目进度' : '学习进度')}</span>
             <strong>
-              {isGameMode
-                ? `已完成 ${completedGameCount} / ${gameLevels.length} 个关卡`
+              {isTowerMode
+                ? `已完成 ${completedTowerCount} / ${towerLevels.length} 层`
                 : (isProjectMode
                 ? `已完成 ${completedProjectCount} / ${projects.length} 个项目`
                 : `已完成 ${completedAvailableCount} / ${availableLessons.length} 关`)}
@@ -1073,13 +1097,13 @@ def show_item(item):
           </div>
           <div
             className="progress-track"
-            aria-label={isGameMode
-              ? `已完成 ${completedGameCount} / ${gameLevels.length} 个关卡`
+            aria-label={isTowerMode
+              ? `已完成 ${completedTowerCount} / ${towerLevels.length} 层`
               : (isProjectMode
               ? `已完成 ${completedProjectCount} / ${projects.length} 个项目`
               : `已完成 ${completedAvailableCount} / ${availableLessons.length} 关`)}
           >
-            <div style={{ width: `${isGameMode ? gameProgressPercent : (isProjectMode ? projectProgressPercent : progressPercent)}%` }} />
+            <div style={{ width: `${isTowerMode ? towerProgressPercent : (isProjectMode ? projectProgressPercent : progressPercent)}%` }} />
           </div>
         </div>
 
@@ -1105,8 +1129,8 @@ def show_item(item):
             onClick={() => switchLearningMode('games')}
             type="button"
           >
-            <strong>游戏闯关营</strong>
-            <span>用 Python 控制小农场画面</span>
+            <strong>Python 勇者塔</strong>
+            <span>用 Python 指挥勇者闯塔</span>
           </button>
         </div>
 
@@ -1114,7 +1138,7 @@ def show_item(item):
           <div className="study-title">学习记录</div>
           <dl>
             <div>
-              <dt>{isGameMode ? '当前游戏' : (isProjectMode ? '当前项目' : '当前关卡')}</dt>
+              <dt>{isTowerMode ? '当前楼层' : (isProjectMode ? '当前项目' : '当前关卡')}</dt>
               <dd>{activeItem.title}</dd>
             </div>
             <div>
@@ -1122,12 +1146,12 @@ def show_item(item):
               <dd>{totalRunCount}</dd>
             </div>
             <div>
-              <dt>{isGameMode ? '本游戏运行' : (isProjectMode ? '本项目运行' : '本关运行')}</dt>
+              <dt>{isTowerMode ? '本层运行' : (isProjectMode ? '本项目运行' : '本关运行')}</dt>
               <dd>{activeRunCount}</dd>
             </div>
             <div>
               <dt>徽章</dt>
-              <dd>{earnedBadges.length + completedProjectCount + completedGameCount} / {badgeDefinitions.length + projectBadgeDefinitions.length + gameBadgeDefinitions.length}</dd>
+              <dd>{earnedBadges.length + completedProjectCount + completedTowerCount} / {badgeDefinitions.length + projectBadgeDefinitions.length + towerBadgeDefinitions.length}</dd>
             </div>
             <div>
               <dt>最近学习</dt>
@@ -1155,10 +1179,10 @@ def show_item(item):
                 </span>
               )
             })}
-            {gameBadgeDefinitions.map((badge) => {
-              const earned = Boolean(gameProgress[badge.gameId]?.completed)
+            {towerBadgeDefinitions.map((badge) => {
+              const earned = Boolean(towerProgress[badge.towerId]?.completed)
               return (
-                <span className={earned ? 'badge earned game-badge' : 'badge game-badge'} key={badge.id}>
+                <span className={earned ? 'badge earned tower-badge' : 'badge tower-badge'} key={badge.id}>
                   {earned ? '✓ ' : ''}{badge.title}
                 </span>
               )
@@ -1207,14 +1231,14 @@ def show_item(item):
               </button>
             )
           })}
-          {learningMode === 'games' && gameLevels.map((level, index) => {
-            const isActive = level.id === currentGame.id
-            const isCompleted = Boolean(gameProgress[level.id]?.completed)
-            const className = ['lesson-item', 'game-item', isActive ? 'active' : ''].filter(Boolean).join(' ')
+          {learningMode === 'games' && towerLevels.map((level, index) => {
+            const isActive = level.id === currentTower.id
+            const isCompleted = Boolean(towerProgress[level.id]?.completed)
+            const className = ['lesson-item', 'tower-item', isActive ? 'active' : ''].filter(Boolean).join(' ')
 
             return (
-              <button className={className} key={level.id} onClick={() => selectGame(level)} type="button">
-                <span className="lesson-number">G{index + 1}</span>
+              <button className={className} key={level.id} onClick={() => selectTower(level)} type="button">
+                <span className="lesson-number">T{index + 1}</span>
                 <span className="lesson-title">
                   {level.title}
                   <small>{level.syntaxFocus}</small>
@@ -1228,82 +1252,130 @@ def show_item(item):
 
       <main className="task-panel">
         <section className="task-card">
-          {isGameMode ? (
+          {isTowerMode ? (
             <>
-              <p className="eyebrow">游戏闯关营 · 小农场第 {currentGameIndex + 1} 关 · {currentGame.syntaxFocus}</p>
-              <h2>{currentGame.title}</h2>
-              <p className="project-subtitle">{currentGame.scene}</p>
+              <p className="eyebrow">Python 勇者塔 · 第 {currentTower.floor || currentTowerIndex + 1} 层 · {currentTower.syntaxFocus}</p>
+              <h2>{currentTower.title}</h2>
+              <p className="project-subtitle">{currentTower.scene}</p>
 
-              <div className="game-stage-card">
-                <div className="game-hud">
-                  <span>⭐ {gameState.stars}</span>
-                  {gameState.score !== null && <span>分数：{gameState.score}</span>}
-                  {gameState.item && <span>物品：{gameState.item}</span>}
-                  <strong>{gameState.notice}</strong>
+              <div className="tower-stage-card">
+                <div className="tower-title-row">
+                  <div>
+                    <strong>第 {currentTower.floor || currentTowerIndex + 1} 层战斗</strong>
+                    <span>{towerState.notice}</span>
+                  </div>
+                  <div className="tower-reward-row">
+                    <span>金币 {towerState.hero.coins}</span>
+                    <span>星星 {towerState.hero.stars}</span>
+                  </div>
                 </div>
-                <div className="farm-grid" aria-label="Python 小农场画面">
-                  {Array.from({ length: 36 }, (_, index) => {
-                    const x = (index % 6) + 1
-                    const y = Math.floor(index / 6) + 1
-                    const obstacle = currentGame.obstacles?.find((item) => item.x === x && item.y === y)
-                    const isPlayer = gameState.player.x === x && gameState.player.y === y
-                    const isNpc = currentGame.npcPosition.x === x && currentGame.npcPosition.y === y
-                    const isGoal = x === 6 && y === 1
-                    return (
-                      <div className={obstacle ? 'farm-cell blocked' : 'farm-cell'} key={`${x}-${y}`}>
-                        {isPlayer && <span className="farm-player">🧒</span>}
-                        {isNpc && !isPlayer && <span>🧑‍🌾</span>}
-                        {obstacle?.type === 'tree' && <span>🌳</span>}
-                        {obstacle?.type === 'house' && <span>🏠</span>}
-                        {obstacle?.type === 'fence' && <span>🪵</span>}
-                        {isGoal && !isPlayer && !isNpc && !obstacle && <span>⭐</span>}
+
+                <div className="tower-battle-row" aria-label="Python 勇者塔战斗画面">
+                  <article className="tower-fighter-card hero">
+                    <span className="tower-avatar">🛡️</span>
+                    <div>
+                      <h3>{towerState.hero.name}</h3>
+                      <p>等级 {towerState.hero.level} · 攻击 {towerState.hero.attack}</p>
+                    </div>
+                    <div className="tower-hp-line">
+                      <span>HP {towerState.hero.hp} / {towerState.hero.maxHp}</span>
+                      <div className="tower-hp-track">
+                        <div
+                          className="tower-hp-fill hero"
+                          style={{ width: `${Math.max(0, Math.min(100, (towerState.hero.hp / towerState.hero.maxHp) * 100))}%` }}
+                        />
                       </div>
-                    )
-                  })}
+                    </div>
+                  </article>
+
+                  <div className="tower-vs">VS</div>
+
+                  <article className="tower-fighter-card monster">
+                    <span className="tower-avatar">{towerState.monster.emoji || '👾'}</span>
+                    <div>
+                      <h3>{towerState.monster.name}</h3>
+                      <p>攻击 {towerState.monster.attack}</p>
+                    </div>
+                    <div className="tower-hp-line">
+                      <span>HP {towerState.monster.hp} / {towerState.monster.maxHp}</span>
+                      <div className="tower-hp-track">
+                        <div
+                          className="tower-hp-fill monster"
+                          style={{ width: `${Math.max(0, Math.min(100, (towerState.monster.hp / towerState.monster.maxHp) * 100))}%` }}
+                        />
+                      </div>
+                    </div>
+                  </article>
                 </div>
-                {gameState.speech && <div className="game-speech">🧒：{gameState.speech}</div>}
+
+                {towerState.speech && <div className="tower-speech">勇者说：{towerState.speech}</div>}
+
+                <div className="tower-log">
+                  <div className="tower-log-title">
+                    <strong>战斗日志</strong>
+                    {towerState.score !== null && <span>分数：{towerState.score}</span>}
+                    {towerState.item && <span>物品：{towerState.item}</span>}
+                  </div>
+                  <ol>
+                    {towerState.logs.slice(-8).map((log, index) => (
+                      <li key={`${log}-${index}`}>{log}</li>
+                    ))}
+                  </ol>
+                </div>
               </div>
 
               <div className="task-section task-goal-section">
-                <h3>游戏任务</h3>
-                <p>{currentGame.goal}</p>
+                <h3>闯塔目标</h3>
+                <p>{currentTower.goal}</p>
               </div>
 
               <div className="learning-section project-steps-section">
                 <h3>真正学习的 Python 本领</h3>
-                <p>{currentGame.explain}</p>
+                <p>{currentTower.explain}</p>
               </div>
 
               <div className="learning-section practice-section">
-                <h3>任务要求</h3>
+                <h3>本层任务</h3>
                 <ol>
-                  {currentGame.tasks.map((task) => (
+                  {currentTower.tasks.map((task) => (
                     <li key={task}>{task}</li>
                   ))}
                 </ol>
               </div>
 
-              <div className="learning-section">
+              <div className="task-section task-modify-section">
                 <h3>改一改任务</h3>
                 <ul>
-                  {currentGame.modifyTask.map((task) => (
+                  {currentTower.modifyTask.map((task) => (
                     <li key={task}>{task}</li>
                   ))}
                 </ul>
               </div>
 
+              {tempChallenge && (
+                <div className="temp-challenge-card">
+                  <div>
+                    <h3>我的临时挑战</h3>
+                    <button className="text-button" onClick={clearTempChallenge} type="button">
+                      清除
+                    </button>
+                  </div>
+                  <p>{tempChallenge}</p>
+                </div>
+              )}
+
               <div className="interactive-preview">
-                <h3>游戏函数只负责画面反馈</h3>
+                <h3>勇者塔动作函数</h3>
                 <p>
-                  可以用 move("right")、say("你好")、star()、show_score(score)、show_item("苹果") 控制画面。
-                  真正要练的是字符串、变量、if、for、list 和 def。
+                  可以用 say("台词")、attack()、heal()、gain_coin(1)、star()、show_score(score)、show_damage(damage)、show_status() 控制战斗反馈。
+                  这些函数负责画面变化，真正要练的是本层的 Python 语法。
                 </p>
               </div>
 
               <div className="learning-section">
-                <h3>家长提问</h3>
+                <h3>讲给爸爸妈妈听</h3>
                 <ul>
-                  {currentGame.parentQuestions.map((question) => (
+                  {currentTower.parentQuestions.map((question) => (
                     <li key={question}>{question}</li>
                   ))}
                 </ul>
@@ -1311,7 +1383,7 @@ def show_item(item):
 
               <div className="hint-box">
                 <span>提示</span>
-                <p>{currentGame.hint}</p>
+                <p>{currentTower.hint}</p>
               </div>
             </>
           ) : isProjectMode ? (
@@ -1549,9 +1621,9 @@ def show_item(item):
               className="next-button"
               onClick={goNextLesson}
               type="button"
-              disabled={!isCurrentCompleted || (isGameMode ? !nextGame : (isProjectMode ? !nextProject : !nextLesson))}
+              disabled={!isCurrentCompleted || (isTowerMode ? !nextTower : (isProjectMode ? !nextProject : !nextLesson))}
             >
-              {isGameMode ? '下一游戏' : (isProjectMode ? '下一项目' : '下一关')}
+              {isTowerMode ? '下一层' : (isProjectMode ? '下一项目' : '下一关')}
             </button>
           </div>
         </div>

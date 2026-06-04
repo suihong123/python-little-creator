@@ -87,20 +87,20 @@ function buildSystemPrompt(type, mode) {
   if (type === AI_TYPES.parentReview) {
     typeRules.push('这次任务是生成家长复盘问题。请给家长 3 个短问题和一个观察孩子是否理解的方法。')
   }
-  typeRules.push('如果当前是游戏闯关营，不要建议 go_to_npc、check_answer、auto_play、finish_level 这类自动完成函数。强调游戏函数只是画面反馈，真正重点是本关 Python 语法。')
+  typeRules.push('如果当前是 Python 勇者塔，不要建议 auto_fight、auto_win、next_floor、finish_level 这类自动完成函数。强调勇者塔动作函数只是画面反馈，真正重点是本层 Python 语法。')
 
   return [...sharedRules, ...modeRules, ...typeRules].join('\n')
 }
 
 function buildLessonSummary(lesson) {
-  if (lesson.type === 'game') {
+  if (lesson.type === 'tower') {
     return [
-      '当前模块：游戏闯关营',
-      `当前游戏关卡：${lesson.title}`,
+      '当前模块：Python 勇者塔',
+      `当前楼层：第 ${lesson.floor || ''} 层 ${lesson.title}`,
       `真正学习的 Python 本领：${lesson.syntaxFocus || lesson.skill}`,
-      '游戏函数只是画面反馈，不是本关重点。',
-      `游戏任务：${lesson.goal || '无'}`,
-      `关卡场景：${lesson.scene || '无'}`,
+      '动作函数 say、attack、heal、gain_coin、star、show_score、show_damage、show_status 只是画面反馈，不是本层重点。',
+      `闯塔目标：${lesson.goal || '无'}`,
+      `楼层场景：${lesson.scene || '无'}`,
       `任务要求：${lesson.tasks?.join('；') || '无'}`,
     ].join('\n')
   }
