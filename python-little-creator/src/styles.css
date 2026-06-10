@@ -87,6 +87,13 @@ button {
   color: #637083;
 }
 
+.progress-stage-line {
+  margin: -3px 0 9px;
+  color: #174ea6;
+  font-size: 12px;
+  font-weight: 900;
+}
+
 .progress-track {
   width: 100%;
   height: 8px;
@@ -105,7 +112,7 @@ button {
 .camp-switch {
   display: grid;
   gap: 8px;
-  margin-bottom: 14px;
+  margin-bottom: 10px;
 }
 
 .camp-switch button {
@@ -143,11 +150,30 @@ button {
 
 .study-card,
 .badge-card {
-  margin-bottom: 14px;
+  margin-bottom: 0;
   padding: 14px;
   border: 1px solid #dce2ea;
   border-radius: 8px;
   background: #ffffff;
+}
+
+.sidebar-details {
+  margin-bottom: 10px;
+  border: 1px solid #dce2ea;
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.sidebar-details > summary {
+  padding: 11px 12px;
+  color: #344054;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.sidebar-details[open] > summary {
+  border-bottom: 1px solid #dce2ea;
 }
 
 .study-title {
@@ -193,11 +219,11 @@ button {
 .learning-map-card {
   display: grid;
   gap: 12px;
-  margin-bottom: 14px;
-  padding: 14px;
-  border: 1px solid #bfdbfe;
-  border-radius: 8px;
-  background: #eff6ff;
+  margin-bottom: 0;
+  padding: 12px;
+  border: 0;
+  border-radius: 0 0 8px 8px;
+  background: #f8fafc;
 }
 
 .learning-map-header {
@@ -454,10 +480,29 @@ button {
 }
 
 .task-card h2 {
-  margin: 0 0 28px;
+  margin: 0 0 16px;
   font-size: 34px;
   line-height: 1.15;
   letter-spacing: 0;
+}
+
+.lesson-flow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 18px;
+}
+
+.lesson-flow span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 4px 9px;
+  border-radius: 999px;
+  background: #eef2f6;
+  color: #344054;
+  font-size: 12px;
+  font-weight: 900;
 }
 
 .project-subtitle {
@@ -684,7 +729,9 @@ button {
 
 .task-goal-section,
 .task-modify-section,
-.task-challenge-section {
+.task-challenge-section,
+.task-follow-section,
+.task-check-section {
   padding: 14px 16px;
   border: 1px solid transparent;
   border-left-width: 5px;
@@ -703,7 +750,19 @@ button {
   background: #f0fdf4;
 }
 
+.task-follow-section {
+  border-color: #dce2ea;
+  border-left-color: #64748b;
+  background: #f8fafc;
+}
+
 .task-challenge-section {
+  border-color: #fed7aa;
+  border-left-color: #f97316;
+  background: #fff7ed;
+}
+
+.task-check-section {
   border-color: #fed7aa;
   border-left-color: #f97316;
   background: #fff7ed;
@@ -721,6 +780,18 @@ button {
   color: #c2410c;
 }
 
+.task-check-section h3 {
+  color: #c2410c;
+}
+
+.task-check-section span {
+  display: inline-flex;
+  margin-top: 8px;
+  color: #9a3412;
+  font-size: 13px;
+  font-weight: 900;
+}
+
 .task-section h3 {
   margin: 0 0 8px;
   font-size: 16px;
@@ -730,6 +801,44 @@ button {
   margin: 0;
   color: #3f4958;
   line-height: 1.8;
+}
+
+.lesson-fold {
+  margin: 10px 0;
+  border: 1px solid #dce2ea;
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.lesson-fold > summary {
+  padding: 12px 14px;
+  color: #344054;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.lesson-fold[open] > summary {
+  border-bottom: 1px solid #dce2ea;
+}
+
+.lesson-fold > p,
+.lesson-fold > ul,
+.lesson-fold > ol,
+.lesson-fold > .mistake-list {
+  margin: 0;
+  padding: 14px;
+}
+
+.lesson-fold > ul,
+.lesson-fold > ol {
+  padding-left: 34px;
+}
+
+.lesson-fold p,
+.lesson-fold li {
+  color: #3f4958;
+  line-height: 1.75;
 }
 
 .hint-box {
@@ -916,7 +1025,7 @@ button {
 
 .workspace {
   display: grid;
-  grid-template-rows: auto minmax(340px, 1fr) minmax(230px, 0.46fr);
+  grid-template-rows: auto minmax(260px, 55fr) minmax(210px, 45fr);
   min-width: 0;
   max-height: 100vh;
   background: #111827;
@@ -926,8 +1035,8 @@ button {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
-  padding: 16px;
+  gap: 12px;
+  padding: 12px 14px;
   background: #ffffff;
   border-left: 1px solid #dce2ea;
   border-bottom: 1px solid #dce2ea;
@@ -946,12 +1055,12 @@ button {
 
 .python-status-card {
   display: grid;
-  grid-template-columns: minmax(180px, 1fr) 96px auto;
+  grid-template-columns: minmax(170px, 1fr) 80px auto;
   align-items: center;
   gap: 10px;
-  min-width: 330px;
-  max-width: 520px;
-  padding: 10px 12px;
+  min-width: 300px;
+  max-width: 480px;
+  padding: 8px 10px;
   border: 1px solid #dce2ea;
   border-radius: 8px;
   background: #f8fafc;
@@ -1052,7 +1161,7 @@ button {
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-end;
-  gap: 10px;
+  gap: 8px;
 }
 
 .actions button {
@@ -1065,18 +1174,38 @@ button {
   font-weight: 800;
 }
 
+.actions .run-button {
+  min-height: 46px;
+  padding: 0 22px;
+  background: #276ef1;
+  font-size: 15px;
+  font-weight: 950;
+}
+
 .actions button:disabled {
   cursor: not-allowed;
   opacity: 0.55;
 }
 
-.actions .secondary {
+.actions .check-button {
   background: #eef2f6;
   color: #2f3a4a;
 }
 
+.actions .reset-button {
+  min-height: 36px;
+  padding: 0 10px;
+  background: transparent;
+  color: #64748b;
+}
+
 .actions .next-button {
   background: #16a34a;
+}
+
+.actions .next-button:disabled {
+  background: #eef2f6;
+  color: #94a3b8;
 }
 
 .editor-wrap {
@@ -1086,7 +1215,7 @@ button {
 
 .result-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
   min-height: 0;
   border-top: 1px solid #293244;
   background: #0b1220;
@@ -1420,6 +1549,18 @@ button {
   background: #101827;
 }
 
+.ai-main-summary {
+  padding: 12px 14px;
+  color: #93c5fd;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.ai-assistant-panel[open] .ai-main-summary {
+  border-bottom: 1px solid #293244;
+}
+
 .ai-content {
   display: grid;
   gap: 10px;
@@ -1537,7 +1678,7 @@ button {
 
 .ai-actions-panel {
   align-items: center;
-  grid-template-columns: minmax(180px, 0.45fr) minmax(360px, 1fr);
+  grid-template-columns: minmax(180px, 0.45fr) minmax(260px, 1fr);
 }
 
 .ai-action-buttons {

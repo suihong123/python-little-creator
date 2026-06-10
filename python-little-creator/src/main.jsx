@@ -328,7 +328,7 @@ function App() {
   const [isChecking, setIsChecking] = useState(false)
   const [pythonLoadStatus, setPythonLoadStatus] = useState('idle')
   const [pythonLoadProgress, setPythonLoadProgress] = useState(0)
-  const [pythonLoadMessage, setPythonLoadMessage] = useState('Python 未准备')
+  const [pythonLoadMessage, setPythonLoadMessage] = useState('Python 小助手正在准备中……')
   const [savedApiKey, setSavedApiKey] = useState(() => localStorage.getItem(DEEPSEEK_API_KEY_STORAGE_KEY) || '')
   const [apiKeyInput, setApiKeyInput] = useState('')
   const [deepSeekBaseUrl, setDeepSeekBaseUrl] = useState(() => (
@@ -464,26 +464,26 @@ function App() {
     clearPythonLoadTimers()
     setPythonLoadStatus('loading')
     setPythonLoadProgress(15)
-    setPythonLoadMessage('正在连接 Python 运行环境……')
+    setPythonLoadMessage('Python 小助手正在准备中……')
 
     pythonLoadTimersRef.current = [
       window.setTimeout(() => {
         setPythonLoadProgress(35)
-        setPythonLoadMessage('正在下载运行文件，第一次可能会久一点……')
+        setPythonLoadMessage('第一次打开可能会慢一点。')
       }, 2000),
       window.setTimeout(() => {
         setPythonLoadProgress(65)
-        setPythonLoadMessage('正在初始化 Python……')
+        setPythonLoadMessage('准备好后就能运行代码啦。')
       }, 6000),
       window.setTimeout(() => {
         setPythonLoadStatus('slow')
         setPythonLoadProgress(90)
-        setPythonLoadMessage('Python 加载较慢，可能是网络访问运行环境较慢。第一次加载会久一点，后面浏览器缓存后通常会更快。')
+        setPythonLoadMessage('Python 小助手还在准备中，第一次会久一点。')
       }, 12000),
       window.setTimeout(() => {
         setPythonLoadStatus('slow')
         setPythonLoadProgress(90)
-        setPythonLoadMessage('Python 加载时间较长。可以继续等待，或之后考虑把 Pyodide 放到本地 public/pyodide/ 目录。')
+        setPythonLoadMessage('还在准备中，可以先看看今天目标。')
       }, 45000),
     ]
   }
@@ -492,7 +492,7 @@ function App() {
     if (pyodideRef.current) {
       setPythonLoadStatus('ready')
       setPythonLoadProgress(100)
-      setPythonLoadMessage('Python 已准备好，可以运行代码啦')
+      setPythonLoadMessage('Python 小助手准备完成')
       return pyodideRef.current
     }
 
@@ -512,7 +512,7 @@ function App() {
         clearPythonLoadTimers()
         setPythonLoadStatus('ready')
         setPythonLoadProgress(100)
-        setPythonLoadMessage('Python 已准备好，可以运行代码啦')
+        setPythonLoadMessage('Python 小助手准备完成')
         return pyodide
       })
       .catch((error) => {
@@ -1141,15 +1141,18 @@ def show_status():
 
         <div className="progress-card">
           <div className="progress-copy">
-            <span>{isTowerMode ? '勇者塔进度' : (isProjectMode ? '项目进度' : '学习进度')}</span>
+            <span>当前进度</span>
             <strong>
               {isTowerMode
                 ? `已完成 ${completedTowerCount} / ${towerLevels.length} 层`
                 : (isProjectMode
                 ? `已完成 ${completedProjectCount} / ${projects.length} 个项目`
-                : `已完成 ${completedAvailableCount} / ${availableLessons.length} 关`)}
+                : `第 ${currentLessonNumber} / ${availableLessons.length} 课`)}
             </strong>
           </div>
+          {!isProjectMode && !isTowerMode && (
+            <div className="progress-stage-line">阶段：第 {currentStage.id} 阶段</div>
+          )}
           <div
             className="progress-track"
             aria-label={isTowerMode
@@ -1189,86 +1192,91 @@ def show_status():
           </button>
         </div>
 
-        <section className="study-card" aria-label="学习记录">
-          <div className="study-title">学习记录</div>
-          <dl>
-            <div>
-              <dt>{isTowerMode ? '当前楼层' : (isProjectMode ? '当前项目' : '当前关卡')}</dt>
-              <dd>{activeItem.title}</dd>
+        <details className="sidebar-details">
+          <summary>学习地图</summary>
+          <section className="learning-map-card" aria-label="学习地图">
+            <div className="learning-map-header">
+              <span>学习地图</span>
+              <strong>
+                {isTowerMode ? 'Python 勇者塔' : (isProjectMode ? '项目创造营' : `第 ${currentStage.id} 阶段`)}
+              </strong>
             </div>
-            <div>
-              <dt>总运行次数</dt>
-              <dd>{totalRunCount}</dd>
-            </div>
-            <div>
-              <dt>{isTowerMode ? '本层运行' : (isProjectMode ? '本项目运行' : '本关运行')}</dt>
-              <dd>{activeRunCount}</dd>
-            </div>
-            <div>
-              <dt>{isTowerMode ? '当前目标' : (isProjectMode ? '当前目标' : '当前阶段')}</dt>
-              <dd>{isTowerMode ? '闯塔练习' : (isProjectMode ? '做小作品' : `第 ${currentStage.id} 阶段`)}</dd>
-            </div>
-            <div>
-              <dt>最近学习</dt>
-              <dd>{formatStudyTime(lastStudyAt)}</dd>
-            </div>
-          </dl>
-        </section>
 
-        <section className="learning-map-card" aria-label="学习地图">
-          <div className="learning-map-header">
-            <span>学习地图</span>
-            <strong>
-              {isTowerMode ? 'Python 勇者塔' : (isProjectMode ? '项目创造营' : `第 ${currentStage.id} 阶段`)}
-            </strong>
-          </div>
+            {isTowerMode ? (
+              <div className="learning-map-body">
+                <h2>Python 勇者塔目标</h2>
+                <p>用 Python 语法控制勇者打怪、回血、得金币和闯关。</p>
+                <div className="map-can-do">
+                  <span>能练</span>
+                  <p>变量、if、for、list、dict、def、return、random。</p>
+                </div>
+              </div>
+            ) : isProjectMode ? (
+              <div className="learning-map-body">
+                <h2>项目创造营目标</h2>
+                <p>把学过的 Python 本领用起来，做自己的小工具和小作品。</p>
+                <div className="map-can-do">
+                  <span>能做</span>
+                  <p>自我介绍机器人、背单词小助手、任务打卡系统、问答闯关游戏。</p>
+                </div>
+              </div>
+            ) : (
+              <div className="learning-map-body">
+                <div className="map-progress-row">
+                  <span>当前进度：第 {currentLessonNumber} / {availableLessons.length} 课</span>
+                  <span>阶段进度：{stageCurrent} / {stageTotal}</span>
+                </div>
+                <div className="map-progress-track" aria-label={`第 ${currentStage.id} 阶段已完成 ${stageCompletedCount} / ${stageTotal}`}>
+                  <div style={{ width: `${stageProgressPercent}%` }} />
+                </div>
 
-          {isTowerMode ? (
-            <div className="learning-map-body">
-              <h2>Python 勇者塔目标</h2>
-              <p>用 Python 语法控制勇者打怪、回血、得金币和闯关。</p>
-              <div className="map-can-do">
-                <span>能练</span>
-                <p>变量、if、for、list、dict、def、return、random。</p>
-              </div>
-            </div>
-          ) : isProjectMode ? (
-            <div className="learning-map-body">
-              <h2>项目创造营目标</h2>
-              <p>把学过的 Python 本领用起来，做自己的小工具和小作品。</p>
-              <div className="map-can-do">
-                <span>能做</span>
-                <p>自我介绍机器人、背单词小助手、任务打卡系统、问答闯关游戏。</p>
-              </div>
-            </div>
-          ) : (
-            <div className="learning-map-body">
-              <div className="map-progress-row">
-                <span>当前进度：第 {currentLessonNumber} / {availableLessons.length} 课</span>
-                <span>阶段进度：{stageCurrent} / {stageTotal}</span>
-              </div>
-              <div className="map-progress-track" aria-label={`第 ${currentStage.id} 阶段已完成 ${stageCompletedCount} / ${stageTotal}`}>
-                <div style={{ width: `${stageProgressPercent}%` }} />
-              </div>
+                <h2>{currentStage.title}</h2>
+                <p>{currentStage.goal}</p>
+                <div className="map-can-do">
+                  <span>学完这段能做</span>
+                  <p>{currentStage.canDo.join('、')}。</p>
+                </div>
 
-              <h2>{currentStage.title}</h2>
-              <p>{currentStage.goal}</p>
-              <div className="map-can-do">
-                <span>学完这段能做</span>
-                <p>{currentStage.canDo.join('、')}。</p>
+                <details className="map-final-goals">
+                  <summary>学完 60 课你能做到什么</summary>
+                  <ol>
+                    {finalLearningGoals.map((goal) => (
+                      <li key={goal}>{goal}</li>
+                    ))}
+                  </ol>
+                </details>
               </div>
+            )}
+          </section>
+        </details>
 
-              <details className="map-final-goals">
-                <summary>学完 60 课你能做到什么</summary>
-                <ol>
-                  {finalLearningGoals.map((goal) => (
-                    <li key={goal}>{goal}</li>
-                  ))}
-                </ol>
-              </details>
-            </div>
-          )}
-        </section>
+        <details className="sidebar-details">
+          <summary>学习记录</summary>
+          <section className="study-card" aria-label="学习记录">
+            <dl>
+              <div>
+                <dt>{isTowerMode ? '当前楼层' : (isProjectMode ? '当前项目' : '当前关卡')}</dt>
+                <dd>{activeItem.title}</dd>
+              </div>
+              <div>
+                <dt>总运行次数</dt>
+                <dd>{totalRunCount}</dd>
+              </div>
+              <div>
+                <dt>{isTowerMode ? '本层运行' : (isProjectMode ? '本项目运行' : '本关运行')}</dt>
+                <dd>{activeRunCount}</dd>
+              </div>
+              <div>
+                <dt>{isTowerMode ? '当前目标' : (isProjectMode ? '当前目标' : '当前阶段')}</dt>
+                <dd>{isTowerMode ? '闯塔练习' : (isProjectMode ? '做小作品' : `第 ${currentStage.id} 阶段`)}</dd>
+              </div>
+              <div>
+                <dt>最近学习</dt>
+                <dd>{formatStudyTime(lastStudyAt)}</dd>
+              </div>
+            </dl>
+          </section>
+        </details>
 
         {lessonNotice && <div className="lesson-notice">{lessonNotice}</div>}
 
@@ -1566,18 +1574,19 @@ def show_status():
               <p className="eyebrow">第 {currentLessonIndex + 1} 关 · {currentLesson.concept}</p>
               <h2>{currentLesson.title}</h2>
 
+              <div className="lesson-flow" aria-label="本课学习步骤">
+                {['阅读目标', '修改代码', '点击运行', '完成挑战', '检查任务'].map((step, index) => (
+                  <span key={step}>{index + 1}. {step}</span>
+                ))}
+              </div>
+
               <div className="task-section task-goal-section">
                 <h3>今天目标</h3>
                 <p>{currentLesson.goal}</p>
               </div>
 
-              <div className="task-section">
-                <h3>故事引入</h3>
-                <p>{currentLesson.story}</p>
-              </div>
-
-              <div className="task-section">
-                <h3>简单讲解</h3>
+              <div className="task-section task-follow-section">
+                <h3>跟着做</h3>
                 <p>{currentLesson.explanation}</p>
               </div>
 
@@ -1586,9 +1595,10 @@ def show_status():
                 <p>{currentLesson.modifyTask}</p>
               </div>
 
-              <div className="task-section task-challenge-section">
-                <h3>挑战任务</h3>
+              <div className="task-section task-check-section">
+                <h3>检查任务</h3>
                 <p>{currentLesson.challengeTask}</p>
+                <span>完成后，去右侧点击“检查任务”。</span>
               </div>
 
               {tempChallenge && (
@@ -1603,43 +1613,46 @@ def show_status():
                 </div>
               )}
 
-              <div className="hint-box">
-                <span>提示</span>
-                <p>{currentLesson.hint}</p>
-              </div>
+              {currentLesson.story && (
+                <details className="lesson-fold">
+                  <summary>故事引入</summary>
+                  <p>{currentLesson.story}</p>
+                </details>
+              )}
 
               {currentLesson.keyPoints?.length > 0 && (
-                <div className="learning-section">
-                  <h3>本关重点</h3>
+                <details className="lesson-fold">
+                  <summary>本关重点</summary>
                   <ul>
                     {currentLesson.keyPoints.map((point) => (
                       <li key={point}>{point}</li>
                     ))}
                   </ul>
-                </div>
+                </details>
               )}
 
-              {currentLesson.observeQuestion && (
-                <div className="learning-section compact">
-                  <h3>观察一下</h3>
-                  <p>{currentLesson.observeQuestion}</p>
-                </div>
+              {currentLesson.hint && (
+                <details className="lesson-fold">
+                  <summary>提示</summary>
+                  <p>{currentLesson.hint}</p>
+                </details>
               )}
 
               {currentLesson.practiceTasks?.length > 0 && (
-                <div className="learning-section practice-section">
-                  <h3>多练几次</h3>
+                <details className="lesson-fold">
+                  <summary>多练几次</summary>
                   <ol>
                     {currentLesson.practiceTasks.map((task) => (
                       <li key={task}>{task}</li>
                     ))}
                   </ol>
-                </div>
+                  {currentLesson.observeQuestion && <p>{currentLesson.observeQuestion}</p>}
+                </details>
               )}
 
               {currentLesson.commonMistakes?.length > 0 && (
-                <div className="learning-section">
-                  <h3>常见小错误</h3>
+                <details className="lesson-fold">
+                  <summary>常见错误</summary>
                   <div className="mistake-list">
                     {currentLesson.commonMistakes.map((mistake) => (
                       <article className="mistake-item" key={mistake.wrongCode}>
@@ -1649,14 +1662,22 @@ def show_status():
                       </article>
                     ))}
                   </div>
-                </div>
+                </details>
               )}
 
-              {currentLesson.reviewQuestion && (
-                <div className="learning-section compact">
-                  <h3>复习问题</h3>
-                  <p>{currentLesson.reviewQuestion}</p>
-                </div>
+              {(currentLesson.reviewQuestion || currentLesson.reviewQuestions?.length > 0 || currentLesson.explainToParent) && (
+                <details className="lesson-fold">
+                  <summary>讲给爸爸妈妈听</summary>
+                  {currentLesson.explainToParent && <p>{currentLesson.explainToParent}</p>}
+                  {currentLesson.reviewQuestion && <p>{currentLesson.reviewQuestion}</p>}
+                  {currentLesson.reviewQuestions?.length > 0 && (
+                    <ul>
+                      {currentLesson.reviewQuestions.map((question) => (
+                        <li key={question}>{question}</li>
+                      ))}
+                    </ul>
+                  )}
+                </details>
               )}
             </>
           )}
@@ -1671,7 +1692,7 @@ def show_status():
           </div>
           <div className={`python-status-card ${pythonLoadStatus}`}>
             <div className="python-status-copy">
-              <strong>Python 状态</strong>
+              <strong>Python 小助手</strong>
               <span>
                 {pythonLoadMessage}
                 {pythonLoadStatus === 'ready' ? ' ✅' : ''}
@@ -1680,7 +1701,7 @@ def show_status():
             <div className="python-progress-track" aria-label={`Python 加载进度 ${pythonLoadProgress}%`}>
               <div style={{ width: `${pythonLoadProgress}%` }} />
             </div>
-            <em>{pythonLoadProgress}%</em>
+            <em>{pythonLoadStatus === 'ready' ? '准备完成' : '准备中'}</em>
             {pythonLoadStatus === 'error' && (
               <button className="python-retry-button" onClick={() => getPyodide()} type="button">
                 重新加载 Python
@@ -1688,13 +1709,13 @@ def show_status():
             )}
           </div>
           <div className="actions">
-            <button className="secondary" onClick={resetCode} type="button">
+            <button className="reset-button" onClick={resetCode} type="button">
               重置代码
             </button>
-            <button className="secondary" onClick={checkTask} type="button" disabled={isRunning || isChecking}>
+            <button className="check-button" onClick={checkTask} type="button" disabled={isRunning || isChecking}>
               {isChecking ? '检查中...' : '检查任务'}
             </button>
-            <button onClick={runCode} type="button" disabled={isRunning || isChecking}>
+            <button className="run-button" onClick={runCode} type="button" disabled={isRunning || isChecking}>
               {isRunning ? '运行中...' : '运行代码'}
             </button>
             <button
@@ -1826,13 +1847,13 @@ def show_status():
             )}
           </div>
 
-          <div className="ai-assistant-panel">
-            <div className="panel-title">家庭版 AI 助教</div>
+          <details className="ai-assistant-panel" open={Boolean(aiThinkingRequest || aiPanel)}>
+            <summary className="ai-main-summary">AI 小老师</summary>
             <div className="ai-content">
               <section className="ai-actions-panel">
                 <div className="ai-action-copy">
-                  <strong>AI 助教提示</strong>
-                  <span>先自己想，再让 AI 给一点提示。</span>
+                  <strong>需要时再打开</strong>
+                  <span>先自己试一试，再请 AI 给一点提示。</span>
                 </div>
                 <div className="ai-action-buttons">
                   <button
@@ -1840,16 +1861,16 @@ def show_status():
                     type="button"
                     disabled={isAiLoading || !friendlyError}
                   >
-                    AI 帮我看看错误
+                    帮我看看错误
                   </button>
                   <button onClick={() => openAiRequest(AI_TYPES.explain)} type="button" disabled={isAiLoading}>
-                    AI 讲讲这段代码
+                    给我一点提示
                   </button>
                   <button onClick={() => openAiRequest(AI_TYPES.challenge)} type="button" disabled={isAiLoading}>
-                    AI 给我一个小挑战
+                    给我一个挑战
                   </button>
                   <button onClick={() => openAiRequest(AI_TYPES.parentReview)} type="button" disabled={isAiLoading}>
-                    AI 生成家长复盘问题
+                    给家长的问题
                   </button>
                 </div>
               </section>
@@ -1997,7 +2018,7 @@ def show_status():
                 </section>
               )}
             </div>
-          </div>
+          </details>
         </div>
       </section>
     </div>
