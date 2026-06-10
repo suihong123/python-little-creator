@@ -75,6 +75,48 @@ const towerBadgeDefinitions = [
   { id: 'tower-random', title: '宝箱探险家', towerId: 'tower-12' },
 ]
 
+const learningStages = [
+  {
+    id: 1,
+    range: [1, 12],
+    title: '我会让电脑听我说话',
+    goal: '学会输出、变量、输入、判断、循环和简单计分。',
+    canDo: ['自我介绍机器人', '夸夸机器人', '简单问答游戏'],
+  },
+  {
+    id: 2,
+    range: [13, 24],
+    title: '我会做生活小工具',
+    goal: '学会列表、字典、函数和简单菜单。',
+    canDo: ['任务打卡系统', '菜单小助手', '简单记账本'],
+  },
+  {
+    id: 3,
+    range: [25, 36],
+    title: '我会做自己的小作品',
+    goal: '学会字符串处理、找 Bug、random 和综合应用。',
+    canDo: ['故事生成器', '问卷机', '学习计划表', 'Python 小助手'],
+  },
+  {
+    id: 4,
+    range: [37, 60],
+    title: '我能写更完整的小程序',
+    goal: '学会 len、strip、lower、in、列表进阶、字典进阶、函数参数、return、while、break。',
+    canDo: ['背单词机', '猜数字游戏', '勇者塔战斗逻辑', '积分系统'],
+  },
+]
+
+const finalLearningGoals = [
+  '看懂简单 Python 程序',
+  '自己写输入、判断和循环',
+  '用列表和字典保存资料',
+  '用函数整理重复代码',
+  '做一个简单小游戏',
+  '做一个背单词小助手',
+  '做一个任务打卡系统',
+  '做一个简单的勇者战斗程序',
+]
+
 function readStorage(key) {
   try {
     return JSON.parse(localStorage.getItem(key)) || {}
@@ -324,6 +366,19 @@ function App() {
   const currentLessonIndex = availableLessons.findIndex((lesson) => lesson.id === currentLesson.id)
   const currentProjectIndex = projects.findIndex((project) => project.id === currentProject.id)
   const currentTowerIndex = towerLevels.findIndex((level) => level.id === currentTower.id)
+  const currentLessonNumber = Math.max(1, currentLessonIndex + 1)
+  const currentStage = learningStages.find(
+    (stage) => currentLessonNumber >= stage.range[0] && currentLessonNumber <= stage.range[1],
+  ) || learningStages[0]
+  const stageTotal = currentStage.range[1] - currentStage.range[0] + 1
+  const stageCurrent = Math.min(stageTotal, Math.max(1, currentLessonNumber - currentStage.range[0] + 1))
+  const stageCompletedCount = availableLessons.filter((lesson, index) => {
+    const lessonNumber = index + 1
+    return lessonNumber >= currentStage.range[0]
+      && lessonNumber <= currentStage.range[1]
+      && completedLessons.includes(lesson.id)
+  }).length
+  const stageProgressPercent = Math.round((stageCompletedCount / stageTotal) * 100)
   const nextLesson = availableLessons[currentLessonIndex + 1]
   const nextProject = projects[currentProjectIndex + 1]
   const nextTower = towerLevels[currentTowerIndex + 1]
@@ -1114,7 +1169,7 @@ def show_status():
             type="button"
           >
             <strong>基础训练营</strong>
-            <span>第 1-36 关：学习 Python 本领</span>
+            <span>第 1-60 课：学习 Python 本领</span>
           </button>
           <button
             className={learningMode === 'projects' ? 'active' : ''}
@@ -1150,8 +1205,8 @@ def show_status():
               <dd>{activeRunCount}</dd>
             </div>
             <div>
-              <dt>徽章</dt>
-              <dd>{earnedBadges.length + completedProjectCount + completedTowerCount} / {badgeDefinitions.length + projectBadgeDefinitions.length + towerBadgeDefinitions.length}</dd>
+              <dt>{isTowerMode ? '当前目标' : (isProjectMode ? '当前目标' : '当前阶段')}</dt>
+              <dd>{isTowerMode ? '闯塔练习' : (isProjectMode ? '做小作品' : `第 ${currentStage.id} 阶段`)}</dd>
             </div>
             <div>
               <dt>最近学习</dt>
@@ -1160,34 +1215,59 @@ def show_status():
           </dl>
         </section>
 
-        <section className="badge-card" aria-label="已获得徽章">
-          <div className="study-title">我的徽章</div>
-          <div className="badge-list">
-            {badgeDefinitions.map((badge) => {
-              const earned = earnedBadges.includes(badge.id)
-              return (
-                <span className={earned ? 'badge earned' : 'badge'} key={badge.id}>
-                  {earned ? '✓ ' : ''}{badge.title}
-                </span>
-              )
-            })}
-            {projectBadgeDefinitions.map((badge) => {
-              const earned = Boolean(projectProgress[badge.projectId]?.completed)
-              return (
-                <span className={earned ? 'badge earned project-badge' : 'badge project-badge'} key={badge.id}>
-                  {earned ? '✓ ' : ''}{badge.title}
-                </span>
-              )
-            })}
-            {towerBadgeDefinitions.map((badge) => {
-              const earned = Boolean(towerProgress[badge.towerId]?.completed)
-              return (
-                <span className={earned ? 'badge earned tower-badge' : 'badge tower-badge'} key={badge.id}>
-                  {earned ? '✓ ' : ''}{badge.title}
-                </span>
-              )
-            })}
+        <section className="learning-map-card" aria-label="学习地图">
+          <div className="learning-map-header">
+            <span>学习地图</span>
+            <strong>
+              {isTowerMode ? 'Python 勇者塔' : (isProjectMode ? '项目创造营' : `第 ${currentStage.id} 阶段`)}
+            </strong>
           </div>
+
+          {isTowerMode ? (
+            <div className="learning-map-body">
+              <h2>Python 勇者塔目标</h2>
+              <p>用 Python 语法控制勇者打怪、回血、得金币和闯关。</p>
+              <div className="map-can-do">
+                <span>能练</span>
+                <p>变量、if、for、list、dict、def、return、random。</p>
+              </div>
+            </div>
+          ) : isProjectMode ? (
+            <div className="learning-map-body">
+              <h2>项目创造营目标</h2>
+              <p>把学过的 Python 本领用起来，做自己的小工具和小作品。</p>
+              <div className="map-can-do">
+                <span>能做</span>
+                <p>自我介绍机器人、背单词小助手、任务打卡系统、问答闯关游戏。</p>
+              </div>
+            </div>
+          ) : (
+            <div className="learning-map-body">
+              <div className="map-progress-row">
+                <span>当前进度：第 {currentLessonNumber} / {availableLessons.length} 课</span>
+                <span>阶段进度：{stageCurrent} / {stageTotal}</span>
+              </div>
+              <div className="map-progress-track" aria-label={`第 ${currentStage.id} 阶段已完成 ${stageCompletedCount} / ${stageTotal}`}>
+                <div style={{ width: `${stageProgressPercent}%` }} />
+              </div>
+
+              <h2>{currentStage.title}</h2>
+              <p>{currentStage.goal}</p>
+              <div className="map-can-do">
+                <span>学完这段能做</span>
+                <p>{currentStage.canDo.join('、')}。</p>
+              </div>
+
+              <details className="map-final-goals">
+                <summary>学完 60 课你能做到什么</summary>
+                <ol>
+                  {finalLearningGoals.map((goal) => (
+                    <li key={goal}>{goal}</li>
+                  ))}
+                </ol>
+              </details>
+            </div>
+          )}
         </section>
 
         {lessonNotice && <div className="lesson-notice">{lessonNotice}</div>}

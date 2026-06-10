@@ -190,6 +190,115 @@ button {
   white-space: nowrap;
 }
 
+.learning-map-card {
+  display: grid;
+  gap: 12px;
+  margin-bottom: 14px;
+  padding: 14px;
+  border: 1px solid #bfdbfe;
+  border-radius: 8px;
+  background: #eff6ff;
+}
+
+.learning-map-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.learning-map-header span {
+  color: #1d4ed8;
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.learning-map-header strong {
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: #ffffff;
+  color: #174ea6;
+  font-size: 12px;
+}
+
+.learning-map-body {
+  display: grid;
+  gap: 10px;
+}
+
+.learning-map-body h2 {
+  margin: 0;
+  color: #172554;
+  font-size: 15px;
+  line-height: 1.35;
+}
+
+.learning-map-body p {
+  margin: 0;
+  color: #334155;
+  font-size: 12px;
+  line-height: 1.55;
+}
+
+.map-progress-row {
+  display: grid;
+  gap: 4px;
+  color: #475569;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.map-progress-track {
+  overflow: hidden;
+  height: 7px;
+  border-radius: 999px;
+  background: #dbeafe;
+}
+
+.map-progress-track div {
+  height: 100%;
+  border-radius: inherit;
+  background: #2563eb;
+  transition: width 180ms ease;
+}
+
+.map-can-do {
+  display: grid;
+  gap: 5px;
+  padding: 10px;
+  border: 1px solid #dbeafe;
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.map-can-do span {
+  color: #1d4ed8;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.map-final-goals {
+  border-top: 1px solid #bfdbfe;
+  padding-top: 8px;
+}
+
+.map-final-goals summary {
+  color: #1e40af;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.map-final-goals ol {
+  display: grid;
+  gap: 5px;
+  margin: 8px 0 0;
+  padding-left: 18px;
+  color: #334155;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
 .badge-list {
   display: flex;
   flex-wrap: wrap;
