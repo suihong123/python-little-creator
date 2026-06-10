@@ -148,6 +148,26 @@ button {
   color: #276ef1;
 }
 
+.coach-nav-note {
+  display: grid;
+  gap: 6px;
+  padding: 14px;
+  border: 1px solid #bfdbfe;
+  border-radius: 8px;
+  background: #eff6ff;
+  color: #174ea6;
+}
+
+.coach-nav-note strong {
+  font-size: 14px;
+}
+
+.coach-nav-note span {
+  color: #344054;
+  font-size: 12px;
+  line-height: 1.55;
+}
+
 .study-card,
 .badge-card {
   margin-bottom: 0;
@@ -536,6 +556,135 @@ button {
   font-size: 13px;
   font-weight: 800;
   line-height: 1.5;
+}
+
+.coach-context-card {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin: 0 0 18px;
+}
+
+.coach-context-card div,
+.coach-card,
+.coach-result-card,
+.coach-safe-note {
+  border: 1px solid #dce2ea;
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.coach-context-card div {
+  display: grid;
+  gap: 5px;
+  padding: 12px;
+}
+
+.coach-context-card span,
+.coach-card label span,
+.coach-result-card div span {
+  color: #64748b;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.coach-context-card strong {
+  color: #1f2937;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.coach-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin: 0 0 14px;
+}
+
+.coach-card {
+  display: grid;
+  align-content: start;
+  gap: 10px;
+  padding: 16px;
+}
+
+.coach-card h3 {
+  margin: 0;
+  color: #1f2937;
+  font-size: 17px;
+}
+
+.coach-card p,
+.coach-safe-note,
+.coach-result-card p {
+  margin: 0;
+  color: #475467;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.coach-card label {
+  display: grid;
+  gap: 6px;
+}
+
+.coach-card input,
+.coach-card select {
+  min-height: 38px;
+  padding: 0 11px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #1f2937;
+  font: inherit;
+}
+
+.coach-card button {
+  justify-self: start;
+  min-height: 38px;
+  padding: 0 14px;
+  border-radius: 8px;
+  background: #276ef1;
+  color: #ffffff;
+  cursor: pointer;
+  font-weight: 900;
+}
+
+.coach-card button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.coach-safe-note {
+  padding: 12px 14px;
+  background: #f8fafc;
+  font-weight: 800;
+}
+
+.coach-result-card {
+  display: grid;
+  gap: 10px;
+  margin-top: 14px;
+  padding: 16px;
+  border-color: #bfdbfe;
+  background: #eff6ff;
+}
+
+.coach-result-card div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.coach-result-card strong {
+  color: #174ea6;
+  font-size: 15px;
+}
+
+.coach-result-card p {
+  color: #1f2937;
+  white-space: pre-wrap;
 }
 
 .tower-stage-card {
@@ -1863,6 +2012,11 @@ button {
 
   .ai-action-buttons {
     justify-content: flex-start;
+  }
+
+  .coach-context-card,
+  .coach-grid {
+    grid-template-columns: 1fr;
   }
 }
 

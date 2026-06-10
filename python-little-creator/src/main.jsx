@@ -38,6 +38,21 @@ const TOWER_PROGRESS_STORAGE_KEY = 'plc_tower_progress'
 const CURRENT_PROJECT_STORAGE_KEY = 'plc_current_project_id'
 const CURRENT_TOWER_STORAGE_KEY = 'plc_current_tower_id'
 const LEARNING_MODE_STORAGE_KEY = 'plc_learning_mode'
+const LEARNING_PROFILE_STORAGE_KEY = 'plc_learning_profile'
+
+const coachExampleStyles = ['生活版', '游戏版', 'Minecraft版', '英语单词版', '勇者战斗版']
+const profileConceptRules = [
+  { key: 'print', labels: ['print', '输出'] },
+  { key: 'input', labels: ['input', '输入'] },
+  { key: 'variable', labels: ['变量'] },
+  { key: 'if', labels: ['if', 'elif', 'else', '判断'] },
+  { key: 'for', labels: ['for', 'range', '循环'] },
+  { key: 'list', labels: ['list', '列表'] },
+  { key: 'dict', labels: ['dict', '字典'] },
+  { key: 'function', labels: ['def', '函数'] },
+  { key: 'return', labels: ['return'] },
+  { key: 'while', labels: ['while', 'break'] },
+]
 
 const availableLessons = lessons.filter((lesson) => lesson.status === 'available')
 const badgeDefinitions = [
@@ -300,6 +315,127 @@ function applyTowerActions(level, actions) {
   return state
 }
 
+function readLearningProfile() {
+  const saved = readStorage(LEARNING_PROFILE_STORAGE_KEY)
+  return profileConceptRules.reduce((profile, rule) => ({
+    ...profile,
+    [rule.key]: {
+      practiceCount: Number(saved[rule.key]?.practiceCount || 0),
+      lastSeen: saved[rule.key]?.lastSeen || '',
+      notes: saved[rule.key]?.notes || '',
+    },
+  }), {})
+}
+
+function inferProfileKey(item) {
+  const text = [
+    item?.title,
+    item?.concept,
+    item?.syntaxFocus,
+    item?.skill,
+    item?.skills?.join(' '),
+    item?.explanation,
+  ]
+    .filter(Boolean)
+    .join(' ')
+    .toLowerCase()
+
+  return profileConceptRules.find((rule) => (
+    rule.labels.some((label) => text.includes(label.toLowerCase()))
+  ))?.key || 'print'
+}
+
+function getModuleName(mode) {
+  if (mode === 'projects') return '项目创造营'
+  if (mode === 'games') return 'Python 勇者塔'
+  if (mode === 'coach') return 'AI 学习教练'
+  return '基础训练营'
+}
+
+function buildCoachMessages({
+  type,
+  style,
+  projectIdea,
+  moduleName,
+  lesson,
+  code,
+  output,
+  friendlyError,
+  checkResult,
+  runCount,
+  profileNote,
+}) {
+  const system = [
+    '你是“Python 小小创造师”的 AI 学习教练，服务 8-10 岁孩子和家长。',
+    '你不是聊天机器人，也不是答案机器。',
+    '不要直接给出完整可复制答案，不替孩子完成作业。',
+    '如果必须举例，只给很短的关键片段；代码不要超过要求行数。',
+    '优先用“你可以检查……”“你可以试着……”“想一想……”来引导。',
+    '一次只解决一个重点，语言温和、具体、鼓励，不要打分，不要批评孩子。',
+  ].join('\n')
+
+  const sharedContext = [
+    `当前模块：${moduleName}`,
+    `当前课程：${lesson?.title || '未选择课程'}`,
+    `知识点：${lesson?.concept || lesson?.syntaxFocus || lesson?.skill || lesson?.skills?.join('、') || 'Python 基础'}`,
+    `当前任务：${lesson?.goal || lesson?.challengeTask || lesson?.tasks?.join('；') || '完成当前练习'}`,
+    `当前代码：\n${code || '还没有代码'}`,
+    `最近输出：\n${output || '还没有运行输出'}`,
+    `最近错误：\n${friendlyError?.originalError || '没有错误'}`,
+    `本地错误提示：${friendlyError?.simpleExplanation || '没有本地错误提示'}`,
+    `检查任务：${checkResult ? (checkResult.passed ? '已通过' : `未通过：${checkResult.failedRules?.join('；') || checkResult.message}`) : '还没有检查'}`,
+    `本课运行次数：${runCount}`,
+    `本地学习画像备注：${profileNote || '暂无'}`,
+  ].join('\n\n')
+
+  const taskPrompts = {
+    diagnose: [
+      '请判断孩子可能掌握了什么、哪里还没真正理解。',
+      '输出格式必须是：',
+      '理解比较好：',
+      '- ...',
+      '可能还需要练：',
+      '- ...',
+      '下一步建议：',
+      '- ...',
+      '控制在 200 字以内，不要直接给答案。',
+    ].join('\n'),
+    example: [
+      `请用“${style}”重新解释同一个知识点。`,
+      '输出必须包含：一个简单故事、一个小代码例子、一个提问。',
+      '代码例子不超过 8 行，不要引入当前课程之后太多新知识。',
+      '不要给当前任务的完整答案。',
+    ].join('\n'),
+    exercise: [
+      '请根据当前知识点和孩子最近表现，只生成 1 个定向小练习。',
+      '输出格式必须是：',
+      '练习目标：',
+      '任务：',
+      '提示：',
+      '完成后问自己：',
+      '练习要小，能在当前编辑器里完成，不直接给完整答案。',
+    ].join('\n'),
+    projectPlan: [
+      `孩子想做一个：${projectIdea || '自己的小项目'}`,
+      '请只帮孩子拆步骤，不要写完整代码。',
+      '输出格式必须是：',
+      '项目目标：',
+      '第一步：',
+      '第二步：',
+      '第三步：',
+      '最简单版本：',
+      '以后可以升级：',
+      '可能会用到的 Python 本领：',
+      '鼓励孩子先做最简单版本。',
+    ].join('\n'),
+  }
+
+  return [
+    { role: 'system', content: system },
+    { role: 'user', content: `${sharedContext}\n\n本次请求：\n${taskPrompts[type]}` },
+  ]
+}
+
 function App() {
   const savedState = useMemo(loadSavedState, [])
   const safeInitialLesson = lessons.find(
@@ -307,7 +443,10 @@ function App() {
   )
   const [currentLessonId, setCurrentLessonId] = useState(safeInitialLesson?.id || availableLessons[0].id)
   const currentLesson = lessons.find((lesson) => lesson.id === currentLessonId) || availableLessons[0]
-  const [learningMode, setLearningMode] = useState(() => localStorage.getItem(LEARNING_MODE_STORAGE_KEY) || 'lessons')
+  const [learningMode, setLearningMode] = useState(() => {
+    const savedMode = localStorage.getItem(LEARNING_MODE_STORAGE_KEY) || 'lessons'
+    return savedMode === 'games' ? 'lessons' : savedMode
+  })
   const [currentProjectId, setCurrentProjectId] = useState(
     () => localStorage.getItem(CURRENT_PROJECT_STORAGE_KEY) || projects[0].id,
   )
@@ -318,6 +457,7 @@ function App() {
   const currentTower = towerLevels.find((level) => level.id === currentTowerId) || towerLevels[0]
   const isProjectMode = learningMode === 'projects'
   const isTowerMode = learningMode === 'games'
+  const isCoachMode = learningMode === 'coach'
   const activeItem = isTowerMode ? normalizeTowerLevel(currentTower) : (isProjectMode ? normalizeProject(currentProject) : currentLesson)
   const [completedLessons, setCompletedLessons] = useState(savedState.completedLessons)
   const [lessonCodeMap, setLessonCodeMap] = useState(savedState.lessonCodeMap)
@@ -354,6 +494,11 @@ function App() {
   const [aiPanel, setAiPanel] = useState(null)
   const [isAiLoading, setIsAiLoading] = useState(false)
   const [aiFeedbackMessage, setAiFeedbackMessage] = useState('')
+  const [learningProfile, setLearningProfile] = useState(readLearningProfile)
+  const [coachStyle, setCoachStyle] = useState(coachExampleStyles[0])
+  const [coachProjectIdea, setCoachProjectIdea] = useState('')
+  const [coachResult, setCoachResult] = useState(null)
+  const [isCoachLoading, setIsCoachLoading] = useState(false)
   const [tempChallenge, setTempChallenge] = useState(() => (
     localStorage.getItem(`${TEMP_CHALLENGE_PREFIX}${isProjectMode ? currentProjectId : currentLessonId}`) || ''
   ))
@@ -448,12 +593,17 @@ function App() {
   }, [towerProgress])
 
   useEffect(() => {
+    localStorage.setItem(LEARNING_PROFILE_STORAGE_KEY, JSON.stringify(learningProfile))
+  }, [learningProfile])
+
+  useEffect(() => {
     localStorage.setItem(LEARNING_MODE_STORAGE_KEY, learningMode)
     localStorage.setItem(CURRENT_PROJECT_STORAGE_KEY, currentProjectId)
     localStorage.setItem(CURRENT_TOWER_STORAGE_KEY, currentTowerId)
     setTempChallenge(localStorage.getItem(`${TEMP_CHALLENGE_PREFIX}${activeItem.id}`) || '')
     setAiThinkingRequest(null)
     setAiFeedbackMessage('')
+    setCoachResult(null)
     if (learningMode === 'games') {
       setTowerActions([])
       setTowerState(getInitialTowerState(currentTower))
@@ -902,6 +1052,102 @@ def show_status():
     setAiFeedbackMessage(helpful ? '已记录：这个提示有帮助。' : '可以换个方式再问一次，或者先看本地提示和课程讲解。')
   }
 
+  function updateLearningProfile(note = '') {
+    const profileKey = inferProfileKey(activeItem)
+    setLearningProfile((previous) => ({
+      ...previous,
+      [profileKey]: {
+        practiceCount: Number(previous[profileKey]?.practiceCount || 0) + 1,
+        lastSeen: new Date().toISOString(),
+        notes: note || previous[profileKey]?.notes || '',
+      },
+    }))
+  }
+
+  async function runCoachRequest(type) {
+    if (!savedApiKey) {
+      setCoachResult({
+        type: 'notice',
+        title: '先保存 API Key',
+        content: '请先在右侧“AI 小老师”的设置里保存 DeepSeek API Key。没有 Key 时，课程、运行和本地报错提示仍然可以正常使用。',
+      })
+      return
+    }
+
+    if (type === 'projectPlan' && !coachProjectIdea.trim()) {
+      setCoachResult({
+        type: 'notice',
+        title: '先写一个小想法',
+        content: '请先写下“我想做一个什么”，比如背单词机、任务打卡器、猜数字游戏。',
+      })
+      return
+    }
+
+    const baseUrlValidation = validateBaseUrl(deepSeekBaseUrl)
+    if (!baseUrlValidation.ok) {
+      setCoachResult({
+        type: 'notice',
+        title: 'AI 地址需要检查',
+        content: baseUrlValidation.message,
+      })
+      return
+    }
+    if (baseUrlValidation.value !== normalizeBaseUrl(deepSeekBaseUrl)) {
+      localStorage.setItem(DEEPSEEK_BASE_URL_STORAGE_KEY, baseUrlValidation.value)
+      setDeepSeekBaseUrl(baseUrlValidation.value)
+    }
+
+    const profileKey = inferProfileKey(activeItem)
+    setIsCoachLoading(true)
+    setCoachResult({
+      type,
+      title: 'AI 学习教练正在思考',
+      content: '正在根据当前课程、代码和检查结果整理建议……',
+    })
+
+    try {
+      const content = await callDeepSeek({
+        apiKey: savedApiKey,
+        baseUrl: baseUrlValidation.value,
+        model: deepSeekModel,
+        maxTokens: type === 'diagnose' ? 420 : 680,
+        messages: buildCoachMessages({
+          type,
+          style: coachStyle,
+          projectIdea: coachProjectIdea.trim(),
+          moduleName: getModuleName(learningMode),
+          lesson: activeItem,
+          code: currentCode,
+          output,
+          friendlyError,
+          checkResult,
+          runCount: activeRunCount,
+          profileNote: learningProfile[profileKey]?.notes,
+        }),
+      })
+      const nextUsageCount = incrementTodayUsage()
+      setAiUsageCount(nextUsageCount)
+      setCoachResult({
+        type,
+        title: type === 'diagnose'
+          ? '看看我哪里没懂'
+          : (type === 'example'
+          ? `换个例子讲给我听 · ${coachStyle}`
+          : (type === 'exercise' ? '给我一个定向小练习' : '帮我拆一个小项目')),
+        content,
+      })
+      updateLearningProfile(type === 'diagnose' ? content.slice(0, 180) : `AI 学习教练：${type}`)
+    } catch (error) {
+      setCoachResult({
+        type: 'error',
+        title: 'AI 学习教练暂时没有连上',
+        content: `不用担心，主课程仍然可以继续学习。\n${describeDeepSeekFailure(error)}`,
+      })
+    } finally {
+      setIsCoachLoading(false)
+    }
+  }
+
   function resetCode() {
     setLessonCodeMap((previous) => ({
       ...previous,
@@ -1102,6 +1348,7 @@ def show_status():
         ...previous,
         [currentLesson.id]: true,
       }))
+      updateLearningProfile('检查任务通过')
       setCheckResult({
         passed: true,
         message: activeItem.successMessage,
@@ -1162,11 +1409,14 @@ def show_status():
                 ? `已完成 ${completedTowerCount} / ${towerLevels.length} 层`
                 : (isProjectMode
                 ? `已完成 ${completedProjectCount} / ${projects.length} 个项目`
-                : `${currentLessonLabel} / 60`)}
+                : (isCoachMode ? 'AI 学习教练' : `${currentLessonLabel} / 60`))}
             </strong>
           </div>
-          {!isProjectMode && !isTowerMode && (
+          {!isProjectMode && !isTowerMode && !isCoachMode && (
             <div className="progress-stage-line">阶段：第 {currentStage.id} 阶段</div>
+          )}
+          {isCoachMode && (
+            <div className="progress-stage-line">正在看：{currentLessonLabel} · {currentLesson.concept}</div>
           )}
           <div
             className="progress-track"
@@ -1198,12 +1448,12 @@ def show_status():
             <span>用 Python 本领做作品</span>
           </button>
           <button
-            className={learningMode === 'games' ? 'active' : ''}
-            onClick={() => switchLearningMode('games')}
+            className={learningMode === 'coach' ? 'active' : ''}
+            onClick={() => switchLearningMode('coach')}
             type="button"
           >
-            <strong>Python 勇者塔</strong>
-            <span>用 Python 指挥勇者闯塔</span>
+            <strong>AI 学习教练</strong>
+            <span>发现哪里没懂，换种方式讲</span>
           </button>
         </div>
 
@@ -1213,11 +1463,20 @@ def show_status():
             <div className="learning-map-header">
               <span>学习地图</span>
               <strong>
-                {isTowerMode ? 'Python 勇者塔' : (isProjectMode ? '项目创造营' : `第 ${currentStage.id} 阶段`)}
+                {isCoachMode ? 'AI 学习教练' : (isTowerMode ? 'Python 勇者塔' : (isProjectMode ? '项目创造营' : `第 ${currentStage.id} 阶段`))}
               </strong>
             </div>
 
-            {isTowerMode ? (
+            {isCoachMode ? (
+              <div className="learning-map-body">
+                <h2>AI 学习教练</h2>
+                <p>帮你发现哪里没懂，换一种方式讲，再给你一个小练习。</p>
+                <div className="map-can-do">
+                  <span>能帮你</span>
+                  <p>诊断薄弱点、换例子、出小练习、拆项目步骤。</p>
+                </div>
+              </div>
+            ) : isTowerMode ? (
               <div className="learning-map-body">
                 <h2>Python 勇者塔目标</h2>
                 <p>用 Python 语法控制勇者打怪、回血、得金币和闯关。</p>
@@ -1279,7 +1538,7 @@ def show_status():
           <section className="study-card" aria-label="学习记录">
             <dl>
               <div>
-                <dt>{isTowerMode ? '当前楼层' : (isProjectMode ? '当前项目' : '当前关卡')}</dt>
+                <dt>{isCoachMode ? '当前观察' : (isTowerMode ? '当前楼层' : (isProjectMode ? '当前项目' : '当前关卡'))}</dt>
                 <dd>{activeItem.title}</dd>
               </div>
               <div>
@@ -1291,8 +1550,8 @@ def show_status():
                 <dd>{activeRunCount}</dd>
               </div>
               <div>
-                <dt>{isTowerMode ? '当前目标' : (isProjectMode ? '当前目标' : '当前阶段')}</dt>
-                <dd>{isTowerMode ? '闯塔练习' : (isProjectMode ? '做小作品' : `第 ${currentStage.id} 阶段`)}</dd>
+                <dt>{isTowerMode ? '当前目标' : (isProjectMode ? '当前目标' : (isCoachMode ? '当前目标' : '当前阶段'))}</dt>
+                <dd>{isTowerMode ? '闯塔练习' : (isProjectMode ? '做小作品' : (isCoachMode ? '查漏补缺' : `第 ${currentStage.id} 阶段`))}</dd>
               </div>
               <div>
                 <dt>最近学习</dt>
@@ -1364,12 +1623,103 @@ def show_status():
               </button>
             )
           })}
+          {learningMode === 'coach' && (
+            <div className="coach-nav-note">
+              <strong>AI 学习教练</strong>
+              <span>当前会结合 {currentLessonLabel}、你的代码、运行结果和检查结果来给建议。</span>
+            </div>
+          )}
         </nav>
       </aside>
 
       <main className="task-panel">
         <section className="task-card">
-          {isTowerMode ? (
+          {isCoachMode ? (
+            <>
+              <p className="eyebrow">AI 学习教练 · 当前观察 {currentLessonLabel}</p>
+              <h2>AI 学习教练</h2>
+              <p className="project-subtitle">不直接给答案，只帮你发现下一步怎么练。</p>
+
+              <div className="coach-context-card">
+                <div>
+                  <span>当前课程</span>
+                  <strong>{currentLesson.title}</strong>
+                </div>
+                <div>
+                  <span>知识点</span>
+                  <strong>{currentLesson.concept}</strong>
+                </div>
+                <div>
+                  <span>运行 / 检查</span>
+                  <strong>{activeRunCount} 次 · {checkResult ? (checkResult.passed ? '已通过' : '还要练') : '未检查'}</strong>
+                </div>
+              </div>
+
+              <div className="coach-grid" aria-label="AI 学习教练功能">
+                <article className="coach-card">
+                  <h3>看看我哪里没懂</h3>
+                  <p>根据当前代码、运行结果和检查任务，帮你找一个最值得练的地方。</p>
+                  <button onClick={() => runCoachRequest('diagnose')} type="button" disabled={isCoachLoading}>
+                    开始诊断
+                  </button>
+                </article>
+
+                <article className="coach-card">
+                  <h3>换个例子讲给我听</h3>
+                  <p>同一个知识点，可以换成生活、游戏或 Minecraft 风格再讲一次。</p>
+                  <label>
+                    <span>例子风格</span>
+                    <select value={coachStyle} onChange={(event) => setCoachStyle(event.target.value)}>
+                      {coachExampleStyles.map((style) => (
+                        <option value={style} key={style}>{style}</option>
+                      ))}
+                    </select>
+                  </label>
+                  <button onClick={() => runCoachRequest('example')} type="button" disabled={isCoachLoading}>
+                    换个例子
+                  </button>
+                </article>
+
+                <article className="coach-card">
+                  <h3>给我一个定向小练习</h3>
+                  <p>只出一个小练习，适合在右侧编辑器里自己完成。</p>
+                  <button onClick={() => runCoachRequest('exercise')} type="button" disabled={isCoachLoading}>
+                    生成小练习
+                  </button>
+                </article>
+
+                <article className="coach-card">
+                  <h3>帮我拆一个小项目</h3>
+                  <p>把想做的作品拆成几步，先做最简单版本，不直接写完整代码。</p>
+                  <label>
+                    <span>我想做一个</span>
+                    <input
+                      value={coachProjectIdea}
+                      onChange={(event) => setCoachProjectIdea(event.target.value)}
+                      placeholder="比如：背单词机、任务打卡器"
+                    />
+                  </label>
+                  <button onClick={() => runCoachRequest('projectPlan')} type="button" disabled={isCoachLoading}>
+                    拆成步骤
+                  </button>
+                </article>
+              </div>
+
+              <div className="coach-safe-note">
+                AI 学习教练只会给提示、例子和步骤，不会替你写完整答案。先自己试，再来问它。
+              </div>
+
+              {coachResult && (
+                <section className={`coach-result-card ${coachResult.type}`}>
+                  <div>
+                    <strong>{coachResult.title}</strong>
+                    {isCoachLoading && <span>生成中...</span>}
+                  </div>
+                  <p>{coachResult.content}</p>
+                </section>
+              )}
+            </>
+          ) : isTowerMode ? (
             <>
               <p className="eyebrow">Python 勇者塔 · 第 {currentTower.floor || currentTowerIndex + 1} 层 · {currentTower.syntaxFocus}</p>
               <h2>{currentTower.title}</h2>
