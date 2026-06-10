@@ -11,9 +11,17 @@
     "modifyTask": "把这句话改成你想对小助手说的第一句话。",
     "challengeTask": "再增加一行 print，让小助手介绍自己。",
     "checkRules": [
-      { "type": "run_success" },
-      { "type": "code_contains", "value": "print" },
-      { "type": "output_line_count_at_least", "value": 1 }
+      {
+        "type": "run_success"
+      },
+      {
+        "type": "code_contains",
+        "value": "print"
+      },
+      {
+        "type": "output_line_count_at_least",
+        "value": 1
+      }
     ],
     "successMessage": "小助手已经成功醒来，并说出第一句话。",
     "hint": "使用 print 输出一句话，括号和引号都要写完整。",
@@ -54,9 +62,17 @@
     "modifyTask": "把名字、年龄、爱好改成你自己或你设计的小助手资料。",
     "challengeTask": "再加一行 print，输出“小目标”或“最喜欢的课程”。",
     "checkRules": [
-      { "type": "run_success" },
-      { "type": "code_contains", "value": "print" },
-      { "type": "output_line_count_at_least", "value": 3 }
+      {
+        "type": "run_success"
+      },
+      {
+        "type": "code_contains",
+        "value": "print"
+      },
+      {
+        "type": "output_line_count_at_least",
+        "value": 3
+      }
     ],
     "successMessage": "小助手的文字名片已经做好了。",
     "hint": "用三行 print 输出名片内容，每一行文字都要放在英文引号里。",
@@ -97,10 +113,21 @@
     "modifyTask": "修改变量里的内容，让小助手记住新的名字、年龄和爱好。",
     "challengeTask": "输出时加上说明文字，比如“名字：”和“爱好：”。",
     "checkRules": [
-      { "type": "run_success" },
-      { "type": "code_contains", "value": "=" },
-      { "type": "code_contains", "value": "print" },
-      { "type": "output_line_count_at_least", "value": 3 }
+      {
+        "type": "run_success"
+      },
+      {
+        "type": "code_contains",
+        "value": "="
+      },
+      {
+        "type": "code_contains",
+        "value": "print"
+      },
+      {
+        "type": "output_line_count_at_least",
+        "value": 3
+      }
     ],
     "successMessage": "小助手已经记住这些信息了。",
     "hint": "先用变量保存内容，再用 print 输出变量名。",
@@ -141,10 +168,26 @@
     "modifyTask": "把 money 和 more_money 改成你自己的数字。",
     "challengeTask": "输出一句说明文字，比如“现在一共有：”，再输出计算结果。",
     "checkRules": [
-      { "type": "run_success" },
-      { "type": "code_contains_any", "value": ["+", "-", "*", "/"] },
-      { "type": "code_contains", "value": "print" },
-      { "type": "output_line_count_at_least", "value": 1 }
+      {
+        "type": "run_success"
+      },
+      {
+        "type": "code_contains_any",
+        "value": [
+          "+",
+          "-",
+          "*",
+          "/"
+        ]
+      },
+      {
+        "type": "code_contains",
+        "value": "print"
+      },
+      {
+        "type": "output_line_count_at_least",
+        "value": 1
+      }
     ],
     "successMessage": "零花钱小管家算出了新的金额。",
     "hint": "用 + 把两个数字加起来，再用 print 输出结果。",
@@ -186,9 +229,17 @@
     "challengeTask": "再加一行 print，让小助手欢迎你进入 Python 课堂。",
     "sampleInput": "小明",
     "checkRules": [
-      { "type": "run_success" },
-      { "type": "code_contains", "value": "input" },
-      { "type": "output_contains", "value": "你好" }
+      {
+        "type": "run_success"
+      },
+      {
+        "type": "code_contains",
+        "value": "input"
+      },
+      {
+        "type": "output_contains",
+        "value": "你好"
+      }
     ],
     "successMessage": "小助手已经能听到输入，并完成问候。",
     "hint": "用 input 读取名字，再把名字和问候语一起输出。",
@@ -230,10 +281,21 @@
     "challengeTask": "再增加一个变量，计算三年后的年龄。",
     "sampleInput": "9",
     "checkRules": [
-      { "type": "run_success" },
-      { "type": "code_contains", "value": "input" },
-      { "type": "code_contains", "value": "int" },
-      { "type": "output_line_count_at_least", "value": 1 }
+      {
+        "type": "run_success"
+      },
+      {
+        "type": "code_contains",
+        "value": "input"
+      },
+      {
+        "type": "code_contains",
+        "value": "int"
+      },
+      {
+        "type": "output_line_count_at_least",
+        "value": 1
+      }
     ],
     "successMessage": "年龄魔法机已经完成计算。",
     "hint": "先用 input 读取年龄，再用 int(age) 转成数字，最后加 1。",
@@ -274,9 +336,17 @@
     "modifyTask": "把 weather 改成其他天气，观察提醒会不会出现。",
     "challengeTask": "增加一个晴天建议，比如输出“可以戴帽子”。",
     "checkRules": [
-      { "type": "run_success" },
-      { "type": "code_contains", "value": "if" },
-      { "type": "output_line_count_at_least", "value": 1 }
+      {
+        "type": "run_success"
+      },
+      {
+        "type": "code_contains",
+        "value": "if"
+      },
+      {
+        "type": "output_line_count_at_least",
+        "value": 1
+      }
     ],
     "successMessage": "天气穿衣小助手已经会做判断了。",
     "hint": "保留 if 判断，并让条件成立时输出一条提醒。",
@@ -317,11 +387,25 @@
     "modifyTask": "修改 score 的数字，观察评定结果怎样变化。",
     "challengeTask": "增加一个 60 分以下的等级，比如“需要补给能量”。",
     "checkRules": [
-      { "type": "run_success" },
-      { "type": "code_contains", "value": "if" },
-      { "type": "code_contains", "value": "elif" },
-      { "type": "code_contains", "value": "else" },
-      { "type": "output_contains", "value": "良好" }
+      {
+        "type": "run_success"
+      },
+      {
+        "type": "code_contains",
+        "value": "if"
+      },
+      {
+        "type": "code_contains",
+        "value": "elif"
+      },
+      {
+        "type": "code_contains",
+        "value": "else"
+      },
+      {
+        "type": "output_contains",
+        "value": "良好"
+      }
     ],
     "successMessage": "学习等级评定员完成了判断。",
     "hint": "保留 if、elif、else 三种分支，并让 88 分能输出“良好”。",
@@ -368,10 +452,21 @@
     "modifyTask": "把倒计时文字“开始”改成“出发”。",
     "challengeTask": "把倒计时改成从 5 开始。",
     "checkRules": [
-      { "type": "run_success" },
-      { "type": "code_contains", "value": "for" },
-      { "type": "code_contains", "value": "range" },
-      { "type": "output_line_count_at_least", "value": 4 }
+      {
+        "type": "run_success"
+      },
+      {
+        "type": "code_contains",
+        "value": "for"
+      },
+      {
+        "type": "code_contains",
+        "value": "range"
+      },
+      {
+        "type": "output_line_count_at_least",
+        "value": 4
+      }
     ],
     "successMessage": "出发倒计时完成，可以开始新任务了。",
     "hint": "用 for 和 range 输出数字，最后再 print“开始”或“出发”。",
@@ -412,10 +507,21 @@
     "modifyTask": "把列表里的任务改成你今天真正想做的事。",
     "challengeTask": "输出第二个任务，试试 tasks[1]。",
     "checkRules": [
-      { "type": "run_success" },
-      { "type": "code_contains", "value": "[" },
-      { "type": "code_contains", "value": "]" },
-      { "type": "output_line_count_at_least", "value": 1 }
+      {
+        "type": "run_success"
+      },
+      {
+        "type": "code_contains",
+        "value": "["
+      },
+      {
+        "type": "code_contains",
+        "value": "]"
+      },
+      {
+        "type": "output_line_count_at_least",
+        "value": 1
+      }
     ],
     "successMessage": "每日任务包已经整理好了。",
     "hint": "用方括号创建列表，再用 print 输出其中一个任务。",
@@ -445,6 +551,96 @@
     "reviewQuestion": "为什么第一个任务要用 tasks[0] 读取？"
   },
   {
+    "id": "milestone-01-chatbot",
+    "type": "milestoneProject",
+    "title": "阶段作品1：我的聊天机器人",
+    "status": "available",
+    "concept": "print / input / 变量 / if",
+    "afterLesson": 10,
+    "subtitle": "第10课后阶段作品",
+    "concepts": [
+      "print",
+      "input",
+      "变量",
+      "if"
+    ],
+    "skills": [
+      "会输出文字",
+      "会接收输入",
+      "会保存变量",
+      "会做简单判断"
+    ],
+    "goal": "制作一个会问问题并回答的小机器人。",
+    "story": "你已经学会让电脑说话、记住信息、听你输入和做判断。现在可以把这些本领组合成一个小聊天机器人。",
+    "scene": "做一个能和你简单对话的小机器人。",
+    "explanation": "这个作品不会给完整答案。你可以先用 input 问一个问题，再用 if 判断回答，最后用 print 输出机器人的回应。",
+    "starterCode": "name = input(\"你叫什么名字？\")\nprint(\"你好，\" + name)\n\nanswer = input(\"你今天开心吗？\")\n\nif answer == \"开心\":\n    print(\"太好了！继续加油！\")\nelse:\n    print(\"没关系，我陪你练 Python。\")",
+    "modifyTask": "把机器人问的问题改成你自己的主题，比如学习、运动、宠物或游戏。",
+    "challengeTask": "增加一个新问题，让机器人根据不同回答说不同的话。",
+    "tasks": [
+      "至少问一个问题",
+      "使用变量保存输入",
+      "使用 if 做一次判断",
+      "输出机器人的回答"
+    ],
+    "thinkingQuestions": [
+      "机器人先问了什么？",
+      "哪个变量保存了你的回答？",
+      "if 判断的条件是什么？"
+    ],
+    "completionRequirements": [
+      "能运行成功",
+      "能输入内容",
+      "能看到机器人根据回答输出不同内容"
+    ],
+    "checkRules": [
+      {
+        "type": "run_success"
+      },
+      {
+        "type": "code_contains",
+        "value": "input"
+      },
+      {
+        "type": "code_contains",
+        "value": "if"
+      },
+      {
+        "type": "code_contains",
+        "value": "print"
+      },
+      {
+        "type": "output_line_count_at_least",
+        "value": 2
+      }
+    ],
+    "successMessage": "聊天机器人作品完成！你已经把输入、变量和判断组合起来了。",
+    "hint": "先让机器人问一个问题，再用 if 判断答案。不要急着写很多功能。",
+    "keyPoints": [
+      "input 负责提问",
+      "变量负责保存回答",
+      "if 负责判断回答"
+    ],
+    "practiceTasks": [
+      "把问题改成你喜欢的主题。",
+      "增加一个 else 回答。",
+      "让机器人输出你的名字。"
+    ],
+    "commonMistakes": [
+      {
+        "wrongCode": "if answer = \"开心\":",
+        "explanation": "判断相等要用两个等号。",
+        "fixTip": "写成 if answer == \"开心\":。"
+      }
+    ],
+    "reviewQuestion": "聊天机器人里 input、变量、if 分别做什么？",
+    "reviewQuestions": [
+      "你能讲清楚机器人怎么决定回答吗？"
+    ],
+    "explainToParent": "我做了一个会提问、保存回答并根据回答输出内容的聊天机器人。",
+    "scratchCompare": "像 Scratch 里的询问、回答和如果积木。"
+  },
+  {
     "id": "lesson-11-schedule",
     "title": "自动播报课程表",
     "status": "available",
@@ -456,10 +652,21 @@
     "modifyTask": "把课程表改成你今天的课程。",
     "challengeTask": "输出时加一句“今天有：”，让播报更清楚。",
     "checkRules": [
-      { "type": "run_success" },
-      { "type": "code_contains", "value": "[" },
-      { "type": "code_contains", "value": "for" },
-      { "type": "output_line_count_at_least", "value": 3 }
+      {
+        "type": "run_success"
+      },
+      {
+        "type": "code_contains",
+        "value": "["
+      },
+      {
+        "type": "code_contains",
+        "value": "for"
+      },
+      {
+        "type": "output_line_count_at_least",
+        "value": 3
+      }
     ],
     "successMessage": "课程表已经自动播报完成。",
     "hint": "先创建课程列表，再用 for 逐项 print。",
@@ -506,11 +713,25 @@
     "challengeTask": "再增加一道题，让最高分变成 2 分。",
     "sampleInput": "print",
     "checkRules": [
-      { "type": "run_success" },
-      { "type": "code_contains", "value": "input" },
-      { "type": "code_contains", "value": "if" },
-      { "type": "output_contains", "value": "答对了" },
-      { "type": "output_contains", "value": "1" }
+      {
+        "type": "run_success"
+      },
+      {
+        "type": "code_contains",
+        "value": "input"
+      },
+      {
+        "type": "code_contains",
+        "value": "if"
+      },
+      {
+        "type": "output_contains",
+        "value": "答对了"
+      },
+      {
+        "type": "output_contains",
+        "value": "1"
+      }
     ],
     "successMessage": "小小答题挑战已经可以计分了。",
     "hint": "模拟输入里填 print，代码里保留 input、if 和 score 加分。",
@@ -557,10 +778,24 @@
     "modifyTask": "把 weather_good 或 homework_done 改成 False，观察结果变化。",
     "challengeTask": "加入 or，设计一个“下雨或者太晚就不出门”的判断。",
     "checkRules": [
-      { "type": "run_success" },
-      { "type": "code_contains_any", "value": ["and", "or"] },
-      { "type": "code_contains", "value": "if" },
-      { "type": "output_line_count_at_least", "value": 1 }
+      {
+        "type": "run_success"
+      },
+      {
+        "type": "code_contains_any",
+        "value": [
+          "and",
+          "or"
+        ]
+      },
+      {
+        "type": "code_contains",
+        "value": "if"
+      },
+      {
+        "type": "output_line_count_at_least",
+        "value": 1
+      }
     ],
     "successMessage": "小助手已经会同时判断多个条件了。",
     "hint": "用 and 或 or 连接两个条件，再用 if 输出判断结果。"
@@ -577,10 +812,24 @@
     "modifyTask": "把 reading_done 改成 False，看看小助手会说什么。",
     "challengeTask": "再增加一个 math_done，判断数学任务是否完成。",
     "checkRules": [
-      { "type": "run_success" },
-      { "type": "code_contains_any", "value": ["True", "False"] },
-      { "type": "code_contains", "value": "if" },
-      { "type": "output_line_count_at_least", "value": 1 }
+      {
+        "type": "run_success"
+      },
+      {
+        "type": "code_contains_any",
+        "value": [
+          "True",
+          "False"
+        ]
+      },
+      {
+        "type": "code_contains",
+        "value": "if"
+      },
+      {
+        "type": "output_line_count_at_least",
+        "value": 1
+      }
     ],
     "successMessage": "小助手已经能用布尔值记录任务状态了。",
     "hint": "True 和 False 首字母要大写，可以直接放进 if 判断。"
@@ -597,10 +846,21 @@
     "modifyTask": "把新增物品改成你今天想带的东西。",
     "challengeTask": "连续 append 两个物品，再输出完整书包清单。",
     "checkRules": [
-      { "type": "run_success" },
-      { "type": "code_contains", "value": "append" },
-      { "type": "code_contains", "value": "[" },
-      { "type": "output_line_count_at_least", "value": 1 }
+      {
+        "type": "run_success"
+      },
+      {
+        "type": "code_contains",
+        "value": "append"
+      },
+      {
+        "type": "code_contains",
+        "value": "["
+      },
+      {
+        "type": "output_line_count_at_least",
+        "value": 1
+      }
     ],
     "successMessage": "书包清单已经成功增加新物品。",
     "hint": "先创建列表，再用 bag.append(\"物品\") 添加内容。"
@@ -617,10 +877,21 @@
     "modifyTask": "把要删除的任务改成你已经完成的任务。",
     "challengeTask": "再添加一个任务，然后删除另一个已完成任务。",
     "checkRules": [
-      { "type": "run_success" },
-      { "type": "code_contains", "value": "remove" },
-      { "type": "code_contains", "value": "[" },
-      { "type": "output_line_count_at_least", "value": 1 }
+      {
+        "type": "run_success"
+      },
+      {
+        "type": "code_contains",
+        "value": "remove"
+      },
+      {
+        "type": "code_contains",
+        "value": "["
+      },
+      {
+        "type": "output_line_count_at_least",
+        "value": 1
+      }
     ],
     "successMessage": "已完成任务已经从清单中删除。",
     "hint": "remove 里的文字必须和列表里的任务文字一样。"
@@ -637,10 +908,21 @@
     "modifyTask": "把字典里的姓名、年龄、爱好改成你设计的人物信息。",
     "challengeTask": "再增加一个“城市”或“目标”信息。",
     "checkRules": [
-      { "type": "run_success" },
-      { "type": "code_contains", "value": "{" },
-      { "type": "code_contains", "value": ":" },
-      { "type": "output_contains", "value": "姓名" }
+      {
+        "type": "run_success"
+      },
+      {
+        "type": "code_contains",
+        "value": "{"
+      },
+      {
+        "type": "code_contains",
+        "value": ":"
+      },
+      {
+        "type": "output_contains",
+        "value": "姓名"
+      }
     ],
     "successMessage": "小助手已经建立了一张通讯录信息卡。",
     "hint": "字典要用大括号，每条信息用冒号连接 key 和 value。"
@@ -657,10 +939,21 @@
     "modifyTask": "把信息卡内容改成你自己的资料。",
     "challengeTask": "增加“年龄”，并把年龄也查询输出。",
     "checkRules": [
-      { "type": "run_success" },
-      { "type": "code_contains", "value": "{" },
-      { "type": "code_contains", "value": "[" },
-      { "type": "output_line_count_at_least", "value": 2 }
+      {
+        "type": "run_success"
+      },
+      {
+        "type": "code_contains",
+        "value": "{"
+      },
+      {
+        "type": "code_contains",
+        "value": "["
+      },
+      {
+        "type": "output_line_count_at_least",
+        "value": 2
+      }
     ],
     "successMessage": "小助手已经能从信息卡里查询资料了。",
     "hint": "读取字典内容时，要写 card[\"姓名\"] 这样的格式。"
@@ -677,10 +970,21 @@
     "modifyTask": "修改函数里的问候语，让它更像你的专属小助手。",
     "challengeTask": "再写一个 show_goal() 函数，输出今天的小目标。",
     "checkRules": [
-      { "type": "run_success" },
-      { "type": "code_contains", "value": "def" },
-      { "type": "code_contains", "value": "print" },
-      { "type": "output_line_count_at_least", "value": 2 }
+      {
+        "type": "run_success"
+      },
+      {
+        "type": "code_contains",
+        "value": "def"
+      },
+      {
+        "type": "code_contains",
+        "value": "print"
+      },
+      {
+        "type": "output_line_count_at_least",
+        "value": 2
+      }
     ],
     "successMessage": "你的专属函数已经可以重复使用。",
     "hint": "用 def 定义函数，函数里的代码要缩进，最后别忘了调用函数。"
@@ -697,13 +1001,113 @@
     "modifyTask": "把名字改成你和朋友的名字。",
     "challengeTask": "给函数再加一句欢迎语，比如“欢迎学习 Python”。",
     "checkRules": [
-      { "type": "run_success" },
-      { "type": "code_contains", "value": "def" },
-      { "type": "code_contains", "value": "name" },
-      { "type": "output_contains", "value": "你好" }
+      {
+        "type": "run_success"
+      },
+      {
+        "type": "code_contains",
+        "value": "def"
+      },
+      {
+        "type": "code_contains",
+        "value": "name"
+      },
+      {
+        "type": "output_contains",
+        "value": "你好"
+      }
     ],
     "successMessage": "函数已经能接收名字并说出问候。",
     "hint": "在 def greet(name) 里，name 就是函数收到的信息。"
+  },
+  {
+    "id": "milestone-02-checkin",
+    "type": "milestoneProject",
+    "title": "阶段作品2：任务打卡小助手",
+    "status": "available",
+    "concept": "list / for / if",
+    "afterLesson": 20,
+    "subtitle": "第20课后阶段作品",
+    "concepts": [
+      "list",
+      "for",
+      "if"
+    ],
+    "skills": [
+      "保存任务列表",
+      "逐项显示任务",
+      "判断任务是否完成"
+    ],
+    "goal": "显示任务列表，并完成一次简单打卡。",
+    "story": "你已经学会列表、判断和函数。现在可以做一个帮自己管理任务的小助手。",
+    "scene": "显示今日任务，并检查某个任务是否完成。",
+    "explanation": "这个作品重点是把任务放进列表，用 for 显示出来，再用 if 判断今天是否完成了某个任务。",
+    "starterCode": "tasks = [\"阅读\", \"运动\", \"Python\"]\n\nprint(\"今天的任务：\")\nfor task in tasks:\n    print(task)\n\ndone = input(\"你完成了哪个任务？\")\n\nif done in tasks:\n    print(\"打卡成功：\" + done)\nelse:\n    print(\"这个任务不在清单里\")",
+    "sampleInput": "阅读",
+    "modifyTask": "把 tasks 改成你自己的今日任务。",
+    "challengeTask": "完成打卡后，再输出一句鼓励自己的话。",
+    "tasks": [
+      "创建任务列表",
+      "用 for 显示任务",
+      "输入完成的任务",
+      "用 if 判断是否在列表里"
+    ],
+    "thinkingQuestions": [
+      "任务为什么适合放在列表里？",
+      "for 每次拿到的 task 是什么？",
+      "done in tasks 在判断什么？"
+    ],
+    "completionRequirements": [
+      "能显示任务列表",
+      "能输入完成任务",
+      "能输出打卡结果"
+    ],
+    "checkRules": [
+      {
+        "type": "run_success"
+      },
+      {
+        "type": "code_contains",
+        "value": "["
+      },
+      {
+        "type": "code_contains",
+        "value": "for"
+      },
+      {
+        "type": "code_contains",
+        "value": "if"
+      },
+      {
+        "type": "code_contains",
+        "value": " in "
+      }
+    ],
+    "successMessage": "任务打卡小助手完成！你已经能用列表管理任务了。",
+    "hint": "先让任务列表显示出来，再判断输入的任务在不在列表里。",
+    "keyPoints": [
+      "list 保存多个任务",
+      "for 逐个显示任务",
+      "in 判断任务是否存在"
+    ],
+    "practiceTasks": [
+      "换成自己的任务清单。",
+      "增加一个新任务。",
+      "输入一个不在清单里的任务试试看。"
+    ],
+    "commonMistakes": [
+      {
+        "wrongCode": "if done in task:",
+        "explanation": "task 是循环里的单个任务，不是完整列表。",
+        "fixTip": "应该判断 done in tasks。"
+      }
+    ],
+    "reviewQuestion": "任务打卡助手为什么需要 list 和 for？",
+    "reviewQuestions": [
+      "如果输入不在清单里，会发生什么？"
+    ],
+    "explainToParent": "我做了一个能显示任务并检查打卡的小助手。",
+    "scratchCompare": "像 Scratch 里用列表保存任务，再逐项检查。"
   },
   {
     "id": "lesson-21",
@@ -717,10 +1121,21 @@
     "modifyTask": "把 12 和 5 改成你的零花钱数字。",
     "challengeTask": "把输出改成包含说明文字，比如“总金额：”。",
     "checkRules": [
-      { "type": "run_success" },
-      { "type": "code_contains", "value": "def" },
-      { "type": "code_contains", "value": "return" },
-      { "type": "output_line_count_at_least", "value": 1 }
+      {
+        "type": "run_success"
+      },
+      {
+        "type": "code_contains",
+        "value": "def"
+      },
+      {
+        "type": "code_contains",
+        "value": "return"
+      },
+      {
+        "type": "output_line_count_at_least",
+        "value": 1
+      }
     ],
     "successMessage": "函数已经能计算并返回结果。",
     "hint": "在函数里用 return 返回 total，再把函数结果保存到变量中。"
@@ -737,10 +1152,21 @@
     "modifyTask": "把 incomes 改成你自己的几笔收入。",
     "challengeTask": "再加一笔收入，看看总金额会不会变化。",
     "checkRules": [
-      { "type": "run_success" },
-      { "type": "code_contains", "value": "[" },
-      { "type": "code_contains", "value": "for" },
-      { "type": "output_line_count_at_least", "value": 1 }
+      {
+        "type": "run_success"
+      },
+      {
+        "type": "code_contains",
+        "value": "["
+      },
+      {
+        "type": "code_contains",
+        "value": "for"
+      },
+      {
+        "type": "output_line_count_at_least",
+        "value": 1
+      }
     ],
     "successMessage": "小小记账本已经算出总收入。",
     "hint": "用 total = total + money 把列表里的数字逐个加起来。"
@@ -757,11 +1183,25 @@
     "modifyTask": "把任务列表改成你的今日任务。",
     "challengeTask": "再检查一个新任务，比如“练字”或“复习数学”。",
     "checkRules": [
-      { "type": "run_success" },
-      { "type": "code_contains", "value": "[" },
-      { "type": "code_contains", "value": "for" },
-      { "type": "code_contains", "value": "if" },
-      { "type": "output_contains", "value": "阅读" }
+      {
+        "type": "run_success"
+      },
+      {
+        "type": "code_contains",
+        "value": "["
+      },
+      {
+        "type": "code_contains",
+        "value": "for"
+      },
+      {
+        "type": "code_contains",
+        "value": "if"
+      },
+      {
+        "type": "output_contains",
+        "value": "阅读"
+      }
     ],
     "successMessage": "任务打卡系统已经找到阅读任务。",
     "hint": "用 for 逐项查看任务，再用 if 判断 task 是否等于“阅读”。"
@@ -779,11 +1219,25 @@
     "challengeTask": "给任务列表增加一个新任务，或修改零花钱计算数字。",
     "sampleInput": "问候",
     "checkRules": [
-      { "type": "run_success" },
-      { "type": "code_contains", "value": "input" },
-      { "type": "code_contains", "value": "if" },
-      { "type": "code_contains", "value": "[" },
-      { "type": "output_line_count_at_least", "value": 1 }
+      {
+        "type": "run_success"
+      },
+      {
+        "type": "code_contains",
+        "value": "input"
+      },
+      {
+        "type": "code_contains",
+        "value": "if"
+      },
+      {
+        "type": "code_contains",
+        "value": "["
+      },
+      {
+        "type": "output_line_count_at_least",
+        "value": 1
+      }
     ],
     "successMessage": "你的生活小助手已经可以根据输入选择功能。",
     "hint": "模拟输入里填一个功能名称，代码里用 if / elif / else 判断选择。"
@@ -800,10 +1254,21 @@
     "modifyTask": "把 name、weather、plan 改成你的今日信息。",
     "challengeTask": "再增加一个 mood 变量，把今天的心情也拼进去。",
     "checkRules": [
-      { "type": "run_success" },
-      { "type": "code_contains", "value": "+" },
-      { "type": "code_contains", "value": "print" },
-      { "type": "output_line_count_at_least", "value": 1 }
+      {
+        "type": "run_success"
+      },
+      {
+        "type": "code_contains",
+        "value": "+"
+      },
+      {
+        "type": "code_contains",
+        "value": "print"
+      },
+      {
+        "type": "output_line_count_at_least",
+        "value": 1
+      }
     ],
     "successMessage": "今日介绍已经拼接完成。",
     "hint": "用 + 连接文字和变量，文字部分要放在英文引号里。"
@@ -820,10 +1285,21 @@
     "modifyTask": "把 message 改成你自己写的一句话。",
     "challengeTask": "换一个关键词，比如“阅读”或“数学”，再做一次判断。",
     "checkRules": [
-      { "type": "run_success" },
-      { "type": "code_contains", "value": " in " },
-      { "type": "code_contains", "value": "if" },
-      { "type": "output_contains", "value": "Python" }
+      {
+        "type": "run_success"
+      },
+      {
+        "type": "code_contains",
+        "value": " in "
+      },
+      {
+        "type": "code_contains",
+        "value": "if"
+      },
+      {
+        "type": "output_contains",
+        "value": "Python"
+      }
     ],
     "successMessage": "小助手已经能找到关键词了。",
     "hint": "判断关键词时，可以写 if \"Python\" in message:。"
@@ -840,10 +1316,21 @@
     "modifyTask": "把 raw_name 改成带空格的你的名字或任务名称。",
     "challengeTask": "再创建一个 raw_task，用 strip 清理任务名称。",
     "checkRules": [
-      { "type": "run_success" },
-      { "type": "code_contains", "value": "strip" },
-      { "type": "code_contains", "value": "print" },
-      { "type": "output_line_count_at_least", "value": 2 }
+      {
+        "type": "run_success"
+      },
+      {
+        "type": "code_contains",
+        "value": "strip"
+      },
+      {
+        "type": "code_contains",
+        "value": "print"
+      },
+      {
+        "type": "output_line_count_at_least",
+        "value": 2
+      }
     ],
     "successMessage": "文字小清洁工已经把多余空格清理掉了。",
     "hint": "用 raw_name.strip() 得到清理后的文字。"
@@ -861,10 +1348,21 @@
     "challengeTask": "再给故事加一句结尾，比如“今天真不错”。",
     "sampleInput": "小明\n图书馆\nPython",
     "checkRules": [
-      { "type": "run_success" },
-      { "type": "code_contains", "value": "input" },
-      { "type": "code_contains", "value": "+" },
-      { "type": "output_line_count_at_least", "value": 1 }
+      {
+        "type": "run_success"
+      },
+      {
+        "type": "code_contains",
+        "value": "input"
+      },
+      {
+        "type": "code_contains",
+        "value": "+"
+      },
+      {
+        "type": "output_line_count_at_least",
+        "value": 1
+      }
     ],
     "successMessage": "故事生成器已经写出一小段故事。",
     "hint": "模拟输入需要三行，分别给 name、place、hobby 使用。"
@@ -881,10 +1379,21 @@
     "modifyTask": "把 name 和 score 改成你自己的内容，保持代码能运行。",
     "challengeTask": "故意少写一个引号观察报错，再修回来。",
     "checkRules": [
-      { "type": "run_success" },
-      { "type": "code_contains", "value": "if" },
-      { "type": "code_contains", "value": ":" },
-      { "type": "output_line_count_at_least", "value": 1 }
+      {
+        "type": "run_success"
+      },
+      {
+        "type": "code_contains",
+        "value": "if"
+      },
+      {
+        "type": "code_contains",
+        "value": ":"
+      },
+      {
+        "type": "output_line_count_at_least",
+        "value": 1
+      }
     ],
     "successMessage": "小侦探已经让代码保持正常运行。",
     "hint": "检查引号是否成对、if 后面有没有冒号、缩进是否对齐。"
@@ -901,13 +1410,116 @@
     "modifyTask": "把 user_name 改成你的名字，让小助手向你问好。",
     "challengeTask": "再输出一句“程序修好了”。",
     "checkRules": [
-      { "type": "run_success" },
-      { "type": "code_contains", "value": "=" },
-      { "type": "code_contains", "value": "print" },
-      { "type": "output_contains", "value": "你好" }
+      {
+        "type": "run_success"
+      },
+      {
+        "type": "code_contains",
+        "value": "="
+      },
+      {
+        "type": "code_contains",
+        "value": "print"
+      },
+      {
+        "type": "output_contains",
+        "value": "你好"
+      }
     ],
     "successMessage": "问候小程序已经修好并正常运行。",
     "hint": "先确保变量名一致，再用 print 输出 message。"
+  },
+  {
+    "id": "milestone-03-word-teacher",
+    "type": "milestoneProject",
+    "title": "阶段作品3：背单词小老师",
+    "status": "available",
+    "concept": "input / if / list / score",
+    "afterLesson": 30,
+    "subtitle": "第30课后阶段作品",
+    "concepts": [
+      "input",
+      "if",
+      "list",
+      "score"
+    ],
+    "skills": [
+      "保存题目",
+      "输入答案",
+      "判断答案",
+      "记录分数"
+    ],
+    "goal": "制作一个简单英语问答程序。",
+    "story": "你已经会输入、判断、列表和找 Bug。现在可以做一个小小背单词老师。",
+    "scene": "问一个英文单词，答对就加分。",
+    "explanation": "这个作品可以先从一个单词开始。重点是用 input 收答案，用 if 判断，用 score 记录分数。",
+    "starterCode": "score = 0\nwords = [\"apple\", \"book\"]\n\nanswer = input(\"苹果的英文是什么？\")\n\nif answer == words[0]:\n    print(\"答对啦\")\n    score = score + 1\nelse:\n    print(\"再想想\")\n\nprint(\"得分：\", score)",
+    "sampleInput": "apple",
+    "modifyTask": "把单词和问题改成你正在背的内容。",
+    "challengeTask": "再增加一道题，并让 score 最多得到 2 分。",
+    "tasks": [
+      "创建 score",
+      "用列表保存单词",
+      "输入答案",
+      "判断是否正确",
+      "输出得分"
+    ],
+    "thinkingQuestions": [
+      "score 从几开始？",
+      "答对时哪一行加分？",
+      "words[0] 取到哪个单词？"
+    ],
+    "completionRequirements": [
+      "能输入答案",
+      "答对能加分",
+      "最后能显示得分"
+    ],
+    "checkRules": [
+      {
+        "type": "run_success"
+      },
+      {
+        "type": "code_contains",
+        "value": "input"
+      },
+      {
+        "type": "code_contains",
+        "value": "if"
+      },
+      {
+        "type": "code_contains",
+        "value": "score"
+      },
+      {
+        "type": "output_contains",
+        "value": "得分"
+      }
+    ],
+    "successMessage": "背单词小老师完成！你已经能做问答计分程序了。",
+    "hint": "先完成一道题，再考虑增加更多题目。",
+    "keyPoints": [
+      "input 收答案",
+      "if 判断答案",
+      "score 记录分数"
+    ],
+    "practiceTasks": [
+      "换成一个新单词。",
+      "故意输入错误答案。",
+      "增加第二道题。"
+    ],
+    "commonMistakes": [
+      {
+        "wrongCode": "score = score + \"1\"",
+        "explanation": "分数是数字，不能直接加文字。",
+        "fixTip": "写成 score = score + 1。"
+      }
+    ],
+    "reviewQuestion": "背单词程序里 score 有什么用？",
+    "reviewQuestions": [
+      "为什么先做一道题更容易？"
+    ],
+    "explainToParent": "我做了一个能问单词、判断答案并计分的小老师。",
+    "scratchCompare": "像 Scratch 问答游戏里的分数变量。"
   },
   {
     "id": "lesson-31",
@@ -922,11 +1534,25 @@
     "challengeTask": "猜对时再输出一句“挑战成功”。",
     "sampleInput": "2\n4\n5",
     "checkRules": [
-      { "type": "run_success" },
-      { "type": "code_contains", "value": "for" },
-      { "type": "code_contains", "value": "if" },
-      { "type": "code_contains", "value": "input" },
-      { "type": "output_contains", "value": "猜对了" }
+      {
+        "type": "run_success"
+      },
+      {
+        "type": "code_contains",
+        "value": "for"
+      },
+      {
+        "type": "code_contains",
+        "value": "if"
+      },
+      {
+        "type": "code_contains",
+        "value": "input"
+      },
+      {
+        "type": "output_contains",
+        "value": "猜对了"
+      }
     ],
     "successMessage": "猜数字升级版已经可以多次尝试。",
     "hint": "模拟输入要写三行数字，每次 input 会读取一行。"
@@ -943,10 +1569,21 @@
     "modifyTask": "把 tasks 改成你的今日任务清单。",
     "challengeTask": "再添加一个任务，让抽签器有更多选择。",
     "checkRules": [
-      { "type": "run_success" },
-      { "type": "code_contains", "value": "random" },
-      { "type": "code_contains", "value": "[" },
-      { "type": "output_line_count_at_least", "value": 1 }
+      {
+        "type": "run_success"
+      },
+      {
+        "type": "code_contains",
+        "value": "random"
+      },
+      {
+        "type": "code_contains",
+        "value": "["
+      },
+      {
+        "type": "output_line_count_at_least",
+        "value": 1
+      }
     ],
     "successMessage": "任务抽签器已经抽出一个小任务。",
     "hint": "用 import random，再用 random.choice(tasks) 从列表里抽一个。"
@@ -964,11 +1601,25 @@
     "challengeTask": "再增加一个问题，比如“今天目标”。",
     "sampleInput": "小明\n画画\nPython",
     "checkRules": [
-      { "type": "run_success" },
-      { "type": "code_contains", "value": "input" },
-      { "type": "code_contains", "value": "[" },
-      { "type": "code_contains", "value": "append" },
-      { "type": "output_line_count_at_least", "value": 1 }
+      {
+        "type": "run_success"
+      },
+      {
+        "type": "code_contains",
+        "value": "input"
+      },
+      {
+        "type": "code_contains",
+        "value": "["
+      },
+      {
+        "type": "code_contains",
+        "value": "append"
+      },
+      {
+        "type": "output_line_count_at_least",
+        "value": 1
+      }
     ],
     "successMessage": "小小问卷机已经收集并保存回答。",
     "hint": "每个 input 读取一行模拟输入，再用 append 加进 answers。"
@@ -985,11 +1636,28 @@
     "modifyTask": "把 scores 改成你自己的三次练习得分。",
     "challengeTask": "增加第四个分数，并修改平均分计算。",
     "checkRules": [
-      { "type": "run_success" },
-      { "type": "code_contains", "value": "[" },
-      { "type": "code_contains", "value": "for" },
-      { "type": "code_contains_any", "value": ["+", "/"] },
-      { "type": "output_contains", "value": "平均分" }
+      {
+        "type": "run_success"
+      },
+      {
+        "type": "code_contains",
+        "value": "["
+      },
+      {
+        "type": "code_contains",
+        "value": "for"
+      },
+      {
+        "type": "code_contains_any",
+        "value": [
+          "+",
+          "/"
+        ]
+      },
+      {
+        "type": "output_contains",
+        "value": "平均分"
+      }
     ],
     "successMessage": "成绩统计员已经算出总分和平均分。",
     "hint": "用 for 累加 total，再用 total / 3 计算平均分。"
@@ -1006,10 +1674,21 @@
     "modifyTask": "把周一到周三的计划改成你自己的安排。",
     "challengeTask": "查询并输出周二或周三的计划。",
     "checkRules": [
-      { "type": "run_success" },
-      { "type": "code_contains", "value": "{" },
-      { "type": "code_contains", "value": "[" },
-      { "type": "output_line_count_at_least", "value": 1 }
+      {
+        "type": "run_success"
+      },
+      {
+        "type": "code_contains",
+        "value": "{"
+      },
+      {
+        "type": "code_contains",
+        "value": "["
+      },
+      {
+        "type": "output_line_count_at_least",
+        "value": 1
+      }
     ],
     "successMessage": "学习计划表已经可以查询一天的安排。",
     "hint": "字典里每一天对应一个任务列表，查询时写 plans[\"周一\"]。"
@@ -1027,12 +1706,29 @@
     "challengeTask": "给小助手增加一个新功能，比如显示今日目标。",
     "sampleInput": "问候",
     "checkRules": [
-      { "type": "run_success" },
-      { "type": "code_contains", "value": "def" },
-      { "type": "code_contains", "value": "input" },
-      { "type": "code_contains", "value": "if" },
-      { "type": "code_contains", "value": "[" },
-      { "type": "output_line_count_at_least", "value": 1 }
+      {
+        "type": "run_success"
+      },
+      {
+        "type": "code_contains",
+        "value": "def"
+      },
+      {
+        "type": "code_contains",
+        "value": "input"
+      },
+      {
+        "type": "code_contains",
+        "value": "if"
+      },
+      {
+        "type": "code_contains",
+        "value": "["
+      },
+      {
+        "type": "output_line_count_at_least",
+        "value": 1
+      }
     ],
     "successMessage": "毕业作品完成，你已经做出了自己的 Python 小助手。",
     "hint": "用 input 选择功能，再用 if / elif / else 执行对应代码。"
@@ -1043,8 +1739,15 @@
     "subtitle": "进阶训练营：为真实项目做准备",
     "status": "available",
     "concept": "len()",
-    "concepts": ["len", "字符串长度", "列表长度"],
-    "skills": ["查看文字长度", "查看列表数量"],
+    "concepts": [
+      "len",
+      "字符串长度",
+      "列表长度"
+    ],
+    "skills": [
+      "查看文字长度",
+      "查看列表数量"
+    ],
     "goal": "用 len() 看文字有几个字符，也看列表里有几个东西。",
     "story": "小助手想知道名字有几个字、背包有几个物品。len() 就像一个小尺子，可以帮它数一数。",
     "scene": "检查名字长度和背包物品数量。",
@@ -1052,22 +1755,52 @@
     "starterCode": "name = \"杭杭\"\nprint(len(name))\n\nitems = [\"苹果\", \"香蕉\", \"牛奶\"]\nprint(len(items))",
     "modifyTask": "把 name 改成你的名字，把 items 改成你的背包清单。",
     "challengeTask": "再创建一个 words 单词列表，并输出它有几个单词。",
-    "tasks": ["运行代码观察两个数字", "修改名字和背包内容", "再试着统计一个新列表"],
+    "tasks": [
+      "运行代码观察两个数字",
+      "修改名字和背包内容",
+      "再试着统计一个新列表"
+    ],
     "checkRules": [
-      { "type": "run_success" },
-      { "type": "code_contains", "value": "len" },
-      { "type": "output_line_count_at_least", "value": 2 }
+      {
+        "type": "run_success"
+      },
+      {
+        "type": "code_contains",
+        "value": "len"
+      },
+      {
+        "type": "output_line_count_at_least",
+        "value": 2
+      }
     ],
     "successMessage": "小尺子工作成功！你已经会用 len() 数长度和数量。",
     "hint": "len() 的括号里放字符串或列表，Python 会帮你数一数。",
-    "keyPoints": ["len() 可以数长度", "字符串和列表都能用 len()", "列表里有几个内容，len() 就会返回几个"],
-    "practiceTasks": ["把名字换成自己的名字。", "给 items 多加一个物品，看看数字会不会变。", "新建一个单词列表并输出长度。"],
+    "keyPoints": [
+      "len() 可以数长度",
+      "字符串和列表都能用 len()",
+      "列表里有几个内容，len() 就会返回几个"
+    ],
+    "practiceTasks": [
+      "把名字换成自己的名字。",
+      "给 items 多加一个物品，看看数字会不会变。",
+      "新建一个单词列表并输出长度。"
+    ],
     "commonMistakes": [
-      { "wrongCode": "print(len)", "explanation": "这里只写了 len 的名字，没有告诉它要数什么。", "fixTip": "写成 len(name) 或 len(items)。" },
-      { "wrongCode": "print(len(name)", "explanation": "少了一个右括号。", "fixTip": "检查小括号是不是成对出现。" }
+      {
+        "wrongCode": "print(len)",
+        "explanation": "这里只写了 len 的名字，没有告诉它要数什么。",
+        "fixTip": "写成 len(name) 或 len(items)。"
+      },
+      {
+        "wrongCode": "print(len(name)",
+        "explanation": "少了一个右括号。",
+        "fixTip": "检查小括号是不是成对出现。"
+      }
     ],
     "reviewQuestion": "len() 可以帮我们数哪些东西？",
-    "reviewQuestions": ["len(name) 和 len(items) 分别在数什么？"],
+    "reviewQuestions": [
+      "len(name) 和 len(items) 分别在数什么？"
+    ],
     "explainToParent": "今天我学会了用 len() 数文字长度和列表数量。",
     "scratchCompare": "Scratch 里可以看列表长度；Python 里用 len(列表) 来完成。"
   },
@@ -1077,8 +1810,15 @@
     "subtitle": "进阶训练营：为真实项目做准备",
     "status": "available",
     "concept": "strip()",
-    "concepts": ["strip", "input", "字符串处理"],
-    "skills": ["清理输入", "让答案判断更宽容"],
+    "concepts": [
+      "strip",
+      "input",
+      "字符串处理"
+    ],
+    "skills": [
+      "清理输入",
+      "让答案判断更宽容"
+    ],
     "goal": "用 strip() 去掉输入前后的多余空格。",
     "story": "背单词时，有时会不小心多打一个空格。小助手可以先帮你把前后的空格擦掉。",
     "scene": "清理孩子输入的单词答案。",
@@ -1087,22 +1827,52 @@
     "modifyTask": "把 apple 改成你正在背的一个英文单词。",
     "challengeTask": "在判断前 print(answer)，观察空格被清理后的结果。",
     "sampleInput": " apple ",
-    "tasks": ["用 input 接收答案", "用 strip() 清理答案", "用 if 判断是否正确"],
+    "tasks": [
+      "用 input 接收答案",
+      "用 strip() 清理答案",
+      "用 if 判断是否正确"
+    ],
     "checkRules": [
-      { "type": "run_success" },
-      { "type": "code_contains", "value": ".strip" },
-      { "type": "output_contains", "value": "输入正确" }
+      {
+        "type": "run_success"
+      },
+      {
+        "type": "code_contains",
+        "value": ".strip"
+      },
+      {
+        "type": "output_contains",
+        "value": "输入正确"
+      }
     ],
     "successMessage": "输入清洁成功！多余空格不会再捣乱。",
     "hint": "先把 input 的结果保存到变量，再写 answer = answer.strip()。",
-    "keyPoints": ["strip() 可以去掉前后空格", "input 得到的文字可以先清理再判断", "strip() 不会删除文字中间的内容"],
-    "practiceTasks": ["把模拟输入改成前后有空格的 apple。", "把目标单词改成 book。", "去掉 strip() 试试看结果有什么不同。"],
+    "keyPoints": [
+      "strip() 可以去掉前后空格",
+      "input 得到的文字可以先清理再判断",
+      "strip() 不会删除文字中间的内容"
+    ],
+    "practiceTasks": [
+      "把模拟输入改成前后有空格的 apple。",
+      "把目标单词改成 book。",
+      "去掉 strip() 试试看结果有什么不同。"
+    ],
     "commonMistakes": [
-      { "wrongCode": "answer.strip()\nif answer == \"apple\":", "explanation": "这样没有把清理后的结果保存回变量。", "fixTip": "写成 answer = answer.strip()。" },
-      { "wrongCode": "answer = strip(answer)", "explanation": "strip 是字符串自己的小功能，写法不对。", "fixTip": "写成 answer.strip()。" }
+      {
+        "wrongCode": "answer.strip()\nif answer == \"apple\":",
+        "explanation": "这样没有把清理后的结果保存回变量。",
+        "fixTip": "写成 answer = answer.strip()。"
+      },
+      {
+        "wrongCode": "answer = strip(answer)",
+        "explanation": "strip 是字符串自己的小功能，写法不对。",
+        "fixTip": "写成 answer.strip()。"
+      }
     ],
     "reviewQuestion": "strip() 去掉的是哪里的空格？",
-    "reviewQuestions": ["为什么判断答案前先 strip() 会更友好？"],
+    "reviewQuestions": [
+      "为什么判断答案前先 strip() 会更友好？"
+    ],
     "explainToParent": "今天我学会了清理输入前后的空格，让程序更宽容。",
     "scratchCompare": "Scratch 判断文字时通常直接比较；Python 可以先用 strip() 清理输入。"
   },
@@ -1112,8 +1882,15 @@
     "subtitle": "进阶训练营：为真实项目做准备",
     "status": "available",
     "concept": "lower()",
-    "concepts": ["lower", "字符串处理", "答案判断"],
-    "skills": ["统一英文大小写", "改进背单词判断"],
+    "concepts": [
+      "lower",
+      "字符串处理",
+      "答案判断"
+    ],
+    "skills": [
+      "统一英文大小写",
+      "改进背单词判断"
+    ],
     "goal": "用 lower() 把英文变成小写，让 Apple、APPLE、apple 都能判断。",
     "story": "背单词时，有人输入 Apple，有人输入 APPLE。小助手可以先把英文都变成小写再检查。",
     "scene": "背单词答案大小写处理。",
@@ -1122,22 +1899,52 @@
     "modifyTask": "把 apple 改成你想练习的单词。",
     "challengeTask": "把 lower() 和 strip() 连起来，先去空格再变小写。",
     "sampleInput": "APPLE",
-    "tasks": ["输入一个英文单词", "使用 lower()", "判断小写后的结果"],
+    "tasks": [
+      "输入一个英文单词",
+      "使用 lower()",
+      "判断小写后的结果"
+    ],
     "checkRules": [
-      { "type": "run_success" },
-      { "type": "code_contains", "value": ".lower" },
-      { "type": "output_contains", "value": "答对啦" }
+      {
+        "type": "run_success"
+      },
+      {
+        "type": "code_contains",
+        "value": ".lower"
+      },
+      {
+        "type": "output_contains",
+        "value": "答对啦"
+      }
     ],
     "successMessage": "大小写小助手完成！不同写法也能被认出来。",
     "hint": "word = word.lower() 会把 word 里的英文变成小写。",
-    "keyPoints": ["lower() 可以把英文变成小写", "判断英文答案时可以先统一大小写", "lower() 不会把中文变成别的内容"],
-    "practiceTasks": ["模拟输入 Apple、APPLE、apple 分别运行。", "把目标单词改成 python。", "试着加入 strip() 清理空格。"],
+    "keyPoints": [
+      "lower() 可以把英文变成小写",
+      "判断英文答案时可以先统一大小写",
+      "lower() 不会把中文变成别的内容"
+    ],
+    "practiceTasks": [
+      "模拟输入 Apple、APPLE、apple 分别运行。",
+      "把目标单词改成 python。",
+      "试着加入 strip() 清理空格。"
+    ],
     "commonMistakes": [
-      { "wrongCode": "word.lower()\nif word == \"apple\":", "explanation": "没有保存 lower() 处理后的结果。", "fixTip": "写成 word = word.lower()。" },
-      { "wrongCode": "word = word.lower", "explanation": "少了小括号，函数没有真正执行。", "fixTip": "写成 word.lower()。" }
+      {
+        "wrongCode": "word.lower()\nif word == \"apple\":",
+        "explanation": "没有保存 lower() 处理后的结果。",
+        "fixTip": "写成 word = word.lower()。"
+      },
+      {
+        "wrongCode": "word = word.lower",
+        "explanation": "少了小括号，函数没有真正执行。",
+        "fixTip": "写成 word.lower()。"
+      }
     ],
     "reviewQuestion": "为什么背单词程序常常要用 lower()？",
-    "reviewQuestions": ["lower() 会改变中文吗？"],
+    "reviewQuestions": [
+      "lower() 会改变中文吗？"
+    ],
     "explainToParent": "今天我学会了把英文统一成小写，再判断答案。",
     "scratchCompare": "Scratch 可以直接比较文字；Python 可以先 lower()，让比较更灵活。"
   },
@@ -1147,8 +1954,15 @@
     "subtitle": "进阶训练营：为真实项目做准备",
     "status": "available",
     "concept": "in",
-    "concepts": ["in", "字符串判断", "关键词"],
-    "skills": ["判断一句话里有没有关键词", "制作简单聊天判断"],
+    "concepts": [
+      "in",
+      "字符串判断",
+      "关键词"
+    ],
+    "skills": [
+      "判断一句话里有没有关键词",
+      "制作简单聊天判断"
+    ],
     "goal": "用 in 判断一段文字里有没有指定关键词。",
     "story": "小助手想听懂一句话里有没有提到 Python。in 可以帮它找关键词。",
     "scene": "简单关键词判断。",
@@ -1157,24 +1971,147 @@
     "modifyTask": "把 Python 改成你想检测的关键词，比如“作业”或“游戏”。",
     "challengeTask": "增加一个 elif，检测另一个关键词。",
     "sampleInput": "我喜欢 Python",
-    "tasks": ["用 input 输入一句话", "用 in 判断关键词", "输出不同结果"],
+    "tasks": [
+      "用 input 输入一句话",
+      "用 in 判断关键词",
+      "输出不同结果"
+    ],
     "checkRules": [
-      { "type": "run_success" },
-      { "type": "code_contains", "value": " in " },
-      { "type": "output_contains", "value": "Python" }
+      {
+        "type": "run_success"
+      },
+      {
+        "type": "code_contains",
+        "value": " in "
+      },
+      {
+        "type": "output_contains",
+        "value": "Python"
+      }
     ],
     "successMessage": "关键词侦探成功找到目标文字。",
     "hint": "写法是 \"Python\" in sentence，注意 in 左右要有内容。",
-    "keyPoints": ["in 可以判断文字是否包含关键词", "关键词要放在引号里", "in 的结果可以交给 if 判断"],
-    "practiceTasks": ["把关键词换成你的名字。", "模拟输入一句包含关键词的话。", "模拟输入一句不包含关键词的话。"],
+    "keyPoints": [
+      "in 可以判断文字是否包含关键词",
+      "关键词要放在引号里",
+      "in 的结果可以交给 if 判断"
+    ],
+    "practiceTasks": [
+      "把关键词换成你的名字。",
+      "模拟输入一句包含关键词的话。",
+      "模拟输入一句不包含关键词的话。"
+    ],
     "commonMistakes": [
-      { "wrongCode": "if Python in sentence:", "explanation": "Python 没有加引号，会被当成变量名。", "fixTip": "写成 if \"Python\" in sentence:。" },
-      { "wrongCode": "if \"Python\" sentence:", "explanation": "少了 in，Python 不知道你要判断包含关系。", "fixTip": "在两个内容中间加上 in。" }
+      {
+        "wrongCode": "if Python in sentence:",
+        "explanation": "Python 没有加引号，会被当成变量名。",
+        "fixTip": "写成 if \"Python\" in sentence:。"
+      },
+      {
+        "wrongCode": "if \"Python\" sentence:",
+        "explanation": "少了 in，Python 不知道你要判断包含关系。",
+        "fixTip": "在两个内容中间加上 in。"
+      }
     ],
     "reviewQuestion": "in 可以帮我们做哪种判断？",
-    "reviewQuestions": ["为什么关键词通常要加引号？"],
+    "reviewQuestions": [
+      "为什么关键词通常要加引号？"
+    ],
     "explainToParent": "今天我学会了判断一句话里有没有某个关键词。",
     "scratchCompare": "Scratch 里可以用“包含”判断文字；Python 里可以用 in。"
+  },
+  {
+    "id": "milestone-04-bag-system",
+    "type": "milestoneProject",
+    "title": "阶段作品4：我的背包系统",
+    "status": "available",
+    "concept": "list / append / remove / in / len",
+    "afterLesson": 40,
+    "subtitle": "第40课后阶段作品",
+    "concepts": [
+      "list",
+      "append",
+      "remove",
+      "in",
+      "len"
+    ],
+    "skills": [
+      "管理物品",
+      "添加物品",
+      "删除物品",
+      "检查物品数量"
+    ],
+    "goal": "制作简单背包管理器。",
+    "story": "勇者塔需要背包。你已经会处理列表、关键词和文字，现在可以做一个真正能管理物品的小系统。",
+    "scene": "添加物品、查看背包、检查钥匙。",
+    "explanation": "这个作品重点是用列表保存物品，用 append 添加，用 remove 删除，用 in 判断关键物品，用 len 看数量。",
+    "starterCode": "bag = [\"药水\", \"金币\"]\n\nbag.append(\"钥匙\")\nprint(\"背包数量：\", len(bag))\n\nif \"钥匙\" in bag:\n    print(\"可以打开门\")\n\nfor item in bag:\n    print(\"物品：\", item)",
+    "modifyTask": "把背包物品改成你自己的冒险道具。",
+    "challengeTask": "使用 remove() 删除一个已经用掉的物品。",
+    "tasks": [
+      "创建背包列表",
+      "添加新物品",
+      "统计物品数量",
+      "判断有没有钥匙",
+      "显示背包内容"
+    ],
+    "thinkingQuestions": [
+      "append 改变了列表吗？",
+      "len(bag) 显示什么？",
+      "in 判断了什么？"
+    ],
+    "completionRequirements": [
+      "能显示背包数量",
+      "能判断关键物品",
+      "能逐项显示背包"
+    ],
+    "checkRules": [
+      {
+        "type": "run_success"
+      },
+      {
+        "type": "code_contains",
+        "value": ".append"
+      },
+      {
+        "type": "code_contains",
+        "value": "len"
+      },
+      {
+        "type": "code_contains",
+        "value": " in "
+      },
+      {
+        "type": "output_line_count_at_least",
+        "value": 3
+      }
+    ],
+    "successMessage": "背包系统完成！你的程序已经能管理物品了。",
+    "hint": "先做添加和查看，再尝试删除物品。",
+    "keyPoints": [
+      "列表保存背包",
+      "append 添加物品",
+      "len 统计数量",
+      "in 检查物品"
+    ],
+    "practiceTasks": [
+      "增加“地图”。",
+      "删除“药水”。",
+      "判断有没有“宝石”。"
+    ],
+    "commonMistakes": [
+      {
+        "wrongCode": "bag.remove(\"宝石\")",
+        "explanation": "如果宝石不在背包里，remove 会报错。",
+        "fixTip": "可以先判断 \"宝石\" in bag。"
+      }
+    ],
+    "reviewQuestion": "背包系统里 append、remove、in、len 分别做什么？",
+    "reviewQuestions": [
+      "为什么删除前最好先检查物品在不在？"
+    ],
+    "explainToParent": "我做了一个能添加、查看和检查物品的背包系统。",
+    "scratchCompare": "像 Scratch 里用列表做物品栏。"
   },
   {
     "id": "lesson-41-string-slice",
@@ -1182,8 +2119,15 @@
     "subtitle": "进阶训练营：为真实项目做准备",
     "status": "available",
     "concept": "字符串切片",
-    "concepts": ["text[0]", "text[0:2]", "字符串下标"],
-    "skills": ["取第一个字符", "取一小段文字"],
+    "concepts": [
+      "text[0]",
+      "text[0:2]",
+      "字符串下标"
+    ],
+    "skills": [
+      "取第一个字符",
+      "取一小段文字"
+    ],
     "goal": "用下标和切片取出文字的一部分。",
     "story": "小助手想从 Python 这个单词里取出第一个字母，也想取出前两个字母。",
     "scene": "取单词或名字的一部分。",
@@ -1191,23 +2135,56 @@
     "starterCode": "word = \"Python\"\nprint(word[0])\nprint(word[0:2])",
     "modifyTask": "把 word 改成你的名字或另一个英文单词。",
     "challengeTask": "再输出 word[1:4]，观察取出了哪一段。",
-    "tasks": ["取出第一个字符", "取出前两个字符", "修改 word 再观察结果"],
+    "tasks": [
+      "取出第一个字符",
+      "取出前两个字符",
+      "修改 word 再观察结果"
+    ],
     "checkRules": [
-      { "type": "run_success" },
-      { "type": "code_contains", "value": "[0]" },
-      { "type": "code_contains", "value": ":" },
-      { "type": "output_line_count_at_least", "value": 2 }
+      {
+        "type": "run_success"
+      },
+      {
+        "type": "code_contains",
+        "value": "[0]"
+      },
+      {
+        "type": "code_contains",
+        "value": ":"
+      },
+      {
+        "type": "output_line_count_at_least",
+        "value": 2
+      }
     ],
     "successMessage": "文字切片成功！你已经能取出一部分文字。",
     "hint": "Python 的编号从 0 开始，word[0] 是第一个字符。",
-    "keyPoints": ["字符串也有编号", "第一个字符编号是 0", "word[0:2] 会取出前两个字符"],
-    "practiceTasks": ["把 word 改成 apple。", "输出最后一个你知道编号的字符。", "尝试 word[0:3] 看看输出什么。"],
+    "keyPoints": [
+      "字符串也有编号",
+      "第一个字符编号是 0",
+      "word[0:2] 会取出前两个字符"
+    ],
+    "practiceTasks": [
+      "把 word 改成 apple。",
+      "输出最后一个你知道编号的字符。",
+      "尝试 word[0:3] 看看输出什么。"
+    ],
     "commonMistakes": [
-      { "wrongCode": "print(word[1])  # 以为这是第一个字符", "explanation": "编号 1 其实是第二个字符。", "fixTip": "第一个字符要用 word[0]。" },
-      { "wrongCode": "print(word[0:2)", "explanation": "中括号和小括号混用了。", "fixTip": "切片要用中括号 word[0:2]。" }
+      {
+        "wrongCode": "print(word[1])  # 以为这是第一个字符",
+        "explanation": "编号 1 其实是第二个字符。",
+        "fixTip": "第一个字符要用 word[0]。"
+      },
+      {
+        "wrongCode": "print(word[0:2)",
+        "explanation": "中括号和小括号混用了。",
+        "fixTip": "切片要用中括号 word[0:2]。"
+      }
     ],
     "reviewQuestion": "为什么第一个字符要用 0？",
-    "reviewQuestions": ["word[0:2] 会取到几个字符？"],
+    "reviewQuestions": [
+      "word[0:2] 会取到几个字符？"
+    ],
     "explainToParent": "今天我学会了用编号取出文字的一部分。",
     "scratchCompare": "Scratch 里有取第几个字母的积木；Python 用 word[编号]。"
   },
@@ -1217,8 +2194,14 @@
     "subtitle": "进阶训练营：为真实项目做准备",
     "status": "available",
     "concept": "len(list)",
-    "concepts": ["列表", "len"],
-    "skills": ["统计列表数量", "显示背包数量"],
+    "concepts": [
+      "列表",
+      "len"
+    ],
+    "skills": [
+      "统计列表数量",
+      "显示背包数量"
+    ],
     "goal": "用 len() 统计列表里有几个内容。",
     "story": "勇者打开背包，小助手要告诉他背包里一共有几个东西。",
     "scene": "统计背包、任务清单或单词表数量。",
@@ -1226,23 +2209,56 @@
     "starterCode": "bag = [\"药水\", \"金币\", \"钥匙\"]\nprint(\"背包里有\", len(bag), \"个东西\")",
     "modifyTask": "给 bag 添加或减少物品，再观察数量变化。",
     "challengeTask": "创建一个 tasks 列表，输出任务数量。",
-    "tasks": ["创建列表", "用 len(bag) 统计数量", "修改列表后再运行"],
+    "tasks": [
+      "创建列表",
+      "用 len(bag) 统计数量",
+      "修改列表后再运行"
+    ],
     "checkRules": [
-      { "type": "run_success" },
-      { "type": "code_contains", "value": "len" },
-      { "type": "code_contains", "value": "[" },
-      { "type": "output_contains", "value": "背包" }
+      {
+        "type": "run_success"
+      },
+      {
+        "type": "code_contains",
+        "value": "len"
+      },
+      {
+        "type": "code_contains",
+        "value": "["
+      },
+      {
+        "type": "output_contains",
+        "value": "背包"
+      }
     ],
     "successMessage": "背包数量统计成功。",
     "hint": "len(bag) 的括号里写列表变量名。",
-    "keyPoints": ["列表可以保存多个内容", "len(列表) 可以数列表数量", "列表增加内容后长度会变大"],
-    "practiceTasks": ["给 bag 增加“地图”。", "删除一个物品后再运行。", "新建一个单词表并统计数量。"],
+    "keyPoints": [
+      "列表可以保存多个内容",
+      "len(列表) 可以数列表数量",
+      "列表增加内容后长度会变大"
+    ],
+    "practiceTasks": [
+      "给 bag 增加“地图”。",
+      "删除一个物品后再运行。",
+      "新建一个单词表并统计数量。"
+    ],
     "commonMistakes": [
-      { "wrongCode": "print(len(\"bag\"))", "explanation": "这里数的是文字 bag 的长度，不是列表 bag。", "fixTip": "变量名不要加引号：len(bag)。" },
-      { "wrongCode": "print(len[bag])", "explanation": "len 要用小括号，不是中括号。", "fixTip": "写成 len(bag)。" }
+      {
+        "wrongCode": "print(len(\"bag\"))",
+        "explanation": "这里数的是文字 bag 的长度，不是列表 bag。",
+        "fixTip": "变量名不要加引号：len(bag)。"
+      },
+      {
+        "wrongCode": "print(len[bag])",
+        "explanation": "len 要用小括号，不是中括号。",
+        "fixTip": "写成 len(bag)。"
+      }
     ],
     "reviewQuestion": "len(bag) 数的是列表名，还是列表里的内容数量？",
-    "reviewQuestions": ["为什么 len(\"bag\") 和 len(bag) 不一样？"],
+    "reviewQuestions": [
+      "为什么 len(\"bag\") 和 len(bag) 不一样？"
+    ],
     "explainToParent": "今天我学会了统计列表里有几个东西。",
     "scratchCompare": "Scratch 的列表有长度；Python 用 len(列表) 看长度。"
   },
@@ -1252,8 +2268,14 @@
     "subtitle": "进阶训练营：为真实项目做准备",
     "status": "available",
     "concept": "list[0]",
-    "concepts": ["列表下标", "索引从 0 开始"],
-    "skills": ["读取列表指定位置", "取第一个物品"],
+    "concepts": [
+      "列表下标",
+      "索引从 0 开始"
+    ],
+    "skills": [
+      "读取列表指定位置",
+      "取第一个物品"
+    ],
     "goal": "用 bag[0]、bag[1] 取出列表里的指定内容。",
     "story": "背包里有好几个东西。小助手要帮勇者拿出第一个和第二个物品。",
     "scene": "读取背包或题库里的指定内容。",
@@ -1261,22 +2283,52 @@
     "starterCode": "bag = [\"药水\", \"金币\", \"钥匙\"]\nprint(bag[0])\nprint(bag[1])",
     "modifyTask": "把 bag 改成你的学习用品清单。",
     "challengeTask": "输出第三个物品，想一想应该写 bag[几]。",
-    "tasks": ["创建列表", "输出第一个内容", "输出第二个内容"],
+    "tasks": [
+      "创建列表",
+      "输出第一个内容",
+      "输出第二个内容"
+    ],
     "checkRules": [
-      { "type": "run_success" },
-      { "type": "code_contains", "value": "[0]" },
-      { "type": "output_line_count_at_least", "value": 2 }
+      {
+        "type": "run_success"
+      },
+      {
+        "type": "code_contains",
+        "value": "[0]"
+      },
+      {
+        "type": "output_line_count_at_least",
+        "value": 2
+      }
     ],
     "successMessage": "列表取物品成功！你记住了编号从 0 开始。",
     "hint": "第一个内容是 bag[0]，不是 bag[1]。",
-    "keyPoints": ["列表里的内容有编号", "第一个编号是 0", "访问不存在的编号会报错"],
-    "practiceTasks": ["输出 bag[2]。", "把列表换成三个课程名。", "试着访问一个不存在的位置，看看本地报错提示。"],
+    "keyPoints": [
+      "列表里的内容有编号",
+      "第一个编号是 0",
+      "访问不存在的编号会报错"
+    ],
+    "practiceTasks": [
+      "输出 bag[2]。",
+      "把列表换成三个课程名。",
+      "试着访问一个不存在的位置，看看本地报错提示。"
+    ],
     "commonMistakes": [
-      { "wrongCode": "print(bag[1])  # 想取第一个", "explanation": "bag[1] 是第二个内容。", "fixTip": "取第一个要写 bag[0]。" },
-      { "wrongCode": "print(bag[5])", "explanation": "列表没有这么多内容，会访问不存在的位置。", "fixTip": "先用 len(bag) 看看有几个内容。" }
+      {
+        "wrongCode": "print(bag[1])  # 想取第一个",
+        "explanation": "bag[1] 是第二个内容。",
+        "fixTip": "取第一个要写 bag[0]。"
+      },
+      {
+        "wrongCode": "print(bag[5])",
+        "explanation": "列表没有这么多内容，会访问不存在的位置。",
+        "fixTip": "先用 len(bag) 看看有几个内容。"
+      }
     ],
     "reviewQuestion": "列表第一个内容的编号是多少？",
-    "reviewQuestions": ["为什么 bag[5] 可能会报错？"],
+    "reviewQuestions": [
+      "为什么 bag[5] 可能会报错？"
+    ],
     "explainToParent": "今天我学会了用编号取列表里的内容。",
     "scratchCompare": "Scratch 列表通常从第 1 项开始；Python 列表从 0 开始。"
   },
@@ -1286,8 +2338,14 @@
     "subtitle": "进阶训练营：为真实项目做准备",
     "status": "available",
     "concept": "append()",
-    "concepts": ["列表", "append"],
-    "skills": ["给列表添加内容", "扩展任务清单"],
+    "concepts": [
+      "列表",
+      "append"
+    ],
+    "skills": [
+      "给列表添加内容",
+      "扩展任务清单"
+    ],
     "goal": "用 append() 给列表添加一个新内容。",
     "story": "今天又多了一个任务。小助手不用重写整个清单，只要把新任务添加进去。",
     "scene": "添加任务、单词或背包物品。",
@@ -1295,22 +2353,52 @@
     "starterCode": "tasks = [\"阅读\", \"运动\"]\ntasks.append(\"Python\")\nprint(tasks)",
     "modifyTask": "把添加的任务改成你今天真实要做的一件事。",
     "challengeTask": "连续 append 两个新任务，再输出列表长度。",
-    "tasks": ["创建任务列表", "用 append 添加内容", "输出新列表"],
+    "tasks": [
+      "创建任务列表",
+      "用 append 添加内容",
+      "输出新列表"
+    ],
     "checkRules": [
-      { "type": "run_success" },
-      { "type": "code_contains", "value": ".append" },
-      { "type": "output_contains", "value": "Python" }
+      {
+        "type": "run_success"
+      },
+      {
+        "type": "code_contains",
+        "value": ".append"
+      },
+      {
+        "type": "output_contains",
+        "value": "Python"
+      }
     ],
     "successMessage": "任务添加成功！列表变得更丰富了。",
     "hint": "append 前面是列表变量名，括号里是要添加的新内容。",
-    "keyPoints": ["append() 会把内容加到列表最后", "添加文字时要加引号", "可以多次 append 添加多个内容"],
-    "practiceTasks": ["把 Python 改成“整理书包”。", "再 append 一个新任务。", "输出 len(tasks) 看任务数量。"],
+    "keyPoints": [
+      "append() 会把内容加到列表最后",
+      "添加文字时要加引号",
+      "可以多次 append 添加多个内容"
+    ],
+    "practiceTasks": [
+      "把 Python 改成“整理书包”。",
+      "再 append 一个新任务。",
+      "输出 len(tasks) 看任务数量。"
+    ],
     "commonMistakes": [
-      { "wrongCode": "append(\"Python\")", "explanation": "没有告诉 Python 要添加到哪个列表。", "fixTip": "写成 tasks.append(\"Python\")。" },
-      { "wrongCode": "tasks.append(Python)", "explanation": "Python 没有加引号，会被当成变量。", "fixTip": "文字要写成 \"Python\"。" }
+      {
+        "wrongCode": "append(\"Python\")",
+        "explanation": "没有告诉 Python 要添加到哪个列表。",
+        "fixTip": "写成 tasks.append(\"Python\")。"
+      },
+      {
+        "wrongCode": "tasks.append(Python)",
+        "explanation": "Python 没有加引号，会被当成变量。",
+        "fixTip": "文字要写成 \"Python\"。"
+      }
     ],
     "reviewQuestion": "append() 会把新内容加到列表的哪里？",
-    "reviewQuestions": ["为什么 append 前面要写列表名？"],
+    "reviewQuestions": [
+      "为什么 append 前面要写列表名？"
+    ],
     "explainToParent": "今天我学会了给列表添加新内容。",
     "scratchCompare": "Scratch 有“添加到列表”积木；Python 用 列表.append(内容)。"
   },
@@ -1320,8 +2408,14 @@
     "subtitle": "进阶训练营：为真实项目做准备",
     "status": "available",
     "concept": "remove()",
-    "concepts": ["列表", "remove"],
-    "skills": ["从列表删除内容", "更新任务清单"],
+    "concepts": [
+      "列表",
+      "remove"
+    ],
+    "skills": [
+      "从列表删除内容",
+      "更新任务清单"
+    ],
     "goal": "用 remove() 从列表中删除一个已经完成的内容。",
     "story": "运动任务完成了，小助手要把它从今日清单里划掉。",
     "scene": "完成任务后更新清单。",
@@ -1329,22 +2423,52 @@
     "starterCode": "tasks = [\"阅读\", \"运动\", \"Python\"]\ntasks.remove(\"运动\")\nprint(tasks)",
     "modifyTask": "把删除的内容改成你想划掉的任务。",
     "challengeTask": "先判断任务在不在列表里，再删除它。",
-    "tasks": ["创建任务列表", "删除一个任务", "输出剩下的任务"],
+    "tasks": [
+      "创建任务列表",
+      "删除一个任务",
+      "输出剩下的任务"
+    ],
     "checkRules": [
-      { "type": "run_success" },
-      { "type": "code_contains", "value": ".remove" },
-      { "type": "code_not_contains", "value": "运动运动" }
+      {
+        "type": "run_success"
+      },
+      {
+        "type": "code_contains",
+        "value": ".remove"
+      },
+      {
+        "type": "code_not_contains",
+        "value": "运动运动"
+      }
     ],
     "successMessage": "任务删除成功！清单已经更新。",
     "hint": "remove 的内容必须真的在列表里，否则 Python 会提醒你找不到。",
-    "keyPoints": ["remove() 可以删除列表里的指定内容", "删除文字时要加引号", "要删除的内容最好先确认在列表里"],
-    "practiceTasks": ["删除“阅读”再运行。", "把任务清单换成自己的内容。", "尝试删除不存在的任务，观察错误提示。"],
+    "keyPoints": [
+      "remove() 可以删除列表里的指定内容",
+      "删除文字时要加引号",
+      "要删除的内容最好先确认在列表里"
+    ],
+    "practiceTasks": [
+      "删除“阅读”再运行。",
+      "把任务清单换成自己的内容。",
+      "尝试删除不存在的任务，观察错误提示。"
+    ],
     "commonMistakes": [
-      { "wrongCode": "tasks.remove(\"英语\")", "explanation": "列表里没有“英语”，Python 找不到要删除的内容。", "fixTip": "先确认内容在列表里，或换成列表已有内容。" },
-      { "wrongCode": "remove(\"运动\")", "explanation": "没有写从哪个列表删除。", "fixTip": "写成 tasks.remove(\"运动\")。" }
+      {
+        "wrongCode": "tasks.remove(\"英语\")",
+        "explanation": "列表里没有“英语”，Python 找不到要删除的内容。",
+        "fixTip": "先确认内容在列表里，或换成列表已有内容。"
+      },
+      {
+        "wrongCode": "remove(\"运动\")",
+        "explanation": "没有写从哪个列表删除。",
+        "fixTip": "写成 tasks.remove(\"运动\")。"
+      }
     ],
     "reviewQuestion": "remove() 删除的是编号，还是指定内容？",
-    "reviewQuestions": ["如果要删除的内容不在列表里，会发生什么？"],
+    "reviewQuestions": [
+      "如果要删除的内容不在列表里，会发生什么？"
+    ],
     "explainToParent": "今天我学会了从列表中删除一个指定内容。",
     "scratchCompare": "Scratch 可以删除列表项；Python 可以用 remove 删除指定内容。"
   },
@@ -1354,8 +2478,15 @@
     "subtitle": "进阶训练营：为真实项目做准备",
     "status": "available",
     "concept": "item in list",
-    "concepts": ["in", "列表", "if"],
-    "skills": ["判断列表是否包含内容", "检查背包物品"],
+    "concepts": [
+      "in",
+      "列表",
+      "if"
+    ],
+    "skills": [
+      "判断列表是否包含内容",
+      "检查背包物品"
+    ],
     "goal": "用 in 判断一个东西是否在列表里。",
     "story": "勇者来到门前。小助手要检查背包里有没有钥匙。",
     "scene": "判断背包、任务或单词是否存在。",
@@ -1363,23 +2494,56 @@
     "starterCode": "bag = [\"药水\", \"金币\", \"钥匙\"]\n\nif \"钥匙\" in bag:\n    print(\"你可以开门\")\nelse:\n    print(\"还没有钥匙\")",
     "modifyTask": "把“钥匙”改成另一个物品，看看判断结果。",
     "challengeTask": "先 append 一个新物品，再判断它在不在列表里。",
-    "tasks": ["创建背包列表", "用 in 判断钥匙", "用 if 输出结果"],
+    "tasks": [
+      "创建背包列表",
+      "用 in 判断钥匙",
+      "用 if 输出结果"
+    ],
     "checkRules": [
-      { "type": "run_success" },
-      { "type": "code_contains", "value": " in " },
-      { "type": "code_contains", "value": "if" },
-      { "type": "output_line_count_at_least", "value": 1 }
+      {
+        "type": "run_success"
+      },
+      {
+        "type": "code_contains",
+        "value": " in "
+      },
+      {
+        "type": "code_contains",
+        "value": "if"
+      },
+      {
+        "type": "output_line_count_at_least",
+        "value": 1
+      }
     ],
     "successMessage": "背包检查成功！你会判断物品是否存在了。",
     "hint": "写法是 \"钥匙\" in bag，左边是物品，右边是列表。",
-    "keyPoints": ["in 可以判断内容是否在列表里", "判断结果可以交给 if", "物品文字要加引号"],
-    "practiceTasks": ["把钥匙从 bag 里删掉再运行。", "判断“地图”在不在背包里。", "添加“地图”后再判断一次。"],
+    "keyPoints": [
+      "in 可以判断内容是否在列表里",
+      "判断结果可以交给 if",
+      "物品文字要加引号"
+    ],
+    "practiceTasks": [
+      "把钥匙从 bag 里删掉再运行。",
+      "判断“地图”在不在背包里。",
+      "添加“地图”后再判断一次。"
+    ],
     "commonMistakes": [
-      { "wrongCode": "if 钥匙 in bag:", "explanation": "钥匙没有加引号，会被当成变量名。", "fixTip": "写成 if \"钥匙\" in bag:。" },
-      { "wrongCode": "if bag in \"钥匙\":", "explanation": "左右位置写反了。", "fixTip": "一般写成 物品 in 列表。" }
+      {
+        "wrongCode": "if 钥匙 in bag:",
+        "explanation": "钥匙没有加引号，会被当成变量名。",
+        "fixTip": "写成 if \"钥匙\" in bag:。"
+      },
+      {
+        "wrongCode": "if bag in \"钥匙\":",
+        "explanation": "左右位置写反了。",
+        "fixTip": "一般写成 物品 in 列表。"
+      }
     ],
     "reviewQuestion": "判断列表里有没有某个内容时，in 左右分别放什么？",
-    "reviewQuestions": ["为什么这个功能适合背包系统？"],
+    "reviewQuestions": [
+      "为什么这个功能适合背包系统？"
+    ],
     "explainToParent": "今天我学会了检查列表里有没有某个东西。",
     "scratchCompare": "Scratch 可以判断列表是否包含某项；Python 用 in。"
   },
@@ -1389,8 +2553,18 @@
     "subtitle": "进阶训练营：为真实项目做准备",
     "status": "available",
     "concept": "list 综合",
-    "concepts": ["list", "append", "remove", "in", "for"],
-    "skills": ["管理背包", "遍历列表", "判断物品"],
+    "concepts": [
+      "list",
+      "append",
+      "remove",
+      "in",
+      "for"
+    ],
+    "skills": [
+      "管理背包",
+      "遍历列表",
+      "判断物品"
+    ],
     "goal": "综合使用列表、append、in 和 for，做一个小背包系统。",
     "story": "勇者塔需要背包系统。你要让勇者拿到钥匙，并显示背包内容。",
     "scene": "勇者塔背包和任务清单。",
@@ -1398,24 +2572,61 @@
     "starterCode": "bag = [\"药水\", \"金币\"]\n\nbag.append(\"钥匙\")\n\nfor item in bag:\n    print(\"背包里有：\", item)\n\nif \"钥匙\" in bag:\n    print(\"可以打开门\")",
     "modifyTask": "把背包物品改成你自己的冒险道具。",
     "challengeTask": "使用 remove() 删除一个已经用掉的物品。",
-    "tasks": ["创建背包", "添加钥匙", "遍历输出背包", "判断是否能开门"],
+    "tasks": [
+      "创建背包",
+      "添加钥匙",
+      "遍历输出背包",
+      "判断是否能开门"
+    ],
     "checkRules": [
-      { "type": "run_success" },
-      { "type": "code_contains", "value": ".append" },
-      { "type": "code_contains", "value": "for" },
-      { "type": "code_contains", "value": " in " },
-      { "type": "output_contains", "value": "可以打开门" }
+      {
+        "type": "run_success"
+      },
+      {
+        "type": "code_contains",
+        "value": ".append"
+      },
+      {
+        "type": "code_contains",
+        "value": "for"
+      },
+      {
+        "type": "code_contains",
+        "value": " in "
+      },
+      {
+        "type": "output_contains",
+        "value": "可以打开门"
+      }
     ],
     "successMessage": "背包系统完成！这已经像一个小项目了。",
     "hint": "先 append 钥匙，再用 if \"钥匙\" in bag 判断。",
-    "keyPoints": ["列表可以保存背包物品", "for 可以逐个显示物品", "in 可以判断关键物品是否存在"],
-    "practiceTasks": ["添加“地图”并输出。", "删除“药水”后再输出。", "把钥匙换成“通行证”。"],
+    "keyPoints": [
+      "列表可以保存背包物品",
+      "for 可以逐个显示物品",
+      "in 可以判断关键物品是否存在"
+    ],
+    "practiceTasks": [
+      "添加“地图”并输出。",
+      "删除“药水”后再输出。",
+      "把钥匙换成“通行证”。"
+    ],
     "commonMistakes": [
-      { "wrongCode": "for item in bag\n    print(item)", "explanation": "for 后面少了冒号。", "fixTip": "写成 for item in bag:。" },
-      { "wrongCode": "if \"钥匙\" bag:", "explanation": "判断包含关系时少了 in。", "fixTip": "写成 if \"钥匙\" in bag:。" }
+      {
+        "wrongCode": "for item in bag\n    print(item)",
+        "explanation": "for 后面少了冒号。",
+        "fixTip": "写成 for item in bag:。"
+      },
+      {
+        "wrongCode": "if \"钥匙\" bag:",
+        "explanation": "判断包含关系时少了 in。",
+        "fixTip": "写成 if \"钥匙\" in bag:。"
+      }
     ],
     "reviewQuestion": "背包系统里 append、for、in 分别负责什么？",
-    "reviewQuestions": ["如果没有钥匙，程序应该输出什么？"],
+    "reviewQuestions": [
+      "如果没有钥匙，程序应该输出什么？"
+    ],
     "explainToParent": "今天我把列表的添加、遍历和判断组合成了背包系统。",
     "scratchCompare": "Scratch 里可以用列表做背包；Python 用 list、append、for 和 in。"
   },
@@ -1425,8 +2636,15 @@
     "subtitle": "进阶训练营：为真实项目做准备",
     "status": "available",
     "concept": "dict 取值",
-    "concepts": ["dict", "key", "dict[\"key\"]"],
-    "skills": ["保存资料卡", "读取指定资料"],
+    "concepts": [
+      "dict",
+      "key",
+      "dict[\"key\"]"
+    ],
+    "skills": [
+      "保存资料卡",
+      "读取指定资料"
+    ],
     "goal": "用字典保存资料，并用 key 取出指定内容。",
     "story": "小助手要保存怪物资料卡：名字和血量分别放在不同标签下面。",
     "scene": "怪物资料卡、单词卡片、学生信息卡。",
@@ -1434,23 +2652,56 @@
     "starterCode": "monster = {\n    \"name\": \"史莱姆\",\n    \"hp\": 10\n}\n\nprint(monster[\"name\"])\nprint(monster[\"hp\"])",
     "modifyTask": "把怪物名字和血量改成你设计的怪物。",
     "challengeTask": "给 monster 增加 attack，并输出它。",
-    "tasks": ["创建字典", "读取 name", "读取 hp"],
+    "tasks": [
+      "创建字典",
+      "读取 name",
+      "读取 hp"
+    ],
     "checkRules": [
-      { "type": "run_success" },
-      { "type": "code_contains", "value": "{" },
-      { "type": "code_contains", "value": "[\"name\"]" },
-      { "type": "output_line_count_at_least", "value": 2 }
+      {
+        "type": "run_success"
+      },
+      {
+        "type": "code_contains",
+        "value": "{"
+      },
+      {
+        "type": "code_contains",
+        "value": "[\"name\"]"
+      },
+      {
+        "type": "output_line_count_at_least",
+        "value": 2
+      }
     ],
     "successMessage": "怪物资料读取成功！你会从字典里查资料了。",
     "hint": "字典取值要写 字典名[\"key\"]，key 要和创建时一样。",
-    "keyPoints": ["字典用 key 保存信息", "dict[\"key\"] 可以取出对应内容", "key 写错会找不到资料"],
-    "practiceTasks": ["把 name 改成“火焰怪”。", "增加 attack 并输出。", "试着查询一个不存在的 key，观察错误提示。"],
+    "keyPoints": [
+      "字典用 key 保存信息",
+      "dict[\"key\"] 可以取出对应内容",
+      "key 写错会找不到资料"
+    ],
+    "practiceTasks": [
+      "把 name 改成“火焰怪”。",
+      "增加 attack 并输出。",
+      "试着查询一个不存在的 key，观察错误提示。"
+    ],
     "commonMistakes": [
-      { "wrongCode": "print(monster[name])", "explanation": "name 没有加引号，会被当成变量名。", "fixTip": "写成 monster[\"name\"]。" },
-      { "wrongCode": "print(monster[\"level\"])", "explanation": "字典里没有 level 这个 key。", "fixTip": "先在字典里添加 level，或查询已有 key。" }
+      {
+        "wrongCode": "print(monster[name])",
+        "explanation": "name 没有加引号，会被当成变量名。",
+        "fixTip": "写成 monster[\"name\"]。"
+      },
+      {
+        "wrongCode": "print(monster[\"level\"])",
+        "explanation": "字典里没有 level 这个 key。",
+        "fixTip": "先在字典里添加 level，或查询已有 key。"
+      }
     ],
     "reviewQuestion": "字典里的 key 有什么作用？",
-    "reviewQuestions": ["monster[\"hp\"] 会取出什么？"],
+    "reviewQuestions": [
+      "monster[\"hp\"] 会取出什么？"
+    ],
     "explainToParent": "今天我学会了用字典保存资料，并按 key 查询。",
     "scratchCompare": "Scratch 常用多个变量保存资料；Python 可以用一个字典保存一组资料。"
   },
@@ -1460,8 +2711,15 @@
     "subtitle": "进阶训练营：为真实项目做准备",
     "status": "available",
     "concept": "修改字典",
-    "concepts": ["dict", "修改值", "新增 key"],
-    "skills": ["更新血量", "增加金币"],
+    "concepts": [
+      "dict",
+      "修改值",
+      "新增 key"
+    ],
+    "skills": [
+      "更新血量",
+      "增加金币"
+    ],
     "goal": "修改字典里的值，并给字典新增一个 key。",
     "story": "勇者被攻击后血量减少，又获得了金币。小助手要更新勇者资料卡。",
     "scene": "更新角色血量、金币和学习积分。",
@@ -1469,23 +2727,57 @@
     "starterCode": "hero = {\n    \"name\": \"代码勇者\",\n    \"hp\": 10\n}\n\nhero[\"hp\"] = 8\nhero[\"coin\"] = 5\n\nprint(hero)",
     "modifyTask": "把 hp 和 coin 改成你自己的数值。",
     "challengeTask": "再新增一个 level，表示勇者等级。",
-    "tasks": ["创建 hero 字典", "修改 hp", "新增 coin", "输出字典"],
+    "tasks": [
+      "创建 hero 字典",
+      "修改 hp",
+      "新增 coin",
+      "输出字典"
+    ],
     "checkRules": [
-      { "type": "run_success" },
-      { "type": "code_contains", "value": "[\"hp\"]" },
-      { "type": "code_contains", "value": "[\"coin\"]" },
-      { "type": "output_contains", "value": "coin" }
+      {
+        "type": "run_success"
+      },
+      {
+        "type": "code_contains",
+        "value": "[\"hp\"]"
+      },
+      {
+        "type": "code_contains",
+        "value": "[\"coin\"]"
+      },
+      {
+        "type": "output_contains",
+        "value": "coin"
+      }
     ],
     "successMessage": "勇者资料更新成功！字典可以记录变化。",
     "hint": "已有 key 会被修改，不存在的 key 会被新增。",
-    "keyPoints": ["字典里的值可以修改", "给新 key 赋值就是新增资料", "字典适合保存会变化的角色信息"],
-    "practiceTasks": ["把 hp 改成 6。", "新增 level。", "新增一个 hobby 或 skill。"],
+    "keyPoints": [
+      "字典里的值可以修改",
+      "给新 key 赋值就是新增资料",
+      "字典适合保存会变化的角色信息"
+    ],
+    "practiceTasks": [
+      "把 hp 改成 6。",
+      "新增 level。",
+      "新增一个 hobby 或 skill。"
+    ],
     "commonMistakes": [
-      { "wrongCode": "hero(\"hp\") = 8", "explanation": "字典取值和修改要用中括号。", "fixTip": "写成 hero[\"hp\"] = 8。" },
-      { "wrongCode": "hero[hp] = 8", "explanation": "hp 没加引号，会被当成变量。", "fixTip": "写成 hero[\"hp\"]。" }
+      {
+        "wrongCode": "hero(\"hp\") = 8",
+        "explanation": "字典取值和修改要用中括号。",
+        "fixTip": "写成 hero[\"hp\"] = 8。"
+      },
+      {
+        "wrongCode": "hero[hp] = 8",
+        "explanation": "hp 没加引号，会被当成变量。",
+        "fixTip": "写成 hero[\"hp\"]。"
+      }
     ],
     "reviewQuestion": "给字典里不存在的 key 赋值，会发生什么？",
-    "reviewQuestions": ["修改 hp 和新增 coin 的写法哪里相似？"],
+    "reviewQuestions": [
+      "修改 hp 和新增 coin 的写法哪里相似？"
+    ],
     "explainToParent": "今天我学会了修改字典里的资料，也能新增资料。",
     "scratchCompare": "Scratch 可能用多个变量记录角色状态；Python 可以把状态放进一个字典。"
   },
@@ -1495,8 +2787,15 @@
     "subtitle": "进阶训练营：为真实项目做准备",
     "status": "available",
     "concept": "for key in dict",
-    "concepts": ["dict", "for", "key 和 value"],
-    "skills": ["显示一整张资料卡", "逐项输出字典"],
+    "concepts": [
+      "dict",
+      "for",
+      "key 和 value"
+    ],
+    "skills": [
+      "显示一整张资料卡",
+      "逐项输出字典"
+    ],
     "goal": "用 for 遍历字典，显示 key 和对应的 value。",
     "story": "小助手要把勇者资料卡一项一项展示出来，而不是只显示一项。",
     "scene": "显示角色资料、任务分数或单词卡片。",
@@ -1504,25 +2803,146 @@
     "starterCode": "hero = {\n    \"name\": \"代码勇者\",\n    \"hp\": 10,\n    \"coin\": 5\n}\n\nfor key in hero:\n    print(key, hero[key])",
     "modifyTask": "给 hero 增加 level 或 skill，再观察输出。",
     "challengeTask": "把输出改成“资料：key = value”的样子。",
-    "tasks": ["创建字典", "用 for 遍历 key", "输出 key 和 value"],
+    "tasks": [
+      "创建字典",
+      "用 for 遍历 key",
+      "输出 key 和 value"
+    ],
     "checkRules": [
-      { "type": "run_success" },
-      { "type": "code_contains", "value": "for" },
-      { "type": "code_contains", "value": "hero[key]" },
-      { "type": "output_line_count_at_least", "value": 3 }
+      {
+        "type": "run_success"
+      },
+      {
+        "type": "code_contains",
+        "value": "for"
+      },
+      {
+        "type": "code_contains",
+        "value": "hero[key]"
+      },
+      {
+        "type": "output_line_count_at_least",
+        "value": 3
+      }
     ],
     "successMessage": "资料卡展示成功！字典里的内容被逐项输出。",
     "hint": "for key in hero 取到的是 key，value 要用 hero[key] 再取一次。",
-    "keyPoints": ["for 可以遍历字典的 key", "hero[key] 可以取出对应 value", "适合展示完整资料卡"],
-    "practiceTasks": ["新增一个 level 再输出。", "把 hero 改成 monster。", "修改 print 的显示格式。"],
+    "keyPoints": [
+      "for 可以遍历字典的 key",
+      "hero[key] 可以取出对应 value",
+      "适合展示完整资料卡"
+    ],
+    "practiceTasks": [
+      "新增一个 level 再输出。",
+      "把 hero 改成 monster。",
+      "修改 print 的显示格式。"
+    ],
     "commonMistakes": [
-      { "wrongCode": "for key in hero\n    print(key)", "explanation": "for 后面少了冒号。", "fixTip": "写成 for key in hero:。" },
-      { "wrongCode": "print(key, key[value])", "explanation": "key 是一个文字，不是字典。", "fixTip": "用 hero[key] 取 value。" }
+      {
+        "wrongCode": "for key in hero\n    print(key)",
+        "explanation": "for 后面少了冒号。",
+        "fixTip": "写成 for key in hero:。"
+      },
+      {
+        "wrongCode": "print(key, key[value])",
+        "explanation": "key 是一个文字，不是字典。",
+        "fixTip": "用 hero[key] 取 value。"
+      }
     ],
     "reviewQuestion": "for key in hero 取出来的是 key 还是 value？",
-    "reviewQuestions": ["为什么还要写 hero[key]？"],
+    "reviewQuestions": [
+      "为什么还要写 hero[key]？"
+    ],
     "explainToParent": "今天我学会了把字典资料一项一项显示出来。",
     "scratchCompare": "Scratch 会逐项读取列表；Python 字典可以逐个读取 key。"
+  },
+  {
+    "id": "milestone-05-monster-card",
+    "type": "milestoneProject",
+    "title": "阶段作品5：怪物资料卡",
+    "status": "available",
+    "concept": "dict / for / 修改字典",
+    "afterLesson": 50,
+    "subtitle": "第50课后阶段作品",
+    "concepts": [
+      "dict",
+      "for",
+      "修改字典"
+    ],
+    "skills": [
+      "保存怪物资料",
+      "修改血量",
+      "遍历资料卡"
+    ],
+    "goal": "制作怪物信息管理系统。",
+    "story": "勇者塔里的怪物需要名字、血量和攻击力。字典可以把这些资料放在一张卡片里。",
+    "scene": "记录怪物资料，并在战斗后更新血量。",
+    "explanation": "这个作品重点是用 dict 保存怪物资料，修改 hp，再用 for 把资料显示出来。",
+    "starterCode": "monster = {\n    \"name\": \"史莱姆\",\n    \"hp\": 10,\n    \"attack\": 2\n}\n\nmonster[\"hp\"] = monster[\"hp\"] - 3\n\nfor key in monster:\n    print(key, monster[key])",
+    "modifyTask": "把怪物改成你设计的新怪物。",
+    "challengeTask": "新增 defense 或 level，并一起显示出来。",
+    "tasks": [
+      "创建怪物字典",
+      "修改 hp",
+      "用 for 显示资料",
+      "新增一个资料项"
+    ],
+    "thinkingQuestions": [
+      "字典为什么适合保存怪物资料？",
+      "monster[\"hp\"] - 3 表示什么？",
+      "for key in monster 取到什么？"
+    ],
+    "completionRequirements": [
+      "能显示怪物资料",
+      "能修改血量",
+      "能新增资料项"
+    ],
+    "checkRules": [
+      {
+        "type": "run_success"
+      },
+      {
+        "type": "code_contains",
+        "value": "{"
+      },
+      {
+        "type": "code_contains",
+        "value": "[\"hp\"]"
+      },
+      {
+        "type": "code_contains",
+        "value": "for"
+      },
+      {
+        "type": "output_contains",
+        "value": "hp"
+      }
+    ],
+    "successMessage": "怪物资料卡完成！你已经能管理游戏角色资料了。",
+    "hint": "先保证 name、hp、attack 能输出，再新增自己的资料。",
+    "keyPoints": [
+      "dict 保存一组资料",
+      "可以修改字典里的值",
+      "for 可以遍历字典 key"
+    ],
+    "practiceTasks": [
+      "把史莱姆改成火焰怪。",
+      "把扣血改成 5。",
+      "新增 level。"
+    ],
+    "commonMistakes": [
+      {
+        "wrongCode": "monster[hp] = 7",
+        "explanation": "hp 没加引号，会被当成变量。",
+        "fixTip": "写成 monster[\"hp\"] = 7。"
+      }
+    ],
+    "reviewQuestion": "怪物资料卡为什么用字典比多个变量更清楚？",
+    "reviewQuestions": [
+      "for key in monster 输出了哪些 key？"
+    ],
+    "explainToParent": "我做了一个能保存、修改和显示怪物资料的系统。",
+    "scratchCompare": "Scratch 可能用多个变量记录怪物；Python 可以用字典集中管理。"
   },
   {
     "id": "lesson-51-monster-card",
@@ -1530,8 +2950,16 @@
     "subtitle": "进阶训练营：为真实项目做准备",
     "status": "available",
     "concept": "dict 综合",
-    "concepts": ["dict", "取值", "修改", "遍历"],
-    "skills": ["制作怪物资料卡", "更新怪物血量"],
+    "concepts": [
+      "dict",
+      "取值",
+      "修改",
+      "遍历"
+    ],
+    "skills": [
+      "制作怪物资料卡",
+      "更新怪物血量"
+    ],
     "goal": "综合使用字典取值、修改和遍历，做怪物资料卡。",
     "story": "勇者攻击怪物后，小助手要更新怪物血量，并显示最新资料。",
     "scene": "勇者塔怪物系统和角色资料。",
@@ -1539,24 +2967,60 @@
     "starterCode": "monster = {\n    \"name\": \"史莱姆\",\n    \"hp\": 10,\n    \"attack\": 2\n}\n\nmonster[\"hp\"] = monster[\"hp\"] - 3\n\nfor key in monster:\n    print(key, monster[key])",
     "modifyTask": "把怪物改成你设计的新怪物。",
     "challengeTask": "新增 defense 防御值，并一起输出。",
-    "tasks": ["创建怪物字典", "修改 hp", "遍历输出资料"],
+    "tasks": [
+      "创建怪物字典",
+      "修改 hp",
+      "遍历输出资料"
+    ],
     "checkRules": [
-      { "type": "run_success" },
-      { "type": "code_contains", "value": "{\"" },
-      { "type": "code_contains", "value": "[\"hp\"]" },
-      { "type": "code_contains", "value": "for" },
-      { "type": "output_contains", "value": "hp" }
+      {
+        "type": "run_success"
+      },
+      {
+        "type": "code_contains",
+        "value": "{\""
+      },
+      {
+        "type": "code_contains",
+        "value": "[\"hp\"]"
+      },
+      {
+        "type": "code_contains",
+        "value": "for"
+      },
+      {
+        "type": "output_contains",
+        "value": "hp"
+      }
     ],
     "successMessage": "怪物资料卡完成！你能管理会变化的资料了。",
     "hint": "monster[\"hp\"] = monster[\"hp\"] - 3 表示让原来的 hp 减少 3。",
-    "keyPoints": ["字典适合保存一组资料", "可以读取原值再修改", "for 可以展示完整字典"],
-    "practiceTasks": ["把扣血数字改成 5。", "新增 defense。", "把 name 改成“火焰怪”。"],
+    "keyPoints": [
+      "字典适合保存一组资料",
+      "可以读取原值再修改",
+      "for 可以展示完整字典"
+    ],
+    "practiceTasks": [
+      "把扣血数字改成 5。",
+      "新增 defense。",
+      "把 name 改成“火焰怪”。"
+    ],
     "commonMistakes": [
-      { "wrongCode": "monster[\"hp\"] = \"hp\" - 3", "explanation": "这里把 hp 写成了文字，不能做减法。", "fixTip": "用 monster[\"hp\"] 取出原来的数字。" },
-      { "wrongCode": "for key monster:", "explanation": "for 的写法少了 in。", "fixTip": "写成 for key in monster:。" }
+      {
+        "wrongCode": "monster[\"hp\"] = \"hp\" - 3",
+        "explanation": "这里把 hp 写成了文字，不能做减法。",
+        "fixTip": "用 monster[\"hp\"] 取出原来的数字。"
+      },
+      {
+        "wrongCode": "for key monster:",
+        "explanation": "for 的写法少了 in。",
+        "fixTip": "写成 for key in monster:。"
+      }
     ],
     "reviewQuestion": "为什么怪物资料适合用字典保存？",
-    "reviewQuestions": ["扣血时为什么要先读取 monster[\"hp\"]？"],
+    "reviewQuestions": [
+      "扣血时为什么要先读取 monster[\"hp\"]？"
+    ],
     "explainToParent": "今天我做了怪物资料卡，并能更新怪物血量。",
     "scratchCompare": "Scratch 可能用多个变量保存怪物资料；Python 用字典更集中。"
   },
@@ -1566,8 +3030,15 @@
     "subtitle": "进阶训练营：为真实项目做准备",
     "status": "available",
     "concept": "函数的意义",
-    "concepts": ["def", "函数", "避免重复"],
-    "skills": ["把常用代码装起来", "重复调用"],
+    "concepts": [
+      "def",
+      "函数",
+      "避免重复"
+    ],
+    "skills": [
+      "把常用代码装起来",
+      "重复调用"
+    ],
     "goal": "理解函数可以把常用动作装起来，避免重复写很多遍。",
     "story": "小助手每次欢迎你都要说同一句话。如果写成函数，就可以一键重复使用。",
     "scene": "打招呼、小游戏技能和生活小助手功能。",
@@ -1575,23 +3046,56 @@
     "starterCode": "def say_hello():\n    print(\"你好，欢迎来到 Python 世界\")\n\nsay_hello()\nsay_hello()",
     "modifyTask": "把欢迎语改成你自己的话。",
     "challengeTask": "再调用一次 say_hello()，观察输出次数。",
-    "tasks": ["定义一个函数", "调用函数两次", "观察重复输出"],
+    "tasks": [
+      "定义一个函数",
+      "调用函数两次",
+      "观察重复输出"
+    ],
     "checkRules": [
-      { "type": "run_success" },
-      { "type": "code_contains", "value": "def" },
-      { "type": "code_contains", "value": "say_hello()" },
-      { "type": "output_line_count_at_least", "value": 2 }
+      {
+        "type": "run_success"
+      },
+      {
+        "type": "code_contains",
+        "value": "def"
+      },
+      {
+        "type": "code_contains",
+        "value": "say_hello()"
+      },
+      {
+        "type": "output_line_count_at_least",
+        "value": 2
+      }
     ],
     "successMessage": "函数按钮做好了！同一段代码可以重复使用。",
     "hint": "def 负责定义函数，函数名加小括号负责调用函数。",
-    "keyPoints": ["函数可以保存一段常用代码", "定义函数后要调用才会执行", "函数能减少重复代码"],
-    "practiceTasks": ["修改函数里的欢迎语。", "调用三次函数。", "新建一个 say_bye 函数。"],
+    "keyPoints": [
+      "函数可以保存一段常用代码",
+      "定义函数后要调用才会执行",
+      "函数能减少重复代码"
+    ],
+    "practiceTasks": [
+      "修改函数里的欢迎语。",
+      "调用三次函数。",
+      "新建一个 say_bye 函数。"
+    ],
     "commonMistakes": [
-      { "wrongCode": "def say_hello()\n    print(\"你好\")", "explanation": "def 这一行后面少了冒号。", "fixTip": "写成 def say_hello():。" },
-      { "wrongCode": "def say_hello():\nprint(\"你好\")", "explanation": "函数里面的代码没有缩进。", "fixTip": "函数里的代码要往右缩进。" }
+      {
+        "wrongCode": "def say_hello()\n    print(\"你好\")",
+        "explanation": "def 这一行后面少了冒号。",
+        "fixTip": "写成 def say_hello():。"
+      },
+      {
+        "wrongCode": "def say_hello():\nprint(\"你好\")",
+        "explanation": "函数里面的代码没有缩进。",
+        "fixTip": "函数里的代码要往右缩进。"
+      }
     ],
     "reviewQuestion": "函数为什么能让代码更整齐？",
-    "reviewQuestions": ["定义函数后，为什么还要调用它？"],
+    "reviewQuestions": [
+      "定义函数后，为什么还要调用它？"
+    ],
     "explainToParent": "今天我知道了函数可以把常用动作装起来重复使用。",
     "scratchCompare": "Scratch 的自制积木很像 Python 函数。"
   },
@@ -1601,8 +3105,15 @@
     "subtitle": "进阶训练营：为真实项目做准备",
     "status": "available",
     "concept": "def 函数",
-    "concepts": ["def", "调用函数", "无参数"],
-    "skills": ["写一个固定动作函数", "调用函数"],
+    "concepts": [
+      "def",
+      "调用函数",
+      "无参数"
+    ],
+    "skills": [
+      "写一个固定动作函数",
+      "调用函数"
+    ],
     "goal": "写一个没有参数的函数，并调用它。",
     "story": "小助手想准备一个固定的加油口号，每次需要时直接喊出来。",
     "scene": "鼓励函数、打招呼函数和技能函数。",
@@ -1610,23 +3121,56 @@
     "starterCode": "def cheer():\n    print(\"杭杭加油！\")\n    print(\"你正在变成小程序员！\")\n\ncheer()",
     "modifyTask": "把鼓励语改成你想对自己说的话。",
     "challengeTask": "再写一个 ready() 函数，输出“我准备好了”。",
-    "tasks": ["定义 cheer 函数", "函数里输出两句话", "调用 cheer()"],
+    "tasks": [
+      "定义 cheer 函数",
+      "函数里输出两句话",
+      "调用 cheer()"
+    ],
     "checkRules": [
-      { "type": "run_success" },
-      { "type": "code_contains", "value": "def" },
-      { "type": "code_contains", "value": "cheer()" },
-      { "type": "output_line_count_at_least", "value": 2 }
+      {
+        "type": "run_success"
+      },
+      {
+        "type": "code_contains",
+        "value": "def"
+      },
+      {
+        "type": "code_contains",
+        "value": "cheer()"
+      },
+      {
+        "type": "output_line_count_at_least",
+        "value": 2
+      }
     ],
     "successMessage": "加油函数运行成功！固定动作可以装进函数里。",
     "hint": "函数里的两行 print 都要缩进。",
-    "keyPoints": ["没有参数的函数不需要接收外部内容", "调用函数要写函数名和小括号", "函数体里面的代码要缩进"],
-    "practiceTasks": ["修改两句鼓励语。", "调用 cheer() 两次。", "新建一个 ready() 函数。"],
+    "keyPoints": [
+      "没有参数的函数不需要接收外部内容",
+      "调用函数要写函数名和小括号",
+      "函数体里面的代码要缩进"
+    ],
+    "practiceTasks": [
+      "修改两句鼓励语。",
+      "调用 cheer() 两次。",
+      "新建一个 ready() 函数。"
+    ],
     "commonMistakes": [
-      { "wrongCode": "cheer", "explanation": "只写函数名不会调用函数。", "fixTip": "调用要写 cheer()。" },
-      { "wrongCode": "def cheer():\nprint(\"加油\")", "explanation": "函数体没有缩进。", "fixTip": "print 前面要空四格。" }
+      {
+        "wrongCode": "cheer",
+        "explanation": "只写函数名不会调用函数。",
+        "fixTip": "调用要写 cheer()。"
+      },
+      {
+        "wrongCode": "def cheer():\nprint(\"加油\")",
+        "explanation": "函数体没有缩进。",
+        "fixTip": "print 前面要空四格。"
+      }
     ],
     "reviewQuestion": "调用函数时为什么要写小括号？",
-    "reviewQuestions": ["没有参数的函数适合做什么？"],
+    "reviewQuestions": [
+      "没有参数的函数适合做什么？"
+    ],
     "explainToParent": "今天我学会了写一个固定动作函数。",
     "scratchCompare": "像 Scratch 自制积木，不带输入项时就是固定动作。"
   },
@@ -1636,8 +3180,15 @@
     "subtitle": "进阶训练营：为真实项目做准备",
     "status": "available",
     "concept": "函数参数",
-    "concepts": ["def", "参数", "不同输入"],
-    "skills": ["让函数接收内容", "复用同一个函数"],
+    "concepts": [
+      "def",
+      "参数",
+      "不同输入"
+    ],
+    "skills": [
+      "让函数接收内容",
+      "复用同一个函数"
+    ],
     "goal": "让函数接收不同名字，输出不同问候。",
     "story": "小助手不想只和一个人打招呼。参数可以让同一个函数对不同人说话。",
     "scene": "给不同人打招呼、计算不同角色伤害、输出不同单词提示。",
@@ -1645,23 +3196,56 @@
     "starterCode": "def say_name(name):\n    print(\"你好，\", name)\n\nsay_name(\"杭杭\")\nsay_name(\"爸爸\")",
     "modifyTask": "把名字改成家里人的名字或你设计的角色名。",
     "challengeTask": "再增加一个参数 word，让函数说“今天练习 word”。",
-    "tasks": ["定义带参数的函数", "调用两次并传入不同名字", "观察输出变化"],
+    "tasks": [
+      "定义带参数的函数",
+      "调用两次并传入不同名字",
+      "观察输出变化"
+    ],
     "checkRules": [
-      { "type": "run_success" },
-      { "type": "code_contains", "value": "def" },
-      { "type": "code_contains", "value": "name" },
-      { "type": "output_line_count_at_least", "value": 2 }
+      {
+        "type": "run_success"
+      },
+      {
+        "type": "code_contains",
+        "value": "def"
+      },
+      {
+        "type": "code_contains",
+        "value": "name"
+      },
+      {
+        "type": "output_line_count_at_least",
+        "value": 2
+      }
     ],
     "successMessage": "参数函数成功！同一个函数能处理不同内容。",
     "hint": "def say_name(name): 里的 name 是参数，调用时要给它一个名字。",
-    "keyPoints": ["参数让函数接收外面的内容", "同一个函数可以传入不同参数", "参数名在函数内部可以当变量使用"],
-    "practiceTasks": ["改成两个新名字。", "调用第三次 say_name。", "把函数名改成 greet。"],
+    "keyPoints": [
+      "参数让函数接收外面的内容",
+      "同一个函数可以传入不同参数",
+      "参数名在函数内部可以当变量使用"
+    ],
+    "practiceTasks": [
+      "改成两个新名字。",
+      "调用第三次 say_name。",
+      "把函数名改成 greet。"
+    ],
     "commonMistakes": [
-      { "wrongCode": "def say_name(name):\n    print(\"你好\")\nsay_name()", "explanation": "函数需要一个参数，但调用时没有给。", "fixTip": "写成 say_name(\"杭杭\")。" },
-      { "wrongCode": "say_name(杭杭)", "explanation": "文字参数没有加引号。", "fixTip": "写成 say_name(\"杭杭\")。" }
+      {
+        "wrongCode": "def say_name(name):\n    print(\"你好\")\nsay_name()",
+        "explanation": "函数需要一个参数，但调用时没有给。",
+        "fixTip": "写成 say_name(\"杭杭\")。"
+      },
+      {
+        "wrongCode": "say_name(杭杭)",
+        "explanation": "文字参数没有加引号。",
+        "fixTip": "写成 say_name(\"杭杭\")。"
+      }
     ],
     "reviewQuestion": "参数有什么用？",
-    "reviewQuestions": ["为什么 say_name(\"杭杭\") 和 say_name(\"爸爸\") 输出不同？"],
+    "reviewQuestions": [
+      "为什么 say_name(\"杭杭\") 和 say_name(\"爸爸\") 输出不同？"
+    ],
     "explainToParent": "今天我学会了让函数接收不同内容。",
     "scratchCompare": "Scratch 自制积木可以加输入项；Python 函数可以加参数。"
   },
@@ -1671,8 +3255,15 @@
     "subtitle": "进阶训练营：为真实项目做准备",
     "status": "available",
     "concept": "return",
-    "concepts": ["return", "函数结果", "变量"],
-    "skills": ["让函数交出结果", "保存函数结果"],
+    "concepts": [
+      "return",
+      "函数结果",
+      "变量"
+    ],
+    "skills": [
+      "让函数交出结果",
+      "保存函数结果"
+    ],
     "goal": "用 return 让函数把计算结果交出来。",
     "story": "小助手做完加法后，不只想说出来，还想把结果交给后面的代码使用。",
     "scene": "计算伤害、分数和剩余时间。",
@@ -1680,23 +3271,56 @@
     "starterCode": "def add(a, b):\n    return a + b\n\nresult = add(3, 5)\nprint(result)",
     "modifyTask": "把 3 和 5 改成你想计算的两个数字。",
     "challengeTask": "写一个 double(number) 函数，返回 number * 2。",
-    "tasks": ["定义 add 函数", "使用 return", "把结果保存到 result"],
+    "tasks": [
+      "定义 add 函数",
+      "使用 return",
+      "把结果保存到 result"
+    ],
     "checkRules": [
-      { "type": "run_success" },
-      { "type": "code_contains", "value": "return" },
-      { "type": "code_contains", "value": "result" },
-      { "type": "output_line_count_at_least", "value": 1 }
+      {
+        "type": "run_success"
+      },
+      {
+        "type": "code_contains",
+        "value": "return"
+      },
+      {
+        "type": "code_contains",
+        "value": "result"
+      },
+      {
+        "type": "output_line_count_at_least",
+        "value": 1
+      }
     ],
     "successMessage": "函数已经把结果交出来了！return 使用成功。",
     "hint": "return 后面的内容会成为函数的结果。",
-    "keyPoints": ["return 可以返回函数结果", "返回值可以保存到变量", "print 是显示，return 是交出结果"],
-    "practiceTasks": ["修改两个加数。", "把 result 再加 10 后输出。", "写一个乘法函数。"],
+    "keyPoints": [
+      "return 可以返回函数结果",
+      "返回值可以保存到变量",
+      "print 是显示，return 是交出结果"
+    ],
+    "practiceTasks": [
+      "修改两个加数。",
+      "把 result 再加 10 后输出。",
+      "写一个乘法函数。"
+    ],
     "commonMistakes": [
-      { "wrongCode": "def add(a, b):\n    print(a + b)\nresult = add(3, 5)", "explanation": "print 只是显示，result 里不会得到真正的返回值。", "fixTip": "需要把 print 改成 return。" },
-      { "wrongCode": "return a + b", "explanation": "return 必须写在函数里面。", "fixTip": "把 return 缩进到 def 函数内部。" }
+      {
+        "wrongCode": "def add(a, b):\n    print(a + b)\nresult = add(3, 5)",
+        "explanation": "print 只是显示，result 里不会得到真正的返回值。",
+        "fixTip": "需要把 print 改成 return。"
+      },
+      {
+        "wrongCode": "return a + b",
+        "explanation": "return 必须写在函数里面。",
+        "fixTip": "把 return 缩进到 def 函数内部。"
+      }
     ],
     "reviewQuestion": "return 和 print 有什么不同？",
-    "reviewQuestions": ["为什么 result = add(3, 5) 可以保存结果？"],
+    "reviewQuestions": [
+      "为什么 result = add(3, 5) 可以保存结果？"
+    ],
     "explainToParent": "今天我学会了让函数返回结果，而不只是打印结果。",
     "scratchCompare": "Scratch 的自制积木多是执行动作；Python 函数还可以 return 一个结果。"
   },
@@ -1706,8 +3330,16 @@
     "subtitle": "进阶训练营：为真实项目做准备",
     "status": "available",
     "concept": "def + 参数 + return",
-    "concepts": ["def", "参数", "return", "变量"],
-    "skills": ["计算伤害", "复用计算函数"],
+    "concepts": [
+      "def",
+      "参数",
+      "return",
+      "变量"
+    ],
+    "skills": [
+      "计算伤害",
+      "复用计算函数"
+    ],
     "goal": "写一个伤害计算函数，根据 power 返回伤害。",
     "story": "勇者塔里不同技能威力不同。小助手要根据威力计算造成多少伤害。",
     "scene": "勇者塔攻击伤害、游戏技能和简单计算器。",
@@ -1715,23 +3347,56 @@
     "starterCode": "def get_damage(power):\n    return power * 2\n\ndamage = get_damage(5)\nprint(\"造成伤害：\", damage)",
     "modifyTask": "把 5 改成不同技能威力，观察伤害变化。",
     "challengeTask": "增加一个 bonus 参数，让伤害变成 power * 2 + bonus。",
-    "tasks": ["定义带参数函数", "用 return 返回伤害", "输出伤害结果"],
+    "tasks": [
+      "定义带参数函数",
+      "用 return 返回伤害",
+      "输出伤害结果"
+    ],
     "checkRules": [
-      { "type": "run_success" },
-      { "type": "code_contains", "value": "def" },
-      { "type": "code_contains", "value": "return" },
-      { "type": "output_contains", "value": "造成伤害" }
+      {
+        "type": "run_success"
+      },
+      {
+        "type": "code_contains",
+        "value": "def"
+      },
+      {
+        "type": "code_contains",
+        "value": "return"
+      },
+      {
+        "type": "output_contains",
+        "value": "造成伤害"
+      }
     ],
     "successMessage": "伤害计算器完成！函数可以帮游戏算结果。",
     "hint": "power 是传进函数的数字，return 会把算好的伤害交出来。",
-    "keyPoints": ["参数负责接收威力", "return 负责交出伤害", "结果可以保存到 damage"],
-    "practiceTasks": ["把 get_damage(5) 改成 get_damage(8)。", "把乘以 2 改成乘以 3。", "新增 bonus 变量加入计算。"],
+    "keyPoints": [
+      "参数负责接收威力",
+      "return 负责交出伤害",
+      "结果可以保存到 damage"
+    ],
+    "practiceTasks": [
+      "把 get_damage(5) 改成 get_damage(8)。",
+      "把乘以 2 改成乘以 3。",
+      "新增 bonus 变量加入计算。"
+    ],
     "commonMistakes": [
-      { "wrongCode": "damage = get_damage(\"5\")", "explanation": "这里传入的是文字 5，做数学可能出问题。", "fixTip": "传数字时不要加引号。" },
-      { "wrongCode": "def get_damage(power):\nreturn power * 2", "explanation": "return 没有缩进到函数里面。", "fixTip": "return 前面要空四格。" }
+      {
+        "wrongCode": "damage = get_damage(\"5\")",
+        "explanation": "这里传入的是文字 5，做数学可能出问题。",
+        "fixTip": "传数字时不要加引号。"
+      },
+      {
+        "wrongCode": "def get_damage(power):\nreturn power * 2",
+        "explanation": "return 没有缩进到函数里面。",
+        "fixTip": "return 前面要空四格。"
+      }
     ],
     "reviewQuestion": "这个伤害计算器里，参数和 return 分别做什么？",
-    "reviewQuestions": ["为什么这个函数适合勇者塔？"],
+    "reviewQuestions": [
+      "为什么这个函数适合勇者塔？"
+    ],
     "explainToParent": "今天我把函数、参数和 return 组合成了伤害计算器。",
     "scratchCompare": "Scratch 可以用变量算伤害；Python 可以把计算装进函数。"
   },
@@ -1741,8 +3406,16 @@
     "subtitle": "进阶训练营：为真实项目做准备",
     "status": "available",
     "concept": "def + if + return",
-    "concepts": ["def", "参数", "if", "return"],
-    "skills": ["封装答案判断", "制作背单词小助手"],
+    "concepts": [
+      "def",
+      "参数",
+      "if",
+      "return"
+    ],
+    "skills": [
+      "封装答案判断",
+      "制作背单词小助手"
+    ],
     "goal": "写一个函数判断单词答案，并返回提示文字。",
     "story": "小助手要做背单词工具。判断答案这件事可以写成一个函数，以后反复使用。",
     "scene": "背单词小助手、问答游戏和自动判断答案。",
@@ -1751,24 +3424,60 @@
     "modifyTask": "把 apple 改成你正在背的单词，并修改提示。",
     "challengeTask": "在判断前给 answer 加上 strip() 和 lower()。",
     "sampleInput": "apple",
-    "tasks": ["定义 check_word 函数", "用 if 判断答案", "用 return 返回提示"],
+    "tasks": [
+      "定义 check_word 函数",
+      "用 if 判断答案",
+      "用 return 返回提示"
+    ],
     "checkRules": [
-      { "type": "run_success" },
-      { "type": "code_contains", "value": "def" },
-      { "type": "code_contains", "value": "return" },
-      { "type": "code_contains", "value": "if" },
-      { "type": "output_contains", "value": "答对啦" }
+      {
+        "type": "run_success"
+      },
+      {
+        "type": "code_contains",
+        "value": "def"
+      },
+      {
+        "type": "code_contains",
+        "value": "return"
+      },
+      {
+        "type": "code_contains",
+        "value": "if"
+      },
+      {
+        "type": "output_contains",
+        "value": "答对啦"
+      }
     ],
     "successMessage": "单词判断器完成！背单词项目又近了一步。",
     "hint": "函数返回提示文字，最后用 print(result) 显示出来。",
-    "keyPoints": ["函数可以封装判断逻辑", "if 可以决定返回哪句话", "return 的结果可以保存到 result"],
-    "practiceTasks": ["把单词换成 book。", "把提示语改成自己的风格。", "加入 lower() 让大小写都能通过。"],
+    "keyPoints": [
+      "函数可以封装判断逻辑",
+      "if 可以决定返回哪句话",
+      "return 的结果可以保存到 result"
+    ],
+    "practiceTasks": [
+      "把单词换成 book。",
+      "把提示语改成自己的风格。",
+      "加入 lower() 让大小写都能通过。"
+    ],
     "commonMistakes": [
-      { "wrongCode": "if answer = \"apple\":", "explanation": "判断相等要用两个等号。", "fixTip": "写成 if answer == \"apple\":。" },
-      { "wrongCode": "result = check_word", "explanation": "这里只保存了函数本身，没有调用函数。", "fixTip": "调用要写 check_word(input(...))。" }
+      {
+        "wrongCode": "if answer = \"apple\":",
+        "explanation": "判断相等要用两个等号。",
+        "fixTip": "写成 if answer == \"apple\":。"
+      },
+      {
+        "wrongCode": "result = check_word",
+        "explanation": "这里只保存了函数本身，没有调用函数。",
+        "fixTip": "调用要写 check_word(input(...))。"
+      }
     ],
     "reviewQuestion": "为什么把答案判断写进函数会更方便？",
-    "reviewQuestions": ["check_word 返回的是数字还是提示文字？"],
+    "reviewQuestions": [
+      "check_word 返回的是数字还是提示文字？"
+    ],
     "explainToParent": "今天我做了一个能判断单词答案的小函数。",
     "scratchCompare": "Scratch 可以用广播或自制积木组织判断；Python 可以用函数返回结果。"
   },
@@ -1778,8 +3487,15 @@
     "subtitle": "进阶训练营：为真实项目做准备",
     "status": "available",
     "concept": "while",
-    "concepts": ["while", "循环条件", "计数"],
-    "skills": ["按条件重复执行", "制作回合循环"],
+    "concepts": [
+      "while",
+      "循环条件",
+      "计数"
+    ],
+    "skills": [
+      "按条件重复执行",
+      "制作回合循环"
+    ],
     "goal": "用 while 在条件满足时重复执行代码。",
     "story": "小助手想连续给你加油 3 次。while 可以在条件成立时一直重复。",
     "scene": "猜数字、持续提问和游戏回合。",
@@ -1787,23 +3503,56 @@
     "starterCode": "count = 1\n\nwhile count <= 3:\n    print(\"第\", count, \"次加油\")\n    count = count + 1",
     "modifyTask": "把 3 改成 5，让小助手加油 5 次。",
     "challengeTask": "把输出内容改成“第几回合开始”。",
-    "tasks": ["创建 count", "使用 while 条件", "每次循环后更新 count"],
+    "tasks": [
+      "创建 count",
+      "使用 while 条件",
+      "每次循环后更新 count"
+    ],
     "checkRules": [
-      { "type": "run_success" },
-      { "type": "code_contains", "value": "while" },
-      { "type": "code_contains", "value": "count = count + 1" },
-      { "type": "output_line_count_at_least", "value": 3 }
+      {
+        "type": "run_success"
+      },
+      {
+        "type": "code_contains",
+        "value": "while"
+      },
+      {
+        "type": "code_contains",
+        "value": "count = count + 1"
+      },
+      {
+        "type": "output_line_count_at_least",
+        "value": 3
+      }
     ],
     "successMessage": "while 循环成功！程序按条件重复了几次。",
     "hint": "别忘了在循环里让 count 增加，否则循环可能停不下来。",
-    "keyPoints": ["while 会在条件成立时重复执行", "循环里通常要改变条件相关变量", "缩进里的代码属于循环"],
-    "practiceTasks": ["把循环次数改成 5。", "把加油文字改成回合提示。", "把 count 从 0 开始试试看。"],
+    "keyPoints": [
+      "while 会在条件成立时重复执行",
+      "循环里通常要改变条件相关变量",
+      "缩进里的代码属于循环"
+    ],
+    "practiceTasks": [
+      "把循环次数改成 5。",
+      "把加油文字改成回合提示。",
+      "把 count 从 0 开始试试看。"
+    ],
     "commonMistakes": [
-      { "wrongCode": "while count <= 3:\n    print(count)", "explanation": "count 没有增加，循环可能一直停不下来。", "fixTip": "循环里加上 count = count + 1。" },
-      { "wrongCode": "while count <= 3\n    print(count)", "explanation": "while 后面少了冒号。", "fixTip": "写成 while count <= 3:。" }
+      {
+        "wrongCode": "while count <= 3:\n    print(count)",
+        "explanation": "count 没有增加，循环可能一直停不下来。",
+        "fixTip": "循环里加上 count = count + 1。"
+      },
+      {
+        "wrongCode": "while count <= 3\n    print(count)",
+        "explanation": "while 后面少了冒号。",
+        "fixTip": "写成 while count <= 3:。"
+      }
     ],
     "reviewQuestion": "while 循环什么时候会继续执行？",
-    "reviewQuestions": ["为什么循环里要让 count 增加？"],
+    "reviewQuestions": [
+      "为什么循环里要让 count 增加？"
+    ],
     "explainToParent": "今天我学会了用 while 按条件重复执行代码。",
     "scratchCompare": "Scratch 的“重复直到”或“重复执行”很像 while 循环。"
   },
@@ -1813,8 +3562,15 @@
     "subtitle": "进阶训练营：为真实项目做准备",
     "status": "available",
     "concept": "break",
-    "concepts": ["while True", "break", "提前结束"],
-    "skills": ["猜对后停止", "输入正确后退出循环"],
+    "concepts": [
+      "while True",
+      "break",
+      "提前结束"
+    ],
+    "skills": [
+      "猜对后停止",
+      "输入正确后退出循环"
+    ],
     "goal": "用 break 在条件达成时提前跳出循环。",
     "story": "输入密码时，不需要一直问下去。只要答对，小助手就应该停止循环。",
     "scene": "密码输入、猜数字和闯关成功退出。",
@@ -1823,23 +3579,56 @@
     "modifyTask": "把密码 123 改成你设计的安全口令。",
     "challengeTask": "输入错误时增加一句提示，比如“看看是不是少打了数字”。",
     "sampleInput": "111\n123",
-    "tasks": ["使用 while True", "用 if 判断答案", "答对后 break"],
+    "tasks": [
+      "使用 while True",
+      "用 if 判断答案",
+      "答对后 break"
+    ],
     "checkRules": [
-      { "type": "run_success" },
-      { "type": "code_contains", "value": "while" },
-      { "type": "code_contains", "value": "break" },
-      { "type": "output_contains", "value": "密码正确" }
+      {
+        "type": "run_success"
+      },
+      {
+        "type": "code_contains",
+        "value": "while"
+      },
+      {
+        "type": "code_contains",
+        "value": "break"
+      },
+      {
+        "type": "output_contains",
+        "value": "密码正确"
+      }
     ],
     "successMessage": "循环成功停止！break 让程序知道什么时候退出。",
     "hint": "模拟输入可以写两行：第一行错，第二行对。",
-    "keyPoints": ["while True 会一直循环", "break 可以提前跳出循环", "通常用 if 判断什么时候 break"],
-    "practiceTasks": ["把密码改成 888。", "模拟输入先错再对。", "答对时输出“闯关成功”。"],
+    "keyPoints": [
+      "while True 会一直循环",
+      "break 可以提前跳出循环",
+      "通常用 if 判断什么时候 break"
+    ],
+    "practiceTasks": [
+      "把密码改成 888。",
+      "模拟输入先错再对。",
+      "答对时输出“闯关成功”。"
+    ],
     "commonMistakes": [
-      { "wrongCode": "while True:\n    answer = input(\"密码：\")\n    if answer == \"123\":\n        print(\"正确\")", "explanation": "答对后没有 break，循环还会继续。", "fixTip": "在答对分支里加 break。" },
-      { "wrongCode": "break", "explanation": "break 不能单独放在循环外面。", "fixTip": "break 要写在 while 或 for 循环里面。" }
+      {
+        "wrongCode": "while True:\n    answer = input(\"密码：\")\n    if answer == \"123\":\n        print(\"正确\")",
+        "explanation": "答对后没有 break，循环还会继续。",
+        "fixTip": "在答对分支里加 break。"
+      },
+      {
+        "wrongCode": "break",
+        "explanation": "break 不能单独放在循环外面。",
+        "fixTip": "break 要写在 while 或 for 循环里面。"
+      }
     ],
     "reviewQuestion": "break 的作用是什么？",
-    "reviewQuestions": ["为什么 while True 经常要搭配 break？"],
+    "reviewQuestions": [
+      "为什么 while True 经常要搭配 break？"
+    ],
     "explainToParent": "今天我学会了在条件达成后提前停止循环。",
     "scratchCompare": "Scratch 里可以用条件控制循环停止；Python 可以用 break 直接跳出循环。"
   },
@@ -1849,8 +3638,17 @@
     "subtitle": "进阶训练营：为真实项目做准备",
     "status": "available",
     "concept": "while + break + input + int + if",
-    "concepts": ["while", "break", "input", "int", "if"],
-    "skills": ["制作完整小游戏", "综合循环和判断"],
+    "concepts": [
+      "while",
+      "break",
+      "input",
+      "int",
+      "if"
+    ],
+    "skills": [
+      "制作完整小游戏",
+      "综合循环和判断"
+    ],
     "goal": "用 while、break、input、int 和 if 做一个简单猜数字小游戏。",
     "story": "小助手心里有一个数字。你要不断猜，猜对后游戏结束。",
     "scene": "完整小游戏、循环判断综合练习。",
@@ -1859,25 +3657,167 @@
     "modifyTask": "把 secret 改成你想设置的数字，并修改模拟输入。",
     "challengeTask": "增加“猜大了”或“猜小了”的提示。",
     "sampleInput": "3\n7",
-    "tasks": ["设置 secret", "用 input 获取猜测", "用 int 转数字", "用 if 判断", "猜对后 break"],
+    "tasks": [
+      "设置 secret",
+      "用 input 获取猜测",
+      "用 int 转数字",
+      "用 if 判断",
+      "猜对后 break"
+    ],
     "checkRules": [
-      { "type": "run_success" },
-      { "type": "code_contains", "value": "while" },
-      { "type": "code_contains", "value": "break" },
-      { "type": "code_contains", "value": "int" },
-      { "type": "output_contains", "value": "猜对啦" }
+      {
+        "type": "run_success"
+      },
+      {
+        "type": "code_contains",
+        "value": "while"
+      },
+      {
+        "type": "code_contains",
+        "value": "break"
+      },
+      {
+        "type": "code_contains",
+        "value": "int"
+      },
+      {
+        "type": "output_contains",
+        "value": "猜对啦"
+      }
     ],
     "successMessage": "猜数字小游戏完成！你已经能组合多个知识点做作品了。",
     "hint": "模拟输入要包含正确答案，比如 secret 是 7，就至少有一行输入 7。",
-    "keyPoints": ["input 得到文字，猜数字前要用 int", "while 可以持续猜", "break 可以在猜对后结束游戏"],
-    "practiceTasks": ["把 secret 改成 5。", "模拟输入先错再对。", "增加猜大了/猜小了提示。"],
+    "keyPoints": [
+      "input 得到文字，猜数字前要用 int",
+      "while 可以持续猜",
+      "break 可以在猜对后结束游戏"
+    ],
+    "practiceTasks": [
+      "把 secret 改成 5。",
+      "模拟输入先错再对。",
+      "增加猜大了/猜小了提示。"
+    ],
     "commonMistakes": [
-      { "wrongCode": "guess = input(\"猜一个数字：\")\nif guess == secret:", "explanation": "input 得到的是文字，secret 是数字，直接比较容易不相等。", "fixTip": "用 int(input(...)) 把输入转成数字。" },
-      { "wrongCode": "while True:\n    guess = int(input(\"猜：\"))\n    if guess == secret:\n        print(\"猜对啦\")", "explanation": "猜对后没有 break，游戏不会结束。", "fixTip": "在猜对分支里加 break。" }
+      {
+        "wrongCode": "guess = input(\"猜一个数字：\")\nif guess == secret:",
+        "explanation": "input 得到的是文字，secret 是数字，直接比较容易不相等。",
+        "fixTip": "用 int(input(...)) 把输入转成数字。"
+      },
+      {
+        "wrongCode": "while True:\n    guess = int(input(\"猜：\"))\n    if guess == secret:\n        print(\"猜对啦\")",
+        "explanation": "猜对后没有 break，游戏不会结束。",
+        "fixTip": "在猜对分支里加 break。"
+      }
     ],
     "reviewQuestion": "这个小游戏里，while、int、if、break 各自负责什么？",
-    "reviewQuestions": ["为什么猜数字时要用 int()？"],
+    "reviewQuestions": [
+      "为什么猜数字时要用 int()？"
+    ],
     "explainToParent": "今天我完成了一个可以反复猜、猜对就结束的小游戏。",
     "scratchCompare": "Scratch 猜数字会用循环和判断；Python 也用 while、if 和 break 完成。"
+  },
+  {
+    "id": "milestone-06-python-helper-pro",
+    "type": "milestoneProject",
+    "title": "毕业作品：Python 小助手 Pro",
+    "status": "available",
+    "concept": "综合项目",
+    "afterLesson": 60,
+    "subtitle": "第60课后毕业作品",
+    "concepts": [
+      "input",
+      "if",
+      "while",
+      "break",
+      "list",
+      "dict",
+      "def",
+      "return"
+    ],
+    "skills": [
+      "菜单程序",
+      "循环控制",
+      "函数整理",
+      "综合创作"
+    ],
+    "goal": "做一个菜单式综合小程序。",
+    "story": "你已经走完整条基础训练营。现在可以做一个真正属于自己的 Python 小助手 Pro。",
+    "scene": "菜单式生活小助手，可以鼓励、背单词、打卡或给挑战。",
+    "explanation": "这个作品不追求代码很长。重点是用菜单选择功能，用函数整理代码，用 while 让程序持续运行，用 break 退出。",
+    "starterCode": "def cheer():\n    return \"今天也要给自己一点鼓励！\"\n\ntasks = [\"阅读\", \"Python\", \"运动\"]\n\nwhile True:\n    choice = input(\"选择功能：鼓励/任务/退出\")\n\n    if choice == \"鼓励\":\n        print(cheer())\n    elif choice == \"任务\":\n        print(tasks)\n    elif choice == \"退出\":\n        print(\"小助手下次见\")\n        break\n    else:\n        print(\"还没有这个功能\")",
+    "sampleInput": "鼓励\n任务\n退出",
+    "modifyTask": "把菜单功能改成你真正想做的小助手。",
+    "challengeTask": "增加“背单词”或“随机挑战”功能。",
+    "tasks": [
+      "至少有 3 个菜单选项",
+      "使用 while 和 break",
+      "至少写一个函数",
+      "使用 list 或 dict 保存资料",
+      "能正常退出"
+    ],
+    "thinkingQuestions": [
+      "菜单有哪些功能？",
+      "哪个功能被写成了函数？",
+      "break 在什么时候执行？"
+    ],
+    "completionRequirements": [
+      "能选择功能",
+      "能显示对应结果",
+      "能输入退出并结束程序"
+    ],
+    "checkRules": [
+      {
+        "type": "run_success"
+      },
+      {
+        "type": "code_contains",
+        "value": "while"
+      },
+      {
+        "type": "code_contains",
+        "value": "break"
+      },
+      {
+        "type": "code_contains",
+        "value": "def"
+      },
+      {
+        "type": "code_contains_any",
+        "value": [
+          "[",
+          "{"
+        ]
+      },
+      {
+        "type": "output_contains",
+        "value": "小助手"
+      }
+    ],
+    "successMessage": "Python 小助手 Pro 完成！你已经能把很多 Python 本领组合成自己的程序。",
+    "hint": "先保留 3 个功能能运行，再慢慢加自己的新功能。",
+    "keyPoints": [
+      "while 让菜单持续运行",
+      "break 负责退出",
+      "def 整理功能",
+      "list 或 dict 保存资料"
+    ],
+    "practiceTasks": [
+      "增加背单词功能。",
+      "增加随机挑战功能。",
+      "把 tasks 改成自己的任务。"
+    ],
+    "commonMistakes": [
+      {
+        "wrongCode": "while True:\n    choice = input(\"选择：\")\n    if choice == \"退出\":\n        print(\"再见\")",
+        "explanation": "退出时没有 break，循环不会结束。",
+        "fixTip": "在退出分支里加 break。"
+      }
+    ],
+    "reviewQuestion": "你的 Pro 小助手用了哪些 Python 本领？",
+    "reviewQuestions": [
+      "哪个功能最像你自己的作品？"
+    ],
+    "explainToParent": "我做了一个菜单式综合小程序，可以继续扩展成自己的工具。",
+    "scratchCompare": "像 Scratch 里的主菜单作品，但 Python 用 while、if 和函数组织功能。"
   }
 ]

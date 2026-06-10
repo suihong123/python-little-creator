@@ -117,6 +117,15 @@ const finalLearningGoals = [
   '做一个简单的勇者战斗程序',
 ]
 
+const milestoneRoute = [
+  { afterLesson: 10, title: '聊天机器人作品' },
+  { afterLesson: 20, title: '任务打卡助手' },
+  { afterLesson: 30, title: '背单词小老师' },
+  { afterLesson: 40, title: '背包系统' },
+  { afterLesson: 50, title: '怪物资料卡' },
+  { afterLesson: 60, title: '毕业作品' },
+]
+
 function readStorage(key) {
   try {
     return JSON.parse(localStorage.getItem(key)) || {}
@@ -357,22 +366,28 @@ function App() {
   const pythonLoadTimersRef = useRef([])
   const runTokenRef = useRef(0)
 
-  const completedAvailableCount = availableLessons.filter((lesson) => completedLessons.includes(lesson.id)).length
-  const progressPercent = Math.round((completedAvailableCount / availableLessons.length) * 100)
   const completedProjectCount = projects.filter((project) => projectProgress[project.id]?.completed).length
   const projectProgressPercent = Math.round((completedProjectCount / projects.length) * 100)
   const completedTowerCount = towerLevels.filter((level) => towerProgress[level.id]?.completed).length
   const towerProgressPercent = Math.round((completedTowerCount / towerLevels.length) * 100)
   const currentLessonIndex = availableLessons.findIndex((lesson) => lesson.id === currentLesson.id)
+  const coreLessons = availableLessons.filter((lesson) => lesson.type !== 'milestoneProject')
+  const completedCoreCount = coreLessons.filter((lesson) => completedLessons.includes(lesson.id)).length
+  const coreProgressPercent = Math.round((completedCoreCount / coreLessons.length) * 100)
   const currentProjectIndex = projects.findIndex((project) => project.id === currentProject.id)
   const currentTowerIndex = towerLevels.findIndex((level) => level.id === currentTower.id)
-  const currentLessonNumber = Math.max(1, currentLessonIndex + 1)
+  const currentLessonNumber = currentLesson.type === 'milestoneProject'
+    ? currentLesson.afterLesson
+    : Math.max(1, coreLessons.findIndex((lesson) => lesson.id === currentLesson.id) + 1)
+  const currentLessonLabel = currentLesson.type === 'milestoneProject'
+    ? `阶段作品 · 第 ${currentLesson.afterLesson} 课后`
+    : `第 ${currentLessonNumber} 课`
   const currentStage = learningStages.find(
     (stage) => currentLessonNumber >= stage.range[0] && currentLessonNumber <= stage.range[1],
   ) || learningStages[0]
   const stageTotal = currentStage.range[1] - currentStage.range[0] + 1
   const stageCurrent = Math.min(stageTotal, Math.max(1, currentLessonNumber - currentStage.range[0] + 1))
-  const stageCompletedCount = availableLessons.filter((lesson, index) => {
+  const stageCompletedCount = coreLessons.filter((lesson, index) => {
     const lessonNumber = index + 1
     return lessonNumber >= currentStage.range[0]
       && lessonNumber <= currentStage.range[1]
@@ -1147,7 +1162,7 @@ def show_status():
                 ? `已完成 ${completedTowerCount} / ${towerLevels.length} 层`
                 : (isProjectMode
                 ? `已完成 ${completedProjectCount} / ${projects.length} 个项目`
-                : `第 ${currentLessonNumber} / ${availableLessons.length} 课`)}
+                : `${currentLessonLabel} / 60`)}
             </strong>
           </div>
           {!isProjectMode && !isTowerMode && (
@@ -1159,9 +1174,9 @@ def show_status():
               ? `已完成 ${completedTowerCount} / ${towerLevels.length} 层`
               : (isProjectMode
               ? `已完成 ${completedProjectCount} / ${projects.length} 个项目`
-              : `已完成 ${completedAvailableCount} / ${availableLessons.length} 关`)}
+              : `已完成 ${completedCoreCount} / ${coreLessons.length} 课`)}
           >
-            <div style={{ width: `${isTowerMode ? towerProgressPercent : (isProjectMode ? projectProgressPercent : progressPercent)}%` }} />
+            <div style={{ width: `${isTowerMode ? towerProgressPercent : (isProjectMode ? projectProgressPercent : coreProgressPercent)}%` }} />
           </div>
         </div>
 
@@ -1223,7 +1238,7 @@ def show_status():
             ) : (
               <div className="learning-map-body">
                 <div className="map-progress-row">
-                  <span>当前进度：第 {currentLessonNumber} / {availableLessons.length} 课</span>
+                  <span>当前进度：{currentLessonLabel} / 60</span>
                   <span>阶段进度：{stageCurrent} / {stageTotal}</span>
                 </div>
                 <div className="map-progress-track" aria-label={`第 ${currentStage.id} 阶段已完成 ${stageCompletedCount} / ${stageTotal}`}>
@@ -1236,6 +1251,15 @@ def show_status():
                   <span>学完这段能做</span>
                   <p>{currentStage.canDo.join('、')}。</p>
                 </div>
+
+                <details className="map-final-goals">
+                  <summary>阶段作品路线</summary>
+                  <ol>
+                    {milestoneRoute.map((milestone) => (
+                      <li key={milestone.afterLesson}>第{milestone.afterLesson}课：获得{milestone.title}</li>
+                    ))}
+                  </ol>
+                </details>
 
                 <details className="map-final-goals">
                   <summary>学完 60 课你能做到什么</summary>
@@ -1284,8 +1308,13 @@ def show_status():
           {learningMode === 'lessons' && lessons.map((lesson, index) => {
             const isActive = lesson.id === currentLesson.id
             const isCompleted = completedLessons.includes(lesson.id)
+            const isMilestone = lesson.type === 'milestoneProject'
+            const lessonNumber = isMilestone
+              ? lesson.afterLesson
+              : coreLessons.findIndex((coreLesson) => coreLesson.id === lesson.id) + 1
             const className = [
               'lesson-item',
+              isMilestone ? 'milestone-item' : '',
               isActive ? 'active' : '',
               lesson.status === 'locked' ? 'locked' : '',
             ]
@@ -1294,10 +1323,10 @@ def show_status():
 
             return (
               <button className={className} key={lesson.id} onClick={() => selectLesson(lesson)} type="button">
-                <span className="lesson-number">{String(index + 1).padStart(2, '0')}</span>
+                <span className="lesson-number">{isMilestone ? '作品' : String(lessonNumber).padStart(2, '0')}</span>
                 <span className="lesson-title">
                   {lesson.title}
-                  <small>{lesson.status === 'locked' ? lesson.comingSoonText : lesson.concept}</small>
+                  <small>{lesson.status === 'locked' ? lesson.comingSoonText : (isMilestone ? `第 ${lesson.afterLesson} 课后` : lesson.concept)}</small>
                 </span>
                 {isCompleted && <span className="done-mark">✓</span>}
               </button>
@@ -1571,35 +1600,69 @@ def show_status():
             </>
           ) : (
             <>
-              <p className="eyebrow">第 {currentLessonIndex + 1} 关 · {currentLesson.concept}</p>
+              <p className="eyebrow">{currentLessonLabel} · {currentLesson.concept}</p>
               <h2>{currentLesson.title}</h2>
 
               <div className="lesson-flow" aria-label="本课学习步骤">
-                {['阅读目标', '修改代码', '点击运行', '完成挑战', '检查任务'].map((step, index) => (
+                {(currentLesson.type === 'milestoneProject'
+                  ? ['看作品目标', '想一想功能', '修改代码', '运行作品', '检查作品']
+                  : ['阅读目标', '修改代码', '点击运行', '完成挑战', '检查任务']
+                ).map((step, index) => (
                   <span key={step}>{index + 1}. {step}</span>
                 ))}
               </div>
 
               <div className="task-section task-goal-section">
-                <h3>今天目标</h3>
+                <h3>{currentLesson.type === 'milestoneProject' ? '项目目标' : '今天目标'}</h3>
                 <p>{currentLesson.goal}</p>
               </div>
 
               <div className="task-section task-follow-section">
-                <h3>跟着做</h3>
-                <p>{currentLesson.explanation}</p>
+                <h3>{currentLesson.type === 'milestoneProject' ? '我会用到哪些本领' : '跟着做'}</h3>
+                {currentLesson.type === 'milestoneProject' ? (
+                  <ul>
+                    {currentLesson.skills?.map((skill) => (
+                      <li key={skill}>{skill}</li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p>{currentLesson.explanation}</p>
+                )}
               </div>
 
               <div className="task-section task-modify-section">
-                <h3>改一改任务</h3>
-                <p>{currentLesson.modifyTask}</p>
+                <h3>{currentLesson.type === 'milestoneProject' ? '思考问题' : '改一改任务'}</h3>
+                {currentLesson.type === 'milestoneProject' ? (
+                  <ul>
+                    {currentLesson.thinkingQuestions?.map((question) => (
+                      <li key={question}>{question}</li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p>{currentLesson.modifyTask}</p>
+                )}
               </div>
 
               <div className="task-section task-check-section">
-                <h3>检查任务</h3>
-                <p>{currentLesson.challengeTask}</p>
+                <h3>{currentLesson.type === 'milestoneProject' ? '完成要求' : '检查任务'}</h3>
+                {currentLesson.type === 'milestoneProject' ? (
+                  <ul>
+                    {currentLesson.completionRequirements?.map((requirement) => (
+                      <li key={requirement}>{requirement}</li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p>{currentLesson.challengeTask}</p>
+                )}
                 <span>完成后，去右侧点击“检查任务”。</span>
               </div>
+
+              {currentLesson.type === 'milestoneProject' && (
+                <div className="task-section task-challenge-section">
+                  <h3>改一改挑战</h3>
+                  <p>{currentLesson.challengeTask}</p>
+                </div>
+              )}
 
               {tempChallenge && (
                 <div className="temp-challenge-card">
